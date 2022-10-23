@@ -37,9 +37,30 @@ entity Demanda {
  *  this map to PropuestaEvaluadoresEspecificacion
  */
 @embedded
-entity PropuestaEvaluador {
+entity Evaluador {
     cantidadMinima Integer
     cantidadMaxima Integer
+}
+
+
+@embebbed
+entity Cuestionario {
+    clave String
+}
+
+@embebbed
+entity Pregunta {
+    numero Integer
+    texto String
+    requiereTablaEntregables Boolean
+    respustaMultiple Boolean
+    requiereJustificacion Boolean
+}
+
+@embebbed
+entity Opcion {
+    numero Integer
+    texto String
 }
 
 @embedded
@@ -82,8 +103,9 @@ entity Proyecto {
     clave String
 }
 
+//TODO - 1 ModalidadProyecto
 @embedded
-entity Modalidad {
+entity ModalidadProyecto {
     clave String
     nombre String
     acuerdo String
@@ -99,7 +121,7 @@ entity Modalidad {
 }
 
 @embedded
-entity Participante {
+entity RolEspecificacion {
     nombre String
     clave String
     responsable Boolean
@@ -112,24 +134,6 @@ entity Participante {
     responsableTecnico Boolean
     representanteLegal Boolean
     responsableAdministrativo Boolean
-}
-
-
-@embedded
-entity Institucion {
-    nombre String
-    clave String
-    responsable Boolean
-    persona Boolean
-    proponeEvaluadores Boolean
-    puedeGastarApoyo Boolean
-    cantidadMinima Integer
-    cantidadMaxima Integer
-    puedeEjecutarProyecto Boolean
-    responsableTecnico Boolean
-    representanteLegal Boolean
-    responsableAdministrativo Boolean
-    //participantes list
 }
 
 @embedded
@@ -168,7 +172,6 @@ entity Apoyo {
 
 @embedded
 entity Campo {
-    orden Integer
     clave String
     nombre String
     textoAyuda String
@@ -178,6 +181,11 @@ entity Campo {
     longitudMaxima Integer
 }
 
+@embedded
+entity CampoSeccion {
+    orden Integer
+    clave String
+}
 @embedded
 entity Seccion {
     orden Integer
@@ -191,14 +199,19 @@ entity Documento {
     nombre String
     clave String
     requerido Boolean
-    // propietarios array of strings
-    etapa String
+    etapa PeoEtapa
     porSolicitud Boolean
-    // firmates list
-    tipoFirma String
+    tipoFirma TipoFirma
     longitudMaxima Integer
-    // tipos array of strings
-    // requisitos list
+}
+
+enum PeoEtapa {
+    CONVOCATORIA,
+    SOLICITUD,
+    EVALUACION,
+    FORMALIZACION,
+    SEGUIMIENTO,
+    CIERRE
 }
 
 @embedded
@@ -210,27 +223,24 @@ entity PlanTrabajo {
 entity Actividad {
     longitudMinima Integer
     longitudMaxima Integer
-    relacionObjetivo String
-    relacionResponsables String
-    relacionEntregables String
+    relacionObjetivo TipoRelacion
+    relacionResponsables TipoRelacion
+    relacionEntregables TipoRelacion
+}
+enum TipoRelacion {
+    REQUERIDO,
+    PROHIBIDO,
+    OPCIONAL
 }
 
 @embedded
 entity Etapa {
     longitudMinima Integer
     longitudMaxima Integer
-    relacionActividades String
-    relacionEntregables String
-    relacionMeta String
-    // detalle list
+    relacionActividades TipoRelacion
+    relacionEntregables TipoRelacion
+    relacionMeta TipoRelacion
 }
-
-@embedded
-entity DetalleEtapa {
-    duracion String
-    numero Integer
-}
-
 
 @embedded
 entity Entregable {
@@ -242,8 +252,14 @@ entity Entregable {
 entity Meta {
     longitudMinima Integer
     longitudMaxima Integer
-    relacionObjetivo String
-    relacionActividades String
+    relacionActividades TipoRelacion
+    relacionObjetivo TipoRelacion
+}
+
+@embedded
+entity EtapaDetalle {
+    duracion String
+    numero Integer
 }
 
 @embedded
@@ -251,6 +267,13 @@ entity DesgloseFinanciero {
     montoMaximo Double
     longitudMinima Integer
     longitudMaxima Integer
+}
+
+@emebedded
+entity RequisitoSpel{
+    nombre String
+    invariante String
+    mensaje String
 }
 
 @embedded
@@ -274,15 +297,18 @@ enum TipoGasto {
 
 @embedded
 entity ModeloAportacion {
-    estrategia Estrategia
-    // detalle list
+    estrategia EstrategiaModeloAportacion
 
 }
 
+enum EstrategiaModeloAportacion {
+    PORCENTAJE,
+    MONTO
+}
 @embedded
 entity DetalleModeloAportacion {
     responsableId String
-    monto Integer
+    monto Double
     etapaNumero Integer
     clasificadorGasto String
 }
@@ -290,10 +316,19 @@ entity DetalleModeloAportacion {
 
 @embedded
 entity InformeTecnico {
+    aprobacionesRequeridas Integer
 }
 
-enum Estrategia {
-    PORCENTAJE
+
+@embedded
+entity Comentario {
+    longitudMinima Integer
+    longitudMaxima Integer
+}
+
+@emebbed
+entity DocumentoSoporte {
+    peso Integer
 }
 
 enum TipoFirma {
@@ -317,19 +352,23 @@ enum ModalidadApoyo {
 relationship OneToOne {
   Convocatoria{palabrasClave} to PalabrasClave
   Convocatoria{encargado} to Encargado
-  Convocatoria{propuestaEvaluadores} to PropuestaEvaluador
+  Convocatoria{propuestaEvaluadores} to Evaluador
   Convocatoria{firma} to Firma
   Convocatoria{proyecto} to Proyecto
   Convocatoria{revision} to Revision
-  Modalidad{calendario} to Calendario
-  Modalidad{apoyo} to Apoyo
-  Modalidad{planTrabajo} to PlanTrabajo
-  Modalidad{desgloseFinanciero} to DesgloseFinanciero
-  Modalidad{informeTecnico} to InformeTecnico
+  ModalidadProyecto{calendario} to Calendario
+  ModalidadProyecto{apoyo} to Apoyo
+  ModalidadProyecto{planTrabajo} to PlanTrabajo
+  ModalidadProyecto{desgloseFinanciero} to DesgloseFinanciero
+  ModalidadProyecto{informeTecnico} to InformeTecnico
   PlanTrabajo{actividad} to Actividad
   PlanTrabajo{etapa} to Etapa
   PlanTrabajo{entregable} to Entregable
   PlanTrabajo{meta} to Meta
+  DesgloseFinanciero{modeloAportacion} to ModeloAportacion
+  InformeTecnico{comentario} to Comentario
+  InformeTecnico{documento} to DocumentoSoporte
+  InformeTecnico{evaluadores} to Evaluador
 }
 
 relationship OneToMany {
@@ -337,17 +376,29 @@ relationship OneToMany {
   Convocatoria{informacionContacto} to Contacto
   Convocatoria{cuentasCorreo} to StringValue
   Convocatoria{demandas} to Demanda
-  Convocatoria{modalidadesProyecto} to Modalidad
-  Modalidad{roles} to Participante
-  Modalidad{campos} to Campo
-  Modalidad{secciones} to Seccion
-  Modalidad{catalogoDocumentos} to Documento
-  Participante{participantes} to Participante
-  Participante{requisitos} to Requisito
+  Convocatoria{modalidadesProyecto} to ModalidadProyecto
+  ModalidadProyecto{roles} to RolEspecificacion
+  ModalidadProyecto{campos} to Campo
+  ModalidadProyecto{secciones} to Seccion
+  ModalidadProyecto{catalogoDocumentos} to Documento
+  RolEspecificacion{participantes} to RolEspecificacion
+  RolEspecificacion{requisitos} to Requisito
   Calendario{seguimiento} to EtapaSeguimiento
-  Seccion{campos} to Campo
-  Etapa{detalle} to DetalleEtapa
+  Seccion{campos} to CampoSeccion
+  Etapa{detalle} to EtapaDetalle
   ModeloAportacion{detalle} to DetalleModeloAportacion
+  Documento{propietarios} to StringValue
+  Documento{firmantes} to StringValue
+  Documento{tipos} to StringValue
+  Documento{requisitos} to Requisito
+  DesgloseFinanciero{catalogoRubros} to Rubro
+  DesgloseFinanciero{requisitos} to RequisitoSpel
+  DocumentoSoporte{mimeType} to StringValue
+  InformeTecnico{cuestionarios} to Cuestionario
+  InformeTecnico{aprobacionesDictamen} to StringValue
+  Cuestionario{preguntas} to Pregunta
+  Pregunta{opciones} to Opcion
+
 
 }
 
