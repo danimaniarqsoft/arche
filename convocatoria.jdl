@@ -1,0 +1,364 @@
+
+entity Convocatoria {
+    clave String
+    nombre String
+    objetivo String
+    modalidadApoyo ModalidadApoyo
+    uri String
+    tdr String
+    techoPresupuestal Double
+    acuerdo String
+    cartaSeguridadInformacion String
+    secretariaTecnicaClave String
+    publicada Boolean
+    firma Boolean
+}
+
+@embedded
+entity StringValue {
+    value String
+}
+
+@embedded
+entity Revision {
+    cartaAusenciaConflictoDeInteres String
+    cartaSeguridadInformacion String
+}
+
+
+@embedded
+entity Demanda {
+    clave String
+    nombre String
+    descripcion String
+}
+
+/**
+ *  this map to PropuestaEvaluadoresEspecificacion
+ */
+@embedded
+entity PropuestaEvaluador {
+    cantidadMinima Integer
+    cantidadMaxima Integer
+}
+
+@embedded
+entity Firma {
+    plantilla String
+
+}
+
+@embedded
+entity Encargado {
+    cvu String
+    nombre String
+    cargo String
+}
+
+@embedded
+entity Operador {
+    cvu String
+    tipo String
+    nombre String
+    nombreCompleto String
+    cargo String
+    correo String
+}
+
+@embedded
+entity Contacto {
+    etapa String
+    contenido String
+}
+
+@embedded
+entity PalabrasClave {
+    cantidadMinima Integer
+    cantidadMaxima Integer
+}
+
+@embedded
+entity Proyecto {
+    clave String
+}
+
+@embedded
+entity Modalidad {
+    clave String
+    nombre String
+    acuerdo String
+    //roles list
+    //calendario
+    //apoyo
+    //campos
+    //secciones
+    //catalogoDocumentos
+    //planTrabajo
+    //desgloseFinanciero
+    //informeTecnico
+}
+
+@embedded
+entity Participante {
+    nombre String
+    clave String
+    responsable Boolean
+    persona Boolean
+    proponeEvaluadores Boolean
+    puedeGastarApoyo Boolean
+    cantidadMinima Integer
+    cantidadMaxima Integer
+    puedeEjecutarProyecto Boolean
+    responsableTecnico Boolean
+    representanteLegal Boolean
+    responsableAdministrativo Boolean
+}
+
+
+@embedded
+entity Institucion {
+    nombre String
+    clave String
+    responsable Boolean
+    persona Boolean
+    proponeEvaluadores Boolean
+    puedeGastarApoyo Boolean
+    cantidadMinima Integer
+    cantidadMaxima Integer
+    puedeEjecutarProyecto Boolean
+    responsableTecnico Boolean
+    representanteLegal Boolean
+    responsableAdministrativo Boolean
+    //participantes list
+}
+
+@embedded
+entity Requisito {
+    nombre String
+    operador OperadorRequisito
+    valor String
+}
+
+@embedded
+entity Calendario {
+    publicacion String
+    preregistro String
+    solicitud String
+    evaluacion String
+    resultados String
+    formalizacion String
+    inicioProyectos String
+}
+
+@embedded
+entity EtapaSeguimiento {
+    etapa Integer
+    periodo String
+}
+
+@embedded
+entity Apoyo {
+    repeticiones Integer
+    unidadTiempo String
+    cantidad Integer
+    moneda String
+    incluyeServicioMedico Boolean
+    puedeSolicitarInfraestructuraCientifica Boolean
+}
+
+@embedded
+entity Campo {
+    orden Integer
+    clave String
+    nombre String
+    textoAyuda String
+    requerido Boolean
+    tipo String
+    longitudMinima Integer
+    longitudMaxima Integer
+}
+
+@embedded
+entity Seccion {
+    orden Integer
+    clave String
+    nombre String
+    //campos list
+}
+
+@embedded
+entity Documento {
+    nombre String
+    clave String
+    requerido Boolean
+    // propietarios array of strings
+    etapa String
+    porSolicitud Boolean
+    // firmates list
+    tipoFirma String
+    longitudMaxima Integer
+    // tipos array of strings
+    // requisitos list
+}
+
+@embedded
+entity PlanTrabajo {
+
+}
+
+@embedded
+entity Actividad {
+    longitudMinima Integer
+    longitudMaxima Integer
+    relacionObjetivo String
+    relacionResponsables String
+    relacionEntregables String
+}
+
+@embedded
+entity Etapa {
+    longitudMinima Integer
+    longitudMaxima Integer
+    relacionActividades String
+    relacionEntregables String
+    relacionMeta String
+    // detalle list
+}
+
+@embedded
+entity DetalleEtapa {
+    duracion String
+    numero Integer
+}
+
+
+@embedded
+entity Entregable {
+    longitudMinima Integer
+    longitudMaxima Integer
+}
+
+@embedded
+entity Meta {
+    longitudMinima Integer
+    longitudMaxima Integer
+    relacionObjetivo String
+    relacionActividades String
+}
+
+@embedded
+entity DesgloseFinanciero {
+    montoMaximo Double
+    longitudMinima Integer
+    longitudMaxima Integer
+}
+
+@embedded
+entity Rubro {
+    clave String
+    nombre String
+    tipo TipoGasto
+}
+
+enum OperadorRequisito {
+    IGUAL,
+    DIFERENTE,
+    MENOR_O_IGUAL,
+    MAYOR_O_IGUAL
+}
+
+enum TipoGasto {
+    CORRIENTE,
+    INVERSION
+}
+
+@embedded
+entity ModeloAportacion {
+    estrategia Estrategia
+    // detalle list
+
+}
+
+@embedded
+entity DetalleModeloAportacion {
+    responsableId String
+    monto Integer
+    etapaNumero Integer
+    clasificadorGasto String
+}
+
+
+@embedded
+entity InformeTecnico {
+}
+
+enum Estrategia {
+    PORCENTAJE
+}
+
+enum TipoFirma {
+    AUTOGRAFA,
+    SIMPLE,
+    ELECTRONICA
+}
+
+enum ModalidadApoyo {
+    PROYECTOS_DE_INVESTIGACION_CIENTIFICA,
+    PROYECTOS_DE_DESARROLLO_TECNOLOGICO,
+    PROYECTOS_DE_INNOVACION,
+    PROYECTOS_DE_ACCESO_UNIVERSAL_AL_CONOCIMIENTO_Y_SUS_BENEFICIOS_SOCIALES,
+    OTRAS_VINCULADAS_CON_HUMANIDADES_CIENCIAS_TECNOLOGIAS_INNOVACION,
+    BECAS,
+    INFRAESTRUCTURA_INCLUYENDO_PROYECTOS_DE_MODERNIZACION_TECNOLOGICA,
+    PROYECTOS_POR_ENCARGO_DE_ESTADO,
+    PROYECTOS_PARA_ATENDER_EMERGENCIAS_NACIONALES
+}
+
+relationship OneToOne {
+  Convocatoria{palabrasClave} to PalabrasClave
+  Convocatoria{encargado} to Encargado
+  Convocatoria{propuestaEvaluadores} to PropuestaEvaluador
+  Convocatoria{firma} to Firma
+  Convocatoria{proyecto} to Proyecto
+  Convocatoria{revision} to Revision
+  Modalidad{calendario} to Calendario
+  Modalidad{apoyo} to Apoyo
+  Modalidad{planTrabajo} to PlanTrabajo
+  Modalidad{desgloseFinanciero} to DesgloseFinanciero
+  Modalidad{informeTecnico} to InformeTecnico
+  PlanTrabajo{actividad} to Actividad
+  PlanTrabajo{etapa} to Etapa
+  PlanTrabajo{entregable} to Entregable
+  PlanTrabajo{meta} to Meta
+}
+
+relationship OneToMany {
+  Convocatoria{operadores} to Operador
+  Convocatoria{informacionContacto} to Contacto
+  Convocatoria{cuentasCorreo} to StringValue
+  Convocatoria{demandas} to Demanda
+  Convocatoria{modalidadesProyecto} to Modalidad
+  Modalidad{roles} to Participante
+  Modalidad{campos} to Campo
+  Modalidad{secciones} to Seccion
+  Modalidad{catalogoDocumentos} to Documento
+  Participante{participantes} to Participante
+  Participante{requisitos} to Requisito
+  Calendario{seguimiento} to EtapaSeguimiento
+  Seccion{campos} to Campo
+  Etapa{detalle} to DetalleEtapa
+  ModeloAportacion{detalle} to DetalleModeloAportacion
+
+}
+
+// Set pagination options
+paginate * with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
