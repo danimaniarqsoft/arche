@@ -79,10 +79,8 @@ entity Encargado {
 @embedded
 entity Operador {
     cvu String
-    tipo String
-    nombre String
+    tipo TipoOperador
     nombreCompleto String
-    cargo String
     correo String
 }
 
@@ -337,6 +335,11 @@ enum TipoFirma {
     ELECTRONICA
 }
 
+enum TipoOperador {
+    TECNICO,
+    ADMINISTRATIVO,
+    FINANCIERO
+}
 enum ModalidadApoyo {
     PROYECTOS_DE_INVESTIGACION_CIENTIFICA,
     PROYECTOS_DE_DESARROLLO_TECNOLOGICO,
