@@ -1,8 +1,6 @@
 import Component from 'vue-class-component';
 import { Vue, Inject } from 'vue-property-decorator';
 import LoginService from '@/account/login.service';
-import '@jsonforms/vue2-vanilla/vanilla.css';
-// mergeStyles combines all classes from both styles definitions
 
 @Component({
   components: {},
@@ -29,8 +27,15 @@ export default class Form extends Vue {
   public openLogin(): void {
     this.loginService().openLogin((<any>this).$root);
   }
-  public enviar() {
+  public enviar(forms) {
+    console.log('estamos enviando algo!!!!!!!!!!!!!!!!!!!');
+    console.log(forms);
+    //    (<any>this.$refs.formioForm).formio.submit();
     //console.log(<any>this.$refs.formioForm);
-    console.log('Hola mundo como están todos');
+  }
+
+  public onChange(schema) {
+    console.log('onChange');
+    console.log(schema);
   }
 }

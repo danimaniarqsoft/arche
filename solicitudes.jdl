@@ -1,0 +1,59 @@
+
+entity Form {
+	regionName String
+}
+
+entity UiComponent {
+	name String
+    field String
+    type UiComponentType
+    label String
+    description String
+    placeHolder String
+    defaultValue String
+    isIndexed Boolean
+}
+
+enum UiComponentType {
+    TEXT_FIELD,
+    LONG_TEXT_FIELD,
+    NUMBER_FIELD,
+    PASSWORD_FIELD,
+    OPTION_PICKER,
+    MULTI_SELECT_PICKER
+    CHECKBOX,
+    ATTACHMENT,
+    JSON_FIELD,
+    RELATIONSHIP_PICKER,
+    DATA_PICKER
+}
+
+entity ValidationRule {
+    type ValidationRuleType
+    constraintValue String
+    errorMessage String
+}
+
+
+enum ValidationRuleType {
+    CONSTRAINT,
+    REQUIRED,
+    MAX_LENGTH,
+    MIN_LENGTH,
+    MUST_EQUAL,
+    MUST_NOT_EQUAL,
+    MUST_MATCH_PATTER,
+    MUST_NOT_MATCH_PATTERN
+}
+
+// Set pagination options
+paginate Form with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Employee, Job
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

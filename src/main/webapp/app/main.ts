@@ -3,8 +3,8 @@
 import Vue from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { setupAxiosInterceptors } from '@/shared/config/axios-interceptor';
-//import { Form, FormBuilder } from 'formiojs-vue';
-import { Form, FormBuilder } from '@/components/formiojs-vue';
+import { Form, FormBuilder } from 'vue-formiojs';
+import 'formiojs/dist/formio.full.min.css';
 
 import App from './app.vue';
 import Vue2Filters from 'vue2-filters';
