@@ -15,4 +15,14 @@ nav li.router-link-active .navbar-dropdown-menu {
   color: $navbar-dark-active-color;
 }
 
+/* fixes for formio*/
+.invalid-feedback {
+  display: block;
+  background-color: azure;
+}
+
+.error {
+  color: $warning;
+  background-color: white;
+}
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

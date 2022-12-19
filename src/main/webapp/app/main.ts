@@ -3,6 +3,8 @@
 import Vue from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { setupAxiosInterceptors } from '@/shared/config/axios-interceptor';
+//import { Form, FormBuilder } from 'formiojs-vue';
+import { Form, FormBuilder } from '@/components/formiojs-vue';
 
 import App from './app.vue';
 import Vue2Filters from 'vue2-filters';
@@ -42,6 +44,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('jhi-item-count', JhiItemCountComponent);
 Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);
 Vue.component('infinite-loading', InfiniteLoading);
+Vue.component('formio', Form);
+Vue.component('formbuilder', FormBuilder);
 const i18n = config.initI18N(Vue);
 const store = config.initVueXStore(Vue);
 
