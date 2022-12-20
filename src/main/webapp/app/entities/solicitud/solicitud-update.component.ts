@@ -42,6 +42,7 @@ export default class SolicitudUpdate extends Vue {
         this.currentLanguage = this.$store.getters.currentLanguage;
       }
     );
+    this.retriveForm();
   }
 
   public enviar(forms) {
@@ -101,6 +102,10 @@ export default class SolicitudUpdate extends Vue {
 
   public retrieveSolicitud(solicitudId): void {
     this.solicitudId = solicitudId;
+    this.retriveForm();
+  }
+
+  public retriveForm(): void {
     this.solicitudService()
       .retrieveForms()
       .then(
@@ -115,15 +120,17 @@ export default class SolicitudUpdate extends Vue {
   }
 
   public handleFormLoad(): void {
-    this.solicitudService()
-      .find(this.solicitudId)
-      .then(res => {
-        this.solicitud = res;
-        (<any>this.$refs.formioForm).submission = { data: this.solicitud };
-      })
-      .catch(error => {
-        this.alertService().showHttpError(this, error.response);
-      });
+    if (this.solicitudId) {
+      this.solicitudService()
+        .find(this.solicitudId)
+        .then(res => {
+          this.solicitud = res;
+          (<any>this.$refs.formioForm).submission = { data: this.solicitud };
+        })
+        .catch(error => {
+          this.alertService().showHttpError(this, error.response);
+        });
+    }
   }
 
   public handleSubmit(submit): void {

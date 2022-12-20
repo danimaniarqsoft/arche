@@ -47,9 +47,9 @@ export default class SolicitudService {
   }
 
   public create(entity: ISolicitud): Promise<ISolicitud> {
-    return new Promise<ISolicitud>((resolve, reject) => {
+    return new Promise<any>((resolve, reject) => {
       axios
-        .post(`${baseApiUrl}`, entity)
+        .post(`${baseApiUrl}/generic`, entity)
         .then(res => {
           resolve(res.data);
         })

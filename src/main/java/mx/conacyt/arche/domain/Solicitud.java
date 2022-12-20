@@ -1,6 +1,8 @@
 package mx.conacyt.arche.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -19,6 +21,8 @@ public class Solicitud implements Serializable {
 
     @Field("nombre")
     private String nombre;
+
+    private Map<String, Object> properties = new HashMap<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -48,7 +52,16 @@ public class Solicitud implements Serializable {
         this.nombre = nombre;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public Map<String, Object> getProperties() {
+        return this.properties;
+    }
+
+    public void setProperty(String name, Object value) {
+        this.properties.put(name, value);
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here
 
     @Override
     public boolean equals(Object o) {
@@ -63,7 +76,8 @@ public class Solicitud implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        // see
+        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
@@ -71,8 +85,8 @@ public class Solicitud implements Serializable {
     @Override
     public String toString() {
         return "Solicitud{" +
-            "id=" + getId() +
-            ", nombre='" + getNombre() + "'" +
-            "}";
+                "id=" + getId() +
+                ", nombre='" + getNombre() + "'" +
+                "}";
     }
 }

@@ -1,17 +1,27 @@
 package mx.conacyt.arche.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link mx.conacyt.arche.domain.Solicitud} entity.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class SolicitudDTO implements Serializable {
 
     private String id;
 
     private String nombre;
+
+    @JsonIgnore
+    private transient Map<String, Object> properties = new HashMap<>();
 
     public String getId() {
         return id;
@@ -27,6 +37,16 @@ public class SolicitudDTO implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getProperties() {
+        return this.properties;
+    }
+
+    @JsonAnySetter
+    public void setProperty(String name, Object value) {
+        this.properties.put(name, value);
     }
 
     @Override
@@ -53,9 +73,14 @@ public class SolicitudDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, Object> entry : this.getProperties().entrySet()) {
+            sb.append(entry.getKey()).append("=").append(entry.getValue().toString());
+        }
         return "SolicitudDTO{" +
-            "id='" + getId() + "'" +
-            ", nombre='" + getNombre() + "'" +
-            "}";
+                "id='" + getId() + "'" +
+                ", nombre='" + getNombre() + "'" +
+                "," + sb.toString() +
+                "}";
     }
 }
