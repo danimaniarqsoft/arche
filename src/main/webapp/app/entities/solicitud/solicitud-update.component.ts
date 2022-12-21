@@ -29,6 +29,7 @@ export default class SolicitudUpdate extends Vue {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.params.solicitudId) {
+        vm.options.readOnly = to.meta.readOnly;
         vm.retrieveSolicitud(to.params.solicitudId);
       }
     });
@@ -43,18 +44,6 @@ export default class SolicitudUpdate extends Vue {
       }
     );
     this.retriveForm();
-  }
-
-  public enviar(forms) {
-    console.log('estamos enviando algo!');
-    console.log(forms);
-    //    (<any>this.$refs.formioForm).formio.submit();
-    //console.log(<any>this.$refs.formioForm);
-  }
-
-  public onChange(schema) {
-    console.log('onChange');
-    console.log(schema);
   }
 
   public save(): void {
@@ -102,7 +91,6 @@ export default class SolicitudUpdate extends Vue {
 
   public retrieveSolicitud(solicitudId): void {
     this.solicitudId = solicitudId;
-    this.retriveForm();
   }
 
   public retriveForm(): void {

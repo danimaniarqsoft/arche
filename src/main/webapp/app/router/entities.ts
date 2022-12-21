@@ -7,8 +7,7 @@ const Entities = () => import('@/entities/entities.vue');
 const Solicitud = () => import('@/entities/solicitud/solicitud.vue');
 // prettier-ignore
 const SolicitudUpdate = () => import('@/entities/solicitud/solicitud-update.vue');
-// prettier-ignore
-const SolicitudDetails = () => import('@/entities/solicitud/solicitud-details.vue');
+
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -36,8 +35,8 @@ export default {
     {
       path: 'solicitud/:solicitudId/view',
       name: 'SolicitudView',
-      component: SolicitudDetails,
-      meta: { authorities: [Authority.USER] },
+      component: SolicitudUpdate,
+      meta: { authorities: [Authority.USER], readOnly: true },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
   ],

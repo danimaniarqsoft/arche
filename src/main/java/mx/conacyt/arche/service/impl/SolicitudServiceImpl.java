@@ -2,6 +2,7 @@ package mx.conacyt.arche.service.impl;
 
 import mx.conacyt.arche.domain.Solicitud;
 import mx.conacyt.arche.repository.SolicitudRepository;
+import mx.conacyt.arche.security.SecurityUtils;
 import mx.conacyt.arche.service.SolicitudService;
 import mx.conacyt.arche.service.dto.SolicitudDTO;
 import mx.conacyt.arche.service.mapper.SolicitudMapper;
@@ -32,7 +33,12 @@ public class SolicitudServiceImpl implements SolicitudService {
     @Override
     public Mono<SolicitudDTO> save(SolicitudDTO solicitudDTO) {
         log.debug("Request to save Solicitud : {}", solicitudDTO);
-        return solicitudRepository.save(solicitudMapper.toEntity(solicitudDTO)).map(solicitudMapper::toDto);
+        return SecurityUtils
+            .getCurrentUserLogin()
+            .switchIfEmpty(Mono.just("anonymous"))
+            .map(usuario -> solicitudMapper.toEntity(solicitudDTO.usuario(usuario)))
+            .flatMap(solicitudRepository::save)
+            .map(solicitudMapper::toDto);
     }
 
     @Override
@@ -59,7 +65,15 @@ public class SolicitudServiceImpl implements SolicitudService {
     @Override
     public Flux<SolicitudDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Solicituds");
-        return solicitudRepository.findAllBy(pageable).map(solicitudMapper::toDto);
+        return SecurityUtils
+            .getCurrentUserLogin()
+            .switchIfEmpty(Mono.just("anonymous"))
+            .flatMap(user -> {
+                Flux<Solicitud> sol = solicitudRepository.findAllByUsuario(user, pageable);
+                Flux<SolicitudDTO> solDto = sol.map(solicitudMapper::toDto);
+                return solDto.collectList();
+            })
+            .flatMapIterable(re -> re);
     }
 
     public Mono<Long> countAll() {

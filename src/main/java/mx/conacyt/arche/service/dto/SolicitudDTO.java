@@ -20,6 +20,8 @@ public class SolicitudDTO implements Serializable {
 
     private String nombre;
 
+    private String usuario;
+
     @JsonIgnore
     private transient Map<String, Object> properties = new HashMap<>();
 
@@ -37,6 +39,19 @@ public class SolicitudDTO implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public SolicitudDTO usuario(String usuario) {
+        this.usuario = usuario;
+        return this;
     }
 
     @JsonAnyGetter
@@ -80,6 +95,7 @@ public class SolicitudDTO implements Serializable {
         return "SolicitudDTO{" +
                 "id='" + getId() + "'" +
                 ", nombre='" + getNombre() + "'" +
+                ", usuario='" + getUsuario() + "'" +
                 "," + sb.toString() +
                 "}";
     }

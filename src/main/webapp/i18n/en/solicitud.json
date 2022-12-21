@@ -2,11 +2,11 @@
   "archeApp": {
     "solicitud": {
       "home": {
-        "title": "Solicituds",
+        "title": "Solicitudes",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Solicitud",
         "createOrEditLabel": "Create or edit a Solicitud",
-        "notFound": "No Solicituds found"
+        "notFound": "No Solicitudes found"
       },
       "created": "A new Solicitud is created with identifier {{ param }}",
       "updated": "A Solicitud is updated with identifier {{ param }}",

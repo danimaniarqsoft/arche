@@ -2,9 +2,9 @@
   "archeApp": {
     "solicitud": {
       "home": {
-        "title": "Solicituds",
+        "title": "Solicitudes",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Solicitud",
+        "createLabel": "Crear nueva Solicitud",
         "createOrEditLabel": "Crear o editar Solicitud",
         "notFound": "Ningún Solicituds encontrado"
       },
@@ -12,7 +12,7 @@
       "updated": "Un Solicitud ha sido actualizado con el identificador {{ param }}",
       "deleted": "Un Solicitud ha sido eliminado con el identificador {{ param }}",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Solicitud {{ id }}?"
+        "question": "¿Seguro que quiere eliminar la Solicitud {{ id }}?"
       },
       "detail": {
         "title": "Solicitud"

@@ -22,6 +22,9 @@ public class Solicitud implements Serializable {
     @Field("nombre")
     private String nombre;
 
+    @Field("usuario")
+    private String usuario;
+
     private Map<String, Object> properties = new HashMap<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -58,6 +61,14 @@ public class Solicitud implements Serializable {
 
     public void setProperty(String name, Object value) {
         this.properties.put(name, value);
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and

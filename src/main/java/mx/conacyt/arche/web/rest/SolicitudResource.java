@@ -64,36 +64,7 @@ public class SolicitudResource {
      *         if the solicitud has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/solicituds/generic")
-    public Mono<ResponseEntity<SolicitudDTO>> createGeneric(@RequestBody SolicitudDTO solicitudDTO) throws URISyntaxException {
-        log.debug("REST request to save Solicitud : {}", solicitudDTO);
-        if (solicitudDTO.getId() != null) {
-            throw new BadRequestAlertException("A new solicitud cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        return solicitudService
-            .save(solicitudDTO)
-            .map(result -> {
-                try {
-                    return ResponseEntity
-                        .created(new URI("/api/solicituds/" + result.getId()))
-                        .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
-                        .body(result);
-                } catch (URISyntaxException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-    }
-
-    /**
-     * {@code POST  /solicituds} : Create a new solicitud.
-     *
-     * @param solicitudDTO the solicitudDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
-     *         body the new solicitudDTO, or with status {@code 400 (Bad Request)}
-     *         if the solicitud has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PostMapping("/solicituds")
+    @PostMapping("/solicitudes")
     public Mono<ResponseEntity<SolicitudDTO>> createSolicitud(@RequestBody SolicitudDTO solicitudDTO) throws URISyntaxException {
         log.debug("REST request to save Solicitud : {}", solicitudDTO);
         if (solicitudDTO.getId() != null) {
@@ -104,7 +75,7 @@ public class SolicitudResource {
             .map(result -> {
                 try {
                     return ResponseEntity
-                        .created(new URI("/api/solicituds/" + result.getId()))
+                        .created(new URI("/api/solicitudes/" + result.getId()))
                         .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
                         .body(result);
                 } catch (URISyntaxException e) {
@@ -114,7 +85,7 @@ public class SolicitudResource {
     }
 
     /**
-     * {@code PUT  /solicituds/:id} : Updates an existing solicitud.
+     * {@code PUT  /solicitudes/:id} : Updates an existing solicitud.
      *
      * @param id           the id of the solicitudDTO to save.
      * @param solicitudDTO the solicitudDTO to update.
@@ -126,7 +97,7 @@ public class SolicitudResource {
      *         solicitudDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/solicituds/{id}")
+    @PutMapping("/solicitudes/{id}")
     public Mono<ResponseEntity<SolicitudDTO>> updateSolicitud(
         @PathVariable(value = "id", required = false) final String id,
         @RequestBody SolicitudDTO solicitudDTO
@@ -174,7 +145,7 @@ public class SolicitudResource {
      *         solicitudDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/solicituds/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/solicitudes/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public Mono<ResponseEntity<SolicitudDTO>> partialUpdateSolicitud(
         @PathVariable(value = "id", required = false) final String id,
         @RequestBody SolicitudDTO solicitudDTO
@@ -208,14 +179,14 @@ public class SolicitudResource {
     }
 
     /**
-     * {@code GET  /solicituds} : get all the solicituds.
+     * {@code GET  /solicitudes} : get all the solicituds.
      *
      * @param pageable the pagination information.
      * @param request  a {@link ServerHttpRequest} request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
      *         of solicituds in body.
      */
-    @GetMapping("/solicituds")
+    @GetMapping("/solicitudes")
     public Mono<ResponseEntity<List<SolicitudDTO>>> getAllSolicituds(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         ServerHttpRequest request
@@ -244,7 +215,7 @@ public class SolicitudResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
      *         the solicitudDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/solicituds/{id}")
+    @GetMapping("/solicitudes/{id}")
     public Mono<ResponseEntity<SolicitudDTO>> getSolicitud(@PathVariable String id) {
         log.debug("REST request to get Solicitud : {}", id);
         Mono<SolicitudDTO> solicitudDTO = solicitudService.findOne(id);
@@ -257,7 +228,7 @@ public class SolicitudResource {
      * @param id the id of the solicitudDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/solicituds/{id}")
+    @DeleteMapping("/solicitudes/{id}")
     public Mono<ResponseEntity<Void>> deleteSolicitud(@PathVariable String id) {
         log.debug("REST request to delete Solicitud : {}", id);
         return solicitudService

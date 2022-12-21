@@ -4,7 +4,7 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
 import { ISolicitud } from '@/shared/model/solicitud.model';
 
-const baseApiUrl = 'api/solicituds';
+const baseApiUrl = 'api/solicitudes';
 
 export default class SolicitudService {
   public find(id: string): Promise<ISolicitud> {
@@ -49,7 +49,7 @@ export default class SolicitudService {
   public create(entity: ISolicitud): Promise<ISolicitud> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .post(`${baseApiUrl}/generic`, entity)
+        .post(`${baseApiUrl}`, entity)
         .then(res => {
           resolve(res.data);
         })
