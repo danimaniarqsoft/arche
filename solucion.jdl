@@ -1,0 +1,24 @@
+
+entity Solucion {
+	titulo String
+    descripcion String
+}
+
+@embedded
+entity Pantalla {
+	titulo String
+    descripcion String
+}
+
+relationship ManyToMany {
+  Solucion to Pantalla
+}
+
+// Set pagination options
+paginate Proyecto with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
