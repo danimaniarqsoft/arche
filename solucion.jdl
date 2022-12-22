@@ -5,17 +5,20 @@ entity Solucion {
 }
 
 @embedded
-entity Pantalla {
+entity Componente {
+    orden Integer
 	titulo String
     descripcion String
+    formId String
 }
 
+
 relationship ManyToMany {
-  Solucion to Pantalla
+  Solucion to Componente
 }
 
 // Set pagination options
-paginate Proyecto with pagination
+paginate Solucion with pagination
 
 // Use Data Transfer Objects (DTO)
 dto * with mapstruct

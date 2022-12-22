@@ -1,7 +1,8 @@
 <template>
-  <div id="app">
+  <div id="app" class="wrapper">
     <ribbon></ribbon>
     <div id="app-header">
+      <side-navbar></side-navbar>
       <jhi-navbar></jhi-navbar>
     </div>
     <div class="container-fluid">
