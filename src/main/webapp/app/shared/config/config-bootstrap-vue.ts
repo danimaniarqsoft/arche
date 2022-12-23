@@ -26,9 +26,15 @@ import {
   BInputGroupPrepend,
   BSidebar,
   BNav,
+  BTab,
+  BTabs,
+  BCard,
+  BCardText,
+  BootstrapVueIcons,
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
+  vue.use(BootstrapVueIcons);
   vue.component('b-badge', BBadge);
   vue.component('b-dropdown', BDropdown);
   vue.component('b-dropdown-item', BDropdownItem);
@@ -57,4 +63,8 @@ export function initBootstrapVue(vue) {
   vue.component('b-input-group-prepend', BInputGroupPrepend);
   vue.component('b-sidebar', BSidebar);
   vue.component('b-nav', BNav);
+  vue.component('b-tab', BTab);
+  vue.component('b-tabs', BTabs);
+  vue.component('b-card', BCard);
+  vue.component('b-card-text', BCardText);
 }

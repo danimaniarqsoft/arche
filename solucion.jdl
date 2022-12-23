@@ -13,8 +13,8 @@ entity Componente {
 }
 
 
-relationship ManyToMany {
-  Solucion to Componente
+relationship OneToMany {
+  Solucion{componentes} to Componente
 }
 
 // Set pagination options

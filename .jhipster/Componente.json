@@ -1,0 +1,39 @@
+{
+  "applications": "*",
+  "changelogDate": "20221222204036",
+  "dto": "mapstruct",
+  "embedded": true,
+  "entityTableName": "componente",
+  "fields": [
+    {
+      "fieldName": "orden",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "titulo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "formId",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Componente",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "solucion",
+      "otherEntityRelationshipName": "componentes",
+      "relationshipName": "solucion",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

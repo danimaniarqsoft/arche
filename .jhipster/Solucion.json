@@ -1,0 +1,31 @@
+{
+  "applications": "*",
+  "changelogDate": "20221222204035",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "solucion",
+  "fields": [
+    {
+      "fieldName": "titulo",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Solucion",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "componente",
+      "otherEntityRelationshipName": "solucion",
+      "relationshipName": "componentes",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}

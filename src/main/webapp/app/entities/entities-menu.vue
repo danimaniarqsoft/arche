@@ -4,6 +4,10 @@
       <font-awesome-icon icon="asterisk" />
       <span v-text="$t('global.menu.entities.solicitud')">Solicitud</span>
     </b-dropdown-item>
+    <b-dropdown-item to="/solucion">
+      <font-awesome-icon icon="asterisk" />
+      <span v-text="$t('global.menu.entities.solucion')">Solucion</span>
+    </b-dropdown-item>
     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
   </div>
 </template>

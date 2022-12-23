@@ -8,6 +8,12 @@ const Solicitud = () => import('@/entities/solicitud/solicitud.vue');
 // prettier-ignore
 const SolicitudUpdate = () => import('@/entities/solicitud/solicitud-update.vue');
 
+// prettier-ignore
+const Solucion = () => import('@/entities/solucion/solucion.vue');
+// prettier-ignore
+const SolucionUpdate = () => import('@/entities/solucion/solucion-update.vue');
+// prettier-ignore
+const SolucionDetails = () => import('@/entities/solucion/solucion-details.vue');
 // jhipster-needle-add-entity-to-router-import - JHipster will import entities to the router here
 
 export default {
@@ -37,6 +43,30 @@ export default {
       name: 'SolicitudView',
       component: SolicitudUpdate,
       meta: { authorities: [Authority.USER], readOnly: true },
+    },
+    {
+      path: 'solucion',
+      name: 'Solucion',
+      component: Solucion,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'solucion/new',
+      name: 'SolucionCreate',
+      component: SolucionUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'solucion/:solucionId/edit',
+      name: 'SolucionEdit',
+      component: SolucionUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
+      path: 'solucion/:solucionId/view',
+      name: 'SolucionView',
+      component: SolucionDetails,
+      meta: { authorities: [Authority.USER] },
     },
     // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
   ],

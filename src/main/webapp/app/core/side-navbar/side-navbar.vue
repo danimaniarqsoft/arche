@@ -16,8 +16,8 @@
         <div class="p-3">
           <h4 id="sidebar-no-header-title">Secciones</h4>
           <b-nav vertical class="w-25">
-            <b-nav-item to="/soluciones" exact exact-active-class="active" class="d-inline-block">
-              <span v-text="$t('global.menu.entities.soluciones')">Soluciones</span>
+            <b-nav-item to="/solucion" exact exact-active-class="active" class="d-inline-block">
+              <span v-text="$t('global.menu.entities.solucion')">Soluciones</span>
             </b-nav-item>
             <b-nav-item to="/solicitud" exact exact-active-class="active">
               <span v-text="$t('global.menu.entities.solicitud')">Solicitud</span></b-nav-item

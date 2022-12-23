@@ -8,6 +8,8 @@
       "entities": {
         "main": "Entidades",
         "solicitud": "Solicitud",
+        "solucion": "Solucion",
+        "componente": "Componente",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

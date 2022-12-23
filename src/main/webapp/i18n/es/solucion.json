@@ -1,0 +1,26 @@
+{
+  "archeApp": {
+    "solucion": {
+      "home": {
+        "title": "Solucions",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Solucion",
+        "createOrEditLabel": "Crear o editar Solucion",
+        "notFound": "Ningún Solucions encontrado"
+      },
+      "created": "Un nuevo Solucion ha sido creado con el identificador {{ param }}",
+      "updated": "Un Solucion ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Solucion ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Solucion {{ id }}?"
+      },
+      "detail": {
+        "title": "Solucion"
+      },
+      "id": "ID",
+      "titulo": "Titulo",
+      "descripcion": "Descripcion",
+      "componentes": "Componentes"
+    }
+  }
+}
