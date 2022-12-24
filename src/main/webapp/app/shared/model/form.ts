@@ -18,6 +18,7 @@ export interface Conditional {
   eq: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Properties {}
 
 export interface Component {

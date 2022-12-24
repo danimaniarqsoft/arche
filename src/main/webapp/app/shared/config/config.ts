@@ -48,6 +48,7 @@ import Vue2Filters from 'vue2-filters';
 import * as filters from '@/shared/date/filters';
 import { accountStore } from '@/shared/config/store/account-store';
 import { translationStore } from '@/shared/config/store/translation-store';
+import { menuStore } from '@/shared/config/store/menu-store';
 
 const dateTimeFormats: DateTimeFormats = {
   es: {
@@ -168,6 +169,7 @@ export function initVueXStore(vue) {
     modules: {
       accountStore,
       translationStore,
+      menuStore,
     },
   });
 }

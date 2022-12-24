@@ -1,7 +1,6 @@
 package mx.conacyt.arche.service.dto;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A DTO for the {@link mx.conacyt.arche.domain.Componente} entity.
@@ -16,8 +15,6 @@ public class ComponenteDTO implements Serializable {
     private String descripcion;
 
     private String formId;
-
-    private SolucionDTO solucion;
 
     public Integer getOrden() {
         return orden;
@@ -51,14 +48,6 @@ public class ComponenteDTO implements Serializable {
         this.formId = formId;
     }
 
-    public SolucionDTO getSolucion() {
-        return solucion;
-    }
-
-    public void setSolucion(SolucionDTO solucion) {
-        this.solucion = solucion;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,11 +69,10 @@ public class ComponenteDTO implements Serializable {
     @Override
     public String toString() {
         return "ComponenteDTO{" +
-            "orden=" + getOrden() +
-            ", titulo='" + getTitulo() + "'" +
-            ", descripcion='" + getDescripcion() + "'" +
-            ", formId='" + getFormId() + "'" +
-            ", solucion=" + getSolucion() +
-            "}";
+                "orden=" + getOrden() +
+                ", titulo='" + getTitulo() + "'" +
+                ", descripcion='" + getDescripcion() + "'" +
+                ", formId='" + getFormId() + "'" +
+                "}";
     }
 }

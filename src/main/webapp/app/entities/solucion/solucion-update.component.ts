@@ -93,6 +93,7 @@ export default class SolucionUpdate extends Vue {
       .find(solucionId)
       .then(res => {
         this.solucion = res;
+        this.emitComponent(this.solucion.componentes);
       })
       .catch(error => {
         this.alertService().showHttpError(this, error.response);
@@ -122,11 +123,10 @@ export default class SolucionUpdate extends Vue {
     componente.descripcion = form.name;
     componente.orden = this.solucion.componentes.length + 1;
     this.solucion.componentes.push(componente);
+    this.emitComponent(this.solucion.componentes);
   }
 
   public handleRemoveComponente(form: any): void {
-    console.log('quitando elementos');
-
     const componentes = this.solucion.componentes.filter((value, index, arr) => {
       if (value.formId === form._id) {
         arr.splice(index, 1);
@@ -138,9 +138,14 @@ export default class SolucionUpdate extends Vue {
     this.solucion.componentes.forEach(component => {
       component.orden = index++;
     });
+    this.emitComponent(this.solucion.componentes);
   }
 
   public isInComponents(form: any): boolean {
     return this.solucion.componentes.find(comp => comp.formId === form._id) ? true : false;
+  }
+
+  public emitComponent(componentes: any) {
+    this.$root.$emit('menu', componentes);
   }
 }

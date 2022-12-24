@@ -31,6 +31,7 @@ import {
   BCard,
   BCardText,
   BootstrapVueIcons,
+  BAvatar,
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -67,4 +68,5 @@ export function initBootstrapVue(vue) {
   vue.component('b-tabs', BTabs);
   vue.component('b-card', BCard);
   vue.component('b-card-text', BCardText);
+  vue.component('b-avatar', BAvatar);
 }

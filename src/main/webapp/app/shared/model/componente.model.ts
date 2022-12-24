@@ -5,7 +5,6 @@ export interface IComponente {
   titulo?: string | null;
   descripcion?: string | null;
   formId?: string | null;
-  solucion?: ISolucion | null;
 }
 
 export class Componente implements IComponente {
@@ -13,7 +12,6 @@ export class Componente implements IComponente {
     public orden?: number | null,
     public titulo?: string | null,
     public descripcion?: string | null,
-    public formId?: string | null,
-    public solucion?: ISolucion | null
+    public formId?: string | null
   ) {}
 }
