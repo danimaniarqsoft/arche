@@ -21,6 +21,8 @@
       "titulo": "Titulo",
       "descripcion": "Descripcion",
       "formId": "Form Id",
+      "icon": "Icon",
+      "tipo": "Tipo",
       "solucion": "Solucion"
     }
   }

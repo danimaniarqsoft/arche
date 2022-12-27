@@ -20,6 +20,14 @@
     {
       "fieldName": "formId",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "icon",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tipo",
+      "fieldType": "String"
     }
   ],
   "fluentMethods": true,

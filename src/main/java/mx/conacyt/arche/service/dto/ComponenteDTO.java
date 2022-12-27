@@ -18,6 +18,8 @@ public class ComponenteDTO implements Serializable {
 
     private String icon;
 
+    private String tipo;
+
     public Integer getOrden() {
         return orden;
     }
@@ -50,12 +52,20 @@ public class ComponenteDTO implements Serializable {
         this.formId = formId;
     }
 
+    public String getIcon() {
+        return icon;
+    }
+
     public void setIcon(String icon) {
         this.icon = icon;
     }
 
-    public String getIcon() {
-        return this.icon;
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     @Override
@@ -83,6 +93,8 @@ public class ComponenteDTO implements Serializable {
                 ", titulo='" + getTitulo() + "'" +
                 ", descripcion='" + getDescripcion() + "'" +
                 ", formId='" + getFormId() + "'" +
+                ", icon='" + getIcon() + "'" +
+                ", tipo='" + getTipo() + "'" +
                 "}";
     }
 }

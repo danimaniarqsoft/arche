@@ -26,6 +26,9 @@ public class Componente implements Serializable {
     @Field("icon")
     private String icon;
 
+    @Field("tipo")
+    private String tipo;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Integer getOrden() {
@@ -80,6 +83,10 @@ public class Componente implements Serializable {
         this.formId = formId;
     }
 
+    public String getIcon() {
+        return this.icon;
+    }
+
     public Componente icon(String icon) {
         this.setIcon(icon);
         return this;
@@ -89,8 +96,17 @@ public class Componente implements Serializable {
         this.icon = icon;
     }
 
-    public String getIcon() {
-        return this.icon;
+    public String getTipo() {
+        return this.tipo;
+    }
+
+    public Componente tipo(String tipo) {
+        this.setTipo(tipo);
+        return this;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
@@ -122,6 +138,8 @@ public class Componente implements Serializable {
                 ", titulo='" + getTitulo() + "'" +
                 ", descripcion='" + getDescripcion() + "'" +
                 ", formId='" + getFormId() + "'" +
+                ", icon='" + getIcon() + "'" +
+                ", tipo='" + getTipo() + "'" +
                 "}";
     }
 }

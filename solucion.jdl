@@ -2,6 +2,14 @@
 entity Solucion {
 	titulo String
     descripcion String
+    estado EstadoSolucion
+}
+
+enum EstadoSolucion {
+  INICIADA,
+  PUBLICADA,
+  CERRADA,
+  CANCELADA
 }
 
 @embedded
@@ -11,6 +19,7 @@ entity Componente {
     descripcion String
     formId String
     icon String
+    tipo String
 }
 
 
