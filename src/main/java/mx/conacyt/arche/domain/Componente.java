@@ -23,6 +23,9 @@ public class Componente implements Serializable {
     @Field("form_id")
     private String formId;
 
+    @Field("icon")
+    private String icon;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Integer getOrden() {
@@ -75,6 +78,19 @@ public class Componente implements Serializable {
 
     public void setFormId(String formId) {
         this.formId = formId;
+    }
+
+    public Componente icon(String icon) {
+        this.setIcon(icon);
+        return this;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getIcon() {
+        return this.icon;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and

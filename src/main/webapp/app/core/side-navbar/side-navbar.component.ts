@@ -21,10 +21,17 @@ export default class JhiNavbar extends Vue {
   private languages: any = this.$store.getters.languages;
   private hasAnyAuthorityValues = {};
   private menu = {};
+  public isVisible = false;
 
   mounted() {
     this.$root.$on('menu', data => {
       this.menu = data;
+    });
+    this.$root.$on('set-visible', data => {
+      this.isVisible = true;
+    });
+    this.$root.$on('off-visible', data => {
+      this.isVisible = false;
     });
   }
   created() {

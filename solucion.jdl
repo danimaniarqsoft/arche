@@ -10,6 +10,7 @@ entity Componente {
 	titulo String
     descripcion String
     formId String
+    icon String
 }
 
 

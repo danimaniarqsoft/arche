@@ -29,6 +29,8 @@ import AlertService from './shared/alert/alert.service';
 import '../content/scss/global.scss';
 import '../content/scss/vendor.scss';
 import TranslationService from '@/locale/translation.service';
+import IconPicker from '@/components/icon-picker/icon-picker.vue';
+
 /* tslint:disable */
 
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
@@ -46,6 +48,7 @@ Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);
 Vue.component('infinite-loading', InfiniteLoading);
 Vue.component('formio', Form);
 Vue.component('formbuilder', FormBuilder);
+Vue.component('icon-picker', IconPicker);
 const i18n = config.initI18N(Vue);
 const store = config.initVueXStore(Vue);
 

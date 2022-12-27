@@ -17,6 +17,10 @@ import {
   BBadge,
   BDropdown,
   BDropdownItem,
+  BDropdownItemButton,
+  BDropdownDivider,
+  BDropdownGroup,
+  BDropdownForm,
   BLink,
   BAlert,
   BModal,
@@ -69,4 +73,8 @@ export function initBootstrapVue(vue) {
   vue.component('b-card', BCard);
   vue.component('b-card-text', BCardText);
   vue.component('b-avatar', BAvatar);
+  vue.component('b-dropdown-item-button', BDropdownItemButton);
+  vue.component('b-dropdown-divider', BDropdownDivider);
+  vue.component('b-dropdown-group', BDropdownGroup);
+  vue.component('b-dropdown-form', BDropdownForm);
 }

@@ -4,6 +4,7 @@ import AlertService from '@/shared/alert/alert.service';
 
 import { ISolucion, Solucion } from '@/shared/model/solucion.model';
 import { Componente } from '@/shared/model/componente.model';
+import { Menu } from '@/shared/model/menu.model';
 import SolucionService from './solucion.service';
 
 const validations: any = {
@@ -25,6 +26,7 @@ export default class SolucionUpdate extends Vue {
   public isSaving = false;
   public options = { readOnly: false, languaje: 'en', viewAsHtml: false };
   public currentLanguage = '';
+  public icon = 'fas fa-user-cog';
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -32,7 +34,13 @@ export default class SolucionUpdate extends Vue {
         vm.retrieveSolucion(to.params.solucionId);
       }
       vm.initRelationships();
+      vm.$root.$emit('set-visible', true);
     });
+  }
+
+  beforeRouteLeave(to, from, next) {
+    this.$root.$emit('off-visible', true);
+    next();
   }
 
   created(): void {
@@ -109,19 +117,19 @@ export default class SolucionUpdate extends Vue {
       .retrieveForms()
       .then(res => {
         this.forms = res.data;
-        console.log(this.forms);
       })
       .catch(error => {
         this.alertService().showHttpError(this, error.response);
       });
   }
 
-  public handleAddComponente(form: any): void {
+  public handleAddComponente(iconSelected: string, form: any): void {
     const componente = new Componente();
     componente.formId = form._id;
     componente.titulo = form.title;
     componente.descripcion = form.name;
     componente.orden = this.solucion.componentes.length + 1;
+    componente.icon = iconSelected;
     this.solucion.componentes.push(componente);
     this.emitComponent(this.solucion.componentes);
   }

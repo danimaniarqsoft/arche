@@ -76,10 +76,10 @@ public class SolucionDTO implements Serializable {
     @Override
     public String toString() {
         return "SolucionDTO{" +
-            "id='" + getId() + "'" +
-            ", titulo='" + getTitulo() + "'" +
-            ", descripcion='" + getDescripcion() + "'" +
-            ", componentes=" + getComponentes() +
-            "}";
+                "id='" + getId() + "'" +
+                ", titulo='" + getTitulo() + "'" +
+                ", descripcion='" + getDescripcion() + "'" +
+                ", componentes=" + getComponentes() +
+                "}";
     }
 }

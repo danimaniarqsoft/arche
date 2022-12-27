@@ -56,9 +56,7 @@
                 </div>
               </div>
               <div v-else class="text-right">
-                <b-button :id="form._id + 'agregar'" variant="success" @click="handleAddComponente(form)"
-                  ><b-icon icon="check2-circle"></b-icon>&nbsp;<b>Agregar</b></b-button
-                >
+                <icon-picker @seleted="handleAddComponente($event, form)"></icon-picker>
               </div>
               <formio :form="form" :options="options"></formio>
             </b-tab>

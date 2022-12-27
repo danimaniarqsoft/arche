@@ -2,7 +2,7 @@
   <div>
     <b-sidebar
       id="sidebar-right"
-      :visible="true"
+      :visible="isVisible"
       title="Secciones"
       shadow
       no-close-on-backdrop
@@ -20,7 +20,7 @@
 
           <b-nav vertical class="w-100">
             <b-nav-item v-for="item in menu" v-bind:key="item._id" to="/solucion" exact exact-active-class="active" class="d-inline-block">
-              <b-icon icon="circle" variant="success"></b-icon>
+              <b-icon :icon="item.icon" variant="success"></b-icon>
               {{ item.titulo }}
             </b-nav-item>
           </b-nav>

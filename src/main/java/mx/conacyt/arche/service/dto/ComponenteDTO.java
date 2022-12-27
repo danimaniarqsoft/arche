@@ -16,6 +16,8 @@ public class ComponenteDTO implements Serializable {
 
     private String formId;
 
+    private String icon;
+
     public Integer getOrden() {
         return orden;
     }
@@ -46,6 +48,14 @@ public class ComponenteDTO implements Serializable {
 
     public void setFormId(String formId) {
         this.formId = formId;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getIcon() {
+        return this.icon;
     }
 
     @Override
