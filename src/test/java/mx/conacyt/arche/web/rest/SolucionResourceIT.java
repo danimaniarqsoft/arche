@@ -4,11 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 import mx.conacyt.arche.IntegrationTest;
 import mx.conacyt.arche.domain.Solucion;
+import mx.conacyt.arche.domain.enumeration.EstadoSolucion;
 import mx.conacyt.arche.repository.SolucionRepository;
 import mx.conacyt.arche.service.dto.SolucionDTO;
 import mx.conacyt.arche.service.mapper.SolucionMapper;
@@ -34,6 +34,9 @@ class SolucionResourceIT {
     private static final String DEFAULT_DESCRIPCION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPCION = "BBBBBBBBBB";
 
+    private static final EstadoSolucion DEFAULT_ESTADO = EstadoSolucion.EN_CAPTURA;
+    private static final EstadoSolucion UPDATED_ESTADO = EstadoSolucion.PUBLICADA;
+
     private static final String ENTITY_API_URL = "/api/solucions";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -55,7 +58,7 @@ class SolucionResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Solucion createEntity() {
-        Solucion solucion = new Solucion().titulo(DEFAULT_TITULO).descripcion(DEFAULT_DESCRIPCION);
+        Solucion solucion = new Solucion().titulo(DEFAULT_TITULO).descripcion(DEFAULT_DESCRIPCION).estado(DEFAULT_ESTADO);
         return solucion;
     }
 
@@ -66,7 +69,7 @@ class SolucionResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Solucion createUpdatedEntity() {
-        Solucion solucion = new Solucion().titulo(UPDATED_TITULO).descripcion(UPDATED_DESCRIPCION);
+        Solucion solucion = new Solucion().titulo(UPDATED_TITULO).descripcion(UPDATED_DESCRIPCION).estado(UPDATED_ESTADO);
         return solucion;
     }
 
@@ -96,6 +99,7 @@ class SolucionResourceIT {
         Solucion testSolucion = solucionList.get(solucionList.size() - 1);
         assertThat(testSolucion.getTitulo()).isEqualTo(DEFAULT_TITULO);
         assertThat(testSolucion.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
+        assertThat(testSolucion.getEstado()).isEqualTo(DEFAULT_ESTADO);
     }
 
     @Test
@@ -142,7 +146,9 @@ class SolucionResourceIT {
             .jsonPath("$.[*].titulo")
             .value(hasItem(DEFAULT_TITULO))
             .jsonPath("$.[*].descripcion")
-            .value(hasItem(DEFAULT_DESCRIPCION));
+            .value(hasItem(DEFAULT_DESCRIPCION))
+            .jsonPath("$.[*].estado")
+            .value(hasItem(DEFAULT_ESTADO.toString()));
     }
 
     @Test
@@ -166,7 +172,9 @@ class SolucionResourceIT {
             .jsonPath("$.titulo")
             .value(is(DEFAULT_TITULO))
             .jsonPath("$.descripcion")
-            .value(is(DEFAULT_DESCRIPCION));
+            .value(is(DEFAULT_DESCRIPCION))
+            .jsonPath("$.estado")
+            .value(is(DEFAULT_ESTADO.toString()));
     }
 
     @Test
@@ -190,7 +198,7 @@ class SolucionResourceIT {
 
         // Update the solucion
         Solucion updatedSolucion = solucionRepository.findById(solucion.getId()).block();
-        updatedSolucion.titulo(UPDATED_TITULO).descripcion(UPDATED_DESCRIPCION);
+        updatedSolucion.titulo(UPDATED_TITULO).descripcion(UPDATED_DESCRIPCION).estado(UPDATED_ESTADO);
         SolucionDTO solucionDTO = solucionMapper.toDto(updatedSolucion);
 
         webTestClient
@@ -208,6 +216,7 @@ class SolucionResourceIT {
         Solucion testSolucion = solucionList.get(solucionList.size() - 1);
         assertThat(testSolucion.getTitulo()).isEqualTo(UPDATED_TITULO);
         assertThat(testSolucion.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
+        assertThat(testSolucion.getEstado()).isEqualTo(UPDATED_ESTADO);
     }
 
     @Test
@@ -305,6 +314,7 @@ class SolucionResourceIT {
         Solucion testSolucion = solucionList.get(solucionList.size() - 1);
         assertThat(testSolucion.getTitulo()).isEqualTo(DEFAULT_TITULO);
         assertThat(testSolucion.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
+        assertThat(testSolucion.getEstado()).isEqualTo(DEFAULT_ESTADO);
     }
 
     @Test
@@ -318,7 +328,7 @@ class SolucionResourceIT {
         Solucion partialUpdatedSolucion = new Solucion();
         partialUpdatedSolucion.setId(solucion.getId());
 
-        partialUpdatedSolucion.titulo(UPDATED_TITULO).descripcion(UPDATED_DESCRIPCION);
+        partialUpdatedSolucion.titulo(UPDATED_TITULO).descripcion(UPDATED_DESCRIPCION).estado(UPDATED_ESTADO);
 
         webTestClient
             .patch()
@@ -335,6 +345,7 @@ class SolucionResourceIT {
         Solucion testSolucion = solucionList.get(solucionList.size() - 1);
         assertThat(testSolucion.getTitulo()).isEqualTo(UPDATED_TITULO);
         assertThat(testSolucion.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
+        assertThat(testSolucion.getEstado()).isEqualTo(UPDATED_ESTADO);
     }
 
     @Test

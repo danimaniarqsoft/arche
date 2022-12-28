@@ -2,8 +2,10 @@ import { Component, Vue, Inject } from 'vue-property-decorator';
 
 import AlertService from '@/shared/alert/alert.service';
 
+import { ISolucion, Solucion } from '@/shared/model/solucion.model';
 import { ISolicitud, Solicitud } from '@/shared/model/solicitud.model';
 import SolicitudService from './solicitud.service';
+import SolucionService from '@/entities/solucion/solucion.service';
 
 const validations: any = {
   solicitud: {
@@ -16,9 +18,12 @@ const validations: any = {
 })
 export default class SolicitudUpdate extends Vue {
   @Inject('solicitudService') private solicitudService: () => SolicitudService;
+  @Inject('solucionService') private solucionService: () => SolucionService;
+
   @Inject('alertService') private alertService: () => AlertService;
 
   public solicitud: ISolicitud = new Solicitud();
+  public solucion: ISolucion = new Solucion();
   public isSaving = false;
   public currentLanguage = '';
   public options = { readOnly: false, languaje: 'en', viewAsHtml: false };
@@ -30,9 +35,16 @@ export default class SolicitudUpdate extends Vue {
     next(vm => {
       if (to.params.solicitudId) {
         vm.options.readOnly = to.meta.readOnly;
-        vm.retrieveSolicitud(to.params.solicitudId);
+        vm.retrieveSolucion(to.params.solicitudId);
+        //vm.retrieveSolicitud(to.params.solicitudId);
       }
+      vm.$root.$emit('set-visible', true);
     });
+  }
+
+  beforeRouteLeave(to, from, next) {
+    this.$root.$emit('off-visible', true);
+    next();
   }
 
   created(): void {
@@ -44,6 +56,18 @@ export default class SolicitudUpdate extends Vue {
       }
     );
     this.retriveForm();
+  }
+
+  public retrieveSolucion(solucionId): void {
+    this.solucionService()
+      .find(solucionId)
+      .then(res => {
+        this.solucion = res;
+        this.emitComponent(this.solucion.componentes);
+      })
+      .catch(error => {
+        this.alertService().showHttpError(this, error.response);
+      });
   }
 
   public save(): void {
@@ -131,4 +155,7 @@ export default class SolicitudUpdate extends Vue {
   }
 
   public initRelationships(): void {}
+  public emitComponent(componentes: any) {
+    this.$root.$emit('menu', componentes);
+  }
 }

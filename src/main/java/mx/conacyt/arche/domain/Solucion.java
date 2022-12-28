@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import mx.conacyt.arche.domain.enumeration.EstadoSolucion;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -25,6 +26,9 @@ public class Solucion implements Serializable {
 
     @Field("descripcion")
     private String descripcion;
+
+    @Field("estado")
+    private EstadoSolucion estado;
 
     @Field("componentes")
     @JsonIgnoreProperties(value = { "solucion" }, allowSetters = true)
@@ -69,6 +73,19 @@ public class Solucion implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public EstadoSolucion getEstado() {
+        return this.estado;
+    }
+
+    public Solucion estado(EstadoSolucion estado) {
+        this.setEstado(estado);
+        return this;
+    }
+
+    public void setEstado(EstadoSolucion estado) {
+        this.estado = estado;
     }
 
     public Set<Componente> getComponentes() {
@@ -122,6 +139,7 @@ public class Solucion implements Serializable {
                 "id=" + getId() +
                 ", titulo='" + getTitulo() + "'" +
                 ", descripcion='" + getDescripcion() + "'" +
+                ", estado='" + getEstado() + "'" +
                 "}";
     }
 }

@@ -12,6 +12,11 @@
     {
       "fieldName": "descripcion",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "estado",
+      "fieldType": "EstadoSolucion",
+      "fieldValues": "EN_CAPTURA,PUBLICADA,CERRADA,CANCELADA"
     }
   ],
   "fluentMethods": true,

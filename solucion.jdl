@@ -6,7 +6,7 @@ entity Solucion {
 }
 
 enum EstadoSolucion {
-  INICIADA,
+  EN_CAPTURA,
   PUBLICADA,
   CERRADA,
   CANCELADA

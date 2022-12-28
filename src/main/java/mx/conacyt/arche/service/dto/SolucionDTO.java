@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import mx.conacyt.arche.domain.enumeration.EstadoSolucion;
 
 /**
  * A DTO for the {@link mx.conacyt.arche.domain.Solucion} entity.
@@ -16,6 +17,8 @@ public class SolucionDTO implements Serializable {
     private String titulo;
 
     private String descripcion;
+
+    private EstadoSolucion estado;
 
     private Set<ComponenteDTO> componentes = new HashSet<>();
 
@@ -41,6 +44,14 @@ public class SolucionDTO implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public EstadoSolucion getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoSolucion estado) {
+        this.estado = estado;
     }
 
     public Set<ComponenteDTO> getComponentes() {
@@ -76,10 +87,11 @@ public class SolucionDTO implements Serializable {
     @Override
     public String toString() {
         return "SolucionDTO{" +
-                "id='" + getId() + "'" +
-                ", titulo='" + getTitulo() + "'" +
-                ", descripcion='" + getDescripcion() + "'" +
-                ", componentes=" + getComponentes() +
-                "}";
+            "id='" + getId() + "'" +
+            ", titulo='" + getTitulo() + "'" +
+            ", descripcion='" + getDescripcion() + "'" +
+            ", estado='" + getEstado() + "'" +
+            ", componentes=" + getComponentes() +
+            "}";
     }
 }

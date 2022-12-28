@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-8">
-      <form name="editForm" role="form" novalidate v-on:submit.prevent="save()">
+      <form name="editForm" role="form" novalidate v-on:submit.prevent="handleSave()">
         <h2
           id="archeApp.solucion.home.createOrEditLabel"
           data-cy="SolucionCreateUpdateHeading"
@@ -62,19 +62,28 @@
             </b-tab>
           </b-tabs>
         </b-card>
-        <div>
+        <hr />
+        <div class="text-right">
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">
             <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.cancel')">Cancel</span>
           </button>
-          <button
-            type="submit"
-            id="save-entity"
-            data-cy="entityCreateSaveButton"
-            :disabled="$v.solucion.$invalid || isSaving"
-            class="btn btn-primary"
-          >
-            <font-awesome-icon icon="save"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.save')">Save</span>
-          </button>
+          <b-button variant="primary" id="save-entity" :disabled="$v.solucion.$invalid || isSaving" @click="handleSave()">
+            <b-icon v-if="isSaving" icon="save" animation="fade" aria-hidden="true"></b-icon>
+            <b-icon v-else icon="save" aria-hidden="true"></b-icon>&nbsp;{{ $t('entity.action.save') }}
+          </b-button>
+          <b-dropdown variant="outline-primary" dropright no-caret>
+            <template #button-content>
+              <b-icon v-if="isPublishing" icon="megaphone" animation="fade" aria-hidden="true"></b-icon>
+              <b-icon v-else icon="megaphone" aria-hidden="true"></b-icon>&nbsp;Publicar solución
+            </template>
+            <b-dropdown-form>
+              <div class="text-center">
+                <small class="text-center">¿Esta seguro de publicar?</small>
+              </div>
+              <b-dropdown-divider></b-dropdown-divider>
+              <b-dropdown-item-button @click="handlePublicar()" class="text-center">Aceptar</b-dropdown-item-button>
+            </b-dropdown-form>
+          </b-dropdown>
         </div>
       </form>
     </div>

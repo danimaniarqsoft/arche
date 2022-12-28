@@ -4,13 +4,14 @@ import AlertService from '@/shared/alert/alert.service';
 
 import { ISolucion, Solucion } from '@/shared/model/solucion.model';
 import { Componente } from '@/shared/model/componente.model';
-import { Menu } from '@/shared/model/menu.model';
+import { EstadoSolucion } from '@/shared/model/enumerations/estado-solucion.model';
 import SolucionService from './solucion.service';
 
 const validations: any = {
   solucion: {
     titulo: {},
     descripcion: {},
+    estado: {},
   },
 };
 
@@ -24,8 +25,10 @@ export default class SolucionUpdate extends Vue {
   public solucion: ISolucion = new Solucion();
   public forms: any = {};
   public isSaving = false;
+  public isPublishing = false;
   public options = { readOnly: false, languaje: 'en', viewAsHtml: false };
   public currentLanguage = '';
+  public estadoSolucionValues: string[] = Object.keys(EstadoSolucion);
   public icon = 'fas fa-user-cog';
 
   beforeRouteEnter(to, from, next) {
@@ -53,14 +56,24 @@ export default class SolucionUpdate extends Vue {
     );
   }
 
-  public save(): void {
+  public handlePublicar(): void {
+    this.isPublishing = true;
+    this.save(EstadoSolucion.PUBLICADA);
+  }
+
+  public handleSave(): void {
     this.isSaving = true;
+    this.save(EstadoSolucion.EN_CAPTURA);
+  }
+
+  public save(estado: EstadoSolucion): void {
+    this.solucion.estado = estado;
     if (this.solucion.id) {
       this.solucionService()
         .update(this.solucion)
         .then(param => {
           this.isSaving = false;
-          this.$router.go(-1);
+          this.isPublishing = false;
           const message = this.$t('archeApp.solucion.updated', { param: param.id });
           return (this.$root as any).$bvToast.toast(message.toString(), {
             toaster: 'b-toaster-top-center',
@@ -72,13 +85,16 @@ export default class SolucionUpdate extends Vue {
         })
         .catch(error => {
           this.isSaving = false;
+          this.isPublishing = false;
           this.alertService().showHttpError(this, error.response);
         });
     } else {
+      this.solucion.estado = EstadoSolucion.EN_CAPTURA;
       this.solucionService()
         .create(this.solucion)
         .then(param => {
           this.isSaving = false;
+          this.isPublishing = false;
           this.$router.go(-1);
           const message = this.$t('archeApp.solucion.created', { param: param.id });
           (this.$root as any).$bvToast.toast(message.toString(), {
@@ -91,6 +107,7 @@ export default class SolucionUpdate extends Vue {
         })
         .catch(error => {
           this.isSaving = false;
+          this.isPublishing = false;
           this.alertService().showHttpError(this, error.response);
         });
     }

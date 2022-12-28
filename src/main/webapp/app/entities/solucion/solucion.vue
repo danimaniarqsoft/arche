@@ -40,6 +40,10 @@
               <span v-text="$t('archeApp.solucion.descripcion')">Descripcion</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'descripcion'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('estado')">
+              <span v-text="$t('archeApp.solucion.estado')">Estado</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'estado'"></jhi-sort-indicator>
+            </th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -50,30 +54,27 @@
             </td>
             <td>{{ solucion.titulo }}</td>
             <td>{{ solucion.descripcion }}</td>
+            <td v-text="$t('archeApp.EstadoSolucion.' + solucion.estado)">{{ solucion.estado }}</td>
             <td class="text-right">
-              <div class="btn-group">
+              <div>
                 <router-link :to="{ name: 'SolucionView', params: { solucionId: solucion.id } }" custom v-slot="{ navigate }">
-                  <button @click="navigate" class="btn btn-info btn-sm details" data-cy="entityDetailsButton">
-                    <font-awesome-icon icon="eye"></font-awesome-icon>
+                  <b-button @click="navigate" variant="info">
+                    <b-icon icon="eye"></b-icon>
                     <span class="d-none d-md-inline" v-text="$t('entity.action.view')">View</span>
-                  </button>
+                  </b-button>
                 </router-link>
                 <router-link :to="{ name: 'SolucionEdit', params: { solucionId: solucion.id } }" custom v-slot="{ navigate }">
-                  <button @click="navigate" class="btn btn-primary btn-sm edit" data-cy="entityEditButton">
-                    <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
+                  <b-button @click="navigate" variant="primary">
+                    <b-icon icon="pencil-square"></b-icon>
                     <span class="d-none d-md-inline" v-text="$t('entity.action.edit')">Edit</span>
-                  </button>
+                  </b-button>
                 </router-link>
-                <b-button
-                  v-on:click="prepareRemove(solucion)"
-                  variant="danger"
-                  class="btn btn-sm"
-                  data-cy="entityDeleteButton"
-                  v-b-modal.removeEntity
-                >
-                  <font-awesome-icon icon="times"></font-awesome-icon>
-                  <span class="d-none d-md-inline" v-text="$t('entity.action.delete')">Delete</span>
-                </b-button>
+                <router-link :to="{ name: 'SolicitudEdit', params: { solicitudId: solucion.id } }" custom v-slot="{ navigate }">
+                  <b-button @click="navigate" variant="primary">
+                    <b-icon icon="arrow-right-square"></b-icon>
+                    <span class="d-none d-md-inline">Crear solicitud</span>
+                  </b-button>
+                </router-link>
               </div>
             </td>
           </tr>

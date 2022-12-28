@@ -36,6 +36,7 @@ import {
   BCardText,
   BootstrapVueIcons,
   BAvatar,
+  BButtonGroup,
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -77,4 +78,5 @@ export function initBootstrapVue(vue) {
   vue.component('b-dropdown-divider', BDropdownDivider);
   vue.component('b-dropdown-group', BDropdownGroup);
   vue.component('b-dropdown-form', BDropdownForm);
+  vue.component('b-button-group', BButtonGroup);
 }

@@ -18,6 +18,12 @@
           <dd>
             <span>{{ solucion.descripcion }}</span>
           </dd>
+          <dt>
+            <span v-text="$t('archeApp.solucion.estado')">Estado</span>
+          </dt>
+          <dd>
+            <span v-text="$t('archeApp.EstadoSolucion.' + solucion.estado)">{{ solucion.estado }}</span>
+          </dd>
         </dl>
         <button type="submit" v-on:click.prevent="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
           <font-awesome-icon icon="arrow-left"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.back')"> Back</span>

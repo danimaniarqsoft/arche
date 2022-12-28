@@ -1,0 +1,11 @@
+{
+  "archeApp": {
+    "EstadoSolucion": {
+      "null": "",
+      "EN_CAPTURA": "EN_CAPTURA",
+      "PUBLICADA": "PUBLICADA",
+      "CERRADA": "CERRADA",
+      "CANCELADA": "CANCELADA"
+    }
+  }
+}

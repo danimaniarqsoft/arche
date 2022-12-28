@@ -61,34 +61,6 @@ export default class Solucion extends Vue {
     this.clear();
   }
 
-  public prepareRemove(instance: ISolucion): void {
-    this.removeId = instance.id;
-    if (<any>this.$refs.removeEntity) {
-      (<any>this.$refs.removeEntity).show();
-    }
-  }
-
-  public removeSolucion(): void {
-    this.solucionService()
-      .delete(this.removeId)
-      .then(() => {
-        const message = this.$t('archeApp.solucion.deleted', { param: this.removeId });
-        this.$bvToast.toast(message.toString(), {
-          toaster: 'b-toaster-top-center',
-          title: 'Info',
-          variant: 'danger',
-          solid: true,
-          autoHideDelay: 5000,
-        });
-        this.removeId = null;
-        this.retrieveAllSolucions();
-        this.closeDialog();
-      })
-      .catch(error => {
-        this.alertService().showHttpError(this, error.response);
-      });
-  }
-
   public sort(): Array<any> {
     const result = [this.propOrder + ',' + (this.reverse ? 'desc' : 'asc')];
     if (this.propOrder !== 'id') {
