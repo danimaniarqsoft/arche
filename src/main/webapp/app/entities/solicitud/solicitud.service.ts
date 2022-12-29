@@ -5,6 +5,7 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 import { ISolicitud } from '@/shared/model/solicitud.model';
 
 const baseApiUrl = 'api/solicitudes';
+const baseFormApiUrl = 'http://localhost:3001/form';
 
 export default class SolicitudService {
   public find(id: string): Promise<ISolicitud> {
@@ -85,10 +86,10 @@ export default class SolicitudService {
     });
   }
 
-  public retrieveForms(): Promise<any> {
+  public retrieveForms(formId: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .get('http://localhost:3001/form/639ce61bc69806cc78b482bc')
+        .get(`${baseFormApiUrl}/${formId}`)
         .then(res => {
           resolve(res);
         })

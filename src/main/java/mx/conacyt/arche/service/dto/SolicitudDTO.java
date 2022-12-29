@@ -22,6 +22,8 @@ public class SolicitudDTO implements Serializable {
 
     private String usuario;
 
+    private String solucionId;
+
     @JsonIgnore
     private transient Map<String, Object> properties = new HashMap<>();
 
@@ -52,6 +54,14 @@ public class SolicitudDTO implements Serializable {
     public SolicitudDTO usuario(String usuario) {
         this.usuario = usuario;
         return this;
+    }
+
+    public String getSolucionId() {
+        return this.solucionId;
+    }
+
+    public void setSolucionId(String solucionId) {
+        this.solucionId = solucionId;
     }
 
     @JsonAnyGetter
@@ -96,6 +106,7 @@ public class SolicitudDTO implements Serializable {
                 "id='" + getId() + "'" +
                 ", nombre='" + getNombre() + "'" +
                 ", usuario='" + getUsuario() + "'" +
+                ", solucionId='" + getSolucionId() + "'" +
                 "," + sb.toString() +
                 "}";
     }

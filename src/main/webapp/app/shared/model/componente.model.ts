@@ -7,6 +7,7 @@ export interface IComponente {
   formId?: string | null;
   icon?: string | null;
   tipo?: string | null;
+  path?: string | null;
 }
 
 export class Componente implements IComponente {
@@ -16,6 +17,7 @@ export class Componente implements IComponente {
     public descripcion?: string | null,
     public formId?: string | null,
     public icon?: string | null,
-    public tipo?: string | null
+    public tipo?: string | null,
+    public path?: string | null
   ) {}
 }

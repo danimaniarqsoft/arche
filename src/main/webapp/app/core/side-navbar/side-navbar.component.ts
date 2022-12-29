@@ -27,13 +27,11 @@ export default class JhiNavbar extends Vue {
     this.$root.$on('menu', data => {
       this.menu = data;
     });
-    this.$root.$on('set-visible', data => {
-      this.isVisible = true;
-    });
-    this.$root.$on('off-visible', data => {
-      this.isVisible = false;
+    this.$root.$on('show-side-navbar', data => {
+      this.isVisible = data;
     });
   }
+
   created() {
     const currentLanguage = Object.keys(this.languages).includes(navigator.language) ? navigator.language : this.currentLanguage;
     this.translationService().refreshTranslation(currentLanguage);
@@ -44,6 +42,10 @@ export default class JhiNavbar extends Vue {
     return paths.some(path => {
       return this.$route.path.indexOf(path) === 0; // current path starts with this path string
     });
+  }
+
+  public loadForm(component) {
+    this.$root.$emit('loadForm', component);
   }
 
   public changeLanguage(newLanguage: string): void {

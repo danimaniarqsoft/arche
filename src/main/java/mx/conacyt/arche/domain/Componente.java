@@ -29,6 +29,9 @@ public class Componente implements Serializable {
     @Field("tipo")
     private String tipo;
 
+    @Field("path")
+    private String path;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Integer getOrden() {
@@ -109,6 +112,14 @@ public class Componente implements Serializable {
         this.tipo = tipo;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
     // setters here
 
@@ -140,6 +151,7 @@ public class Componente implements Serializable {
                 ", formId='" + getFormId() + "'" +
                 ", icon='" + getIcon() + "'" +
                 ", tipo='" + getTipo() + "'" +
+                ", path='" + getPath() + "'" +
                 "}";
     }
 }

@@ -37,12 +37,12 @@ export default class SolucionUpdate extends Vue {
         vm.retrieveSolucion(to.params.solucionId);
       }
       vm.initRelationships();
-      vm.$root.$emit('set-visible', true);
+      vm.$root.$emit('show-side-navbar', true);
     });
   }
 
   beforeRouteLeave(to, from, next) {
-    this.$root.$emit('off-visible', true);
+    (this.$root as any).$emit('show-side-navbar', false);
     next();
   }
 
@@ -147,6 +147,7 @@ export default class SolucionUpdate extends Vue {
     componente.descripcion = form.name;
     componente.orden = this.solucion.componentes.length + 1;
     componente.icon = iconSelected;
+    componente.path = form.path;
     this.solucion.componentes.push(componente);
     this.emitComponent(this.solucion.componentes);
   }
@@ -171,6 +172,6 @@ export default class SolucionUpdate extends Vue {
   }
 
   public emitComponent(componentes: any) {
-    this.$root.$emit('menu', componentes);
+    (this.$root as any).$emit('menu', componentes);
   }
 }

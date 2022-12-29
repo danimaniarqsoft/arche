@@ -20,6 +20,8 @@ public class ComponenteDTO implements Serializable {
 
     private String tipo;
 
+    private String path;
+
     public Integer getOrden() {
         return orden;
     }
@@ -68,6 +70,14 @@ public class ComponenteDTO implements Serializable {
         this.tipo = tipo;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -95,6 +105,7 @@ public class ComponenteDTO implements Serializable {
                 ", formId='" + getFormId() + "'" +
                 ", icon='" + getIcon() + "'" +
                 ", tipo='" + getTipo() + "'" +
+                ", path='" + getPath() + "'" +
                 "}";
     }
 }
