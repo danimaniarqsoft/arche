@@ -2,8 +2,9 @@ import { Component, Inject, Vue } from 'vue-property-decorator';
 import LoginService from '@/account/login.service';
 import AccountService from '@/account/account.service';
 import TranslationService from '@/locale/translation.service';
-
+import { Menu } from '@/shared/model/menu.model';
 import EntitiesMenu from '@/entities/entities-menu.vue';
+import { Componente } from '@/shared/model/componente.model';
 
 @Component({
   components: {
@@ -20,16 +21,33 @@ export default class JhiNavbar extends Vue {
   private currentLanguage = this.$store.getters.currentLanguage;
   private languages: any = this.$store.getters.languages;
   private hasAnyAuthorityValues = {};
-  private menu = {};
-  public isVisible = false;
+  private menu = new Menu();
+  public isSideNavbarActivated = false;
+  public isPreview = false;
 
   mounted() {
-    this.$root.$on('menu', data => {
+    (this.$root as any).$on('update-menu', data => {
       this.menu = data;
     });
-    this.$root.$on('show-side-navbar', data => {
-      this.isVisible = data;
+    (this.$root as any).$on('show-side-navbar', data => {
+      this.isSideNavbarActivated = data;
     });
+  }
+
+  public loadSendForm() {
+    const componente = new Componente();
+    componente.formId = 'send-component';
+    componente.titulo = 'Enviar solicitud';
+    componente.descripcion = 'enviarSolicitud';
+    componente.orden = 1000;
+    componente.icon = 'no-icon';
+    componente.path = 'send/compponent';
+    componente.tipo = 'send';
+    this.loadForm(componente);
+  }
+
+  public loadForm(component) {
+    (this.$root as any).$emit('load-form', component);
   }
 
   created() {
@@ -42,10 +60,6 @@ export default class JhiNavbar extends Vue {
     return paths.some(path => {
       return this.$route.path.indexOf(path) === 0; // current path starts with this path string
     });
-  }
-
-  public loadForm(component) {
-    this.$root.$emit('loadForm', component);
   }
 
   public changeLanguage(newLanguage: string): void {
@@ -66,8 +80,9 @@ export default class JhiNavbar extends Vue {
     return Promise.resolve(this.$router.currentRoute);
   }
 
-  public openLogin(): void {
-    this.loginService().openLogin((<any>this).$root);
+  public handleActivatePreview(activate: boolean) {
+    this.isPreview = activate;
+    (this.$root as any).$emit('is-preview-activated', activate);
   }
 
   public get authenticated(): boolean {
@@ -83,13 +98,5 @@ export default class JhiNavbar extends Vue {
         }
       });
     return this.hasAnyAuthorityValues[authorities] ?? false;
-  }
-
-  public get openAPIEnabled(): boolean {
-    return this.$store.getters.activeProfiles.indexOf('api-docs') > -1;
-  }
-
-  public get inProduction(): boolean {
-    return this.$store.getters.activeProfiles.indexOf('prod') > -1;
   }
 }

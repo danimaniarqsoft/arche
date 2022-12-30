@@ -1,9 +1,17 @@
+import { IComponente } from '@/shared/model/componente.model';
+
 export interface IMenu {
-  id?: string | null;
-  url?: string | null;
-  icon?: string | null;
+  isSendActivated?: boolean | false;
+  isPreviewActivated?: boolean | false;
+  componentes?: IComponente[] | null;
 }
 
 export class Menu implements IMenu {
-  constructor(public id?: string, public url?: string | null, public icon?: string | null) {}
+  constructor(
+    public isSendActivated?: boolean | false,
+    public isPreviewActivated?: boolean | false,
+    public componentes?: IComponente[] | null
+  ) {
+    this.componentes = this.componentes ? this.componentes : [];
+  }
 }

@@ -4,8 +4,11 @@ import AlertService from '@/shared/alert/alert.service';
 
 import { ISolucion, Solucion } from '@/shared/model/solucion.model';
 import { Componente } from '@/shared/model/componente.model';
+import { Menu } from '@/shared/model/menu.model';
 import { EstadoSolucion } from '@/shared/model/enumerations/estado-solucion.model';
 import SolucionService from './solucion.service';
+import { mixins } from 'vue-class-component';
+import FormHandler from '@/entities/solicitud/form-handler';
 
 const validations: any = {
   solucion: {
@@ -18,9 +21,8 @@ const validations: any = {
 @Component({
   validations,
 })
-export default class SolucionUpdate extends Vue {
-  @Inject('solucionService') private solucionService: () => SolucionService;
-  @Inject('alertService') private alertService: () => AlertService;
+export default class SolucionUpdate extends mixins(FormHandler) {
+  @Inject('solucionService') public solucionService: () => SolucionService;
 
   public solucion: ISolucion = new Solucion();
   public forms: any = {};
@@ -30,6 +32,7 @@ export default class SolucionUpdate extends Vue {
   public currentLanguage = '';
   public estadoSolucionValues: string[] = Object.keys(EstadoSolucion);
   public icon = 'fas fa-user-cog';
+  public isPreview = false;
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -46,6 +49,12 @@ export default class SolucionUpdate extends Vue {
     next();
   }
 
+  mounted() {
+    (this.$root as any).$on('is-preview-activated', activate => {
+      this.isPreview = activate;
+    });
+  }
+
   created(): void {
     this.currentLanguage = this.$store.getters.currentLanguage;
     this.$store.watch(
@@ -58,15 +67,15 @@ export default class SolucionUpdate extends Vue {
 
   public handlePublicar(): void {
     this.isPublishing = true;
-    this.save(EstadoSolucion.PUBLICADA);
+    this.saveSolucion(EstadoSolucion.PUBLICADA);
   }
 
   public handleSave(): void {
     this.isSaving = true;
-    this.save(EstadoSolucion.EN_CAPTURA);
+    this.saveSolucion(EstadoSolucion.EN_CAPTURA);
   }
 
-  public save(estado: EstadoSolucion): void {
+  public saveSolucion(estado: EstadoSolucion): void {
     this.solucion.estado = estado;
     if (this.solucion.id) {
       this.solucionService()
@@ -118,7 +127,7 @@ export default class SolucionUpdate extends Vue {
       .find(solucionId)
       .then(res => {
         this.solucion = res;
-        this.emitComponent(this.solucion.componentes);
+        this.updateMenu(this.solucion);
       })
       .catch(error => {
         this.alertService().showHttpError(this, error.response);
@@ -133,7 +142,9 @@ export default class SolucionUpdate extends Vue {
     this.solucionService()
       .retrieveForms()
       .then(res => {
-        this.forms = res.data;
+        this.forms = res.data.filter((value, index, arr) => {
+          return !['userLogin', 'userRegister'].includes(value.name);
+        });
       })
       .catch(error => {
         this.alertService().showHttpError(this, error.response);
@@ -149,7 +160,7 @@ export default class SolucionUpdate extends Vue {
     componente.icon = iconSelected;
     componente.path = form.path;
     this.solucion.componentes.push(componente);
-    this.emitComponent(this.solucion.componentes);
+    this.updateMenu(this.solucion);
   }
 
   public handleRemoveComponente(form: any): void {
@@ -164,14 +175,18 @@ export default class SolucionUpdate extends Vue {
     this.solucion.componentes.forEach(component => {
       component.orden = index++;
     });
-    this.emitComponent(this.solucion.componentes);
+    this.updateMenu(this.solucion);
   }
 
   public isInComponents(form: any): boolean {
     return this.solucion.componentes.find(comp => comp.formId === form._id) ? true : false;
   }
 
-  public emitComponent(componentes: any) {
-    (this.$root as any).$emit('menu', componentes);
+  public updateMenu(solucion: any) {
+    const menu = new Menu();
+    menu.isSendActivated = true;
+    menu.isPreviewActivated = true;
+    menu.componentes = solucion.componentes;
+    (this.$root as any).$emit('update-menu', menu);
   }
 }

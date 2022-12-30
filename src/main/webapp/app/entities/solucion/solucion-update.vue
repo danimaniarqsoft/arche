@@ -1,7 +1,10 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-8">
-      <form name="editForm" role="form" novalidate v-on:submit.prevent="handleSave()">
+      <div v-if="isPreview">
+        <formio ref="formio" :form="form" :options="options" v-on:submit="handleSubmit"></formio>
+      </div>
+      <form v-else name="editForm" role="form" novalidate v-on:submit.prevent="handleSave()">
         <h2
           id="archeApp.solucion.home.createOrEditLabel"
           data-cy="SolucionCreateUpdateHeading"

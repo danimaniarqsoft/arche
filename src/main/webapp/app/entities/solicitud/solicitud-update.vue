@@ -3,24 +3,17 @@
     <div class="col-8">
       <form name="editForm" role="form" novalidate v-on:submit.prevent="save()">
         <div>
-          <div v-show="isFormEmpty">
-            <b-alert show variant="success">
-              <h4 class="alert-heading">Bienvenido al registro de solucitudes</h4>
-              <p>
-                Selecciona algún menú de la izquiera para comenzar a llenar tu solicitud. La fecha máxima para recibir solicitudes es el ...
-              </p>
-              <hr />
-              <p class="mb-0">Si tienes dudas, puedes consultarnos en nuestro centro de soporte técnico.</p>
-            </b-alert>
-          </div>
+          <message v-show="showWelcomeMessage" :title="solucion.titulo" :description="solucion.descripcion" />
           <formio
-            :submission="context.submission"
+            v-if="isFormioVisible"
+            :submission="formContext.submission"
             ref="formio"
             :form="form"
             :options="options"
             v-on:submit="handleSubmit"
             v-on:formLoad="handleFormLoad"
           ></formio>
+          <send-solicitud v-if="isSendVisible" @send="handleSend"></send-solicitud>
         </div>
       </form>
     </div>
