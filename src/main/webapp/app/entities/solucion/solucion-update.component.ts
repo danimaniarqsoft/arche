@@ -1,8 +1,6 @@
 import { Component, Vue, Inject } from 'vue-property-decorator';
 
-import AlertService from '@/shared/alert/alert.service';
-
-import { ISolucion, Solucion } from '@/shared/model/solucion.model';
+import { ISolucion, Solucion, Mensaje } from '@/shared/model/solucion.model';
 import { Componente } from '@/shared/model/componente.model';
 import { Menu } from '@/shared/model/menu.model';
 import { EstadoSolucion } from '@/shared/model/enumerations/estado-solucion.model';
@@ -15,6 +13,11 @@ const validations: any = {
     titulo: {},
     descripcion: {},
     estado: {},
+    mensaje: {
+      bienvenida: {},
+      terminos: {},
+    },
+    tags: {},
   },
 };
 
@@ -33,6 +36,10 @@ export default class SolucionUpdate extends mixins(FormHandler) {
   public estadoSolucionValues: string[] = Object.keys(EstadoSolucion);
   public icon = 'fas fa-user-cog';
   public isPreview = false;
+  public range = {
+    start: new Date(),
+    end: new Date(),
+  };
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -127,6 +134,7 @@ export default class SolucionUpdate extends mixins(FormHandler) {
       .find(solucionId)
       .then(res => {
         this.solucion = res;
+        this.solucion.mensaje = this.solucion.mensaje ? this.solucion.mensaje : new Mensaje();
         this.updateMenu(this.solucion);
       })
       .catch(error => {

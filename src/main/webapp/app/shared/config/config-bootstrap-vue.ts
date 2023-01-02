@@ -37,6 +37,9 @@ import {
   BootstrapVueIcons,
   BAvatar,
   BButtonGroup,
+  BFormTextarea,
+  BSpinner,
+  BFormTags,
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -79,4 +82,7 @@ export function initBootstrapVue(vue) {
   vue.component('b-dropdown-group', BDropdownGroup);
   vue.component('b-dropdown-form', BDropdownForm);
   vue.component('b-button-group', BButtonGroup);
+  vue.component('b-form-textarea', BFormTextarea);
+  vue.component('b-spinner', BSpinner);
+  vue.component('b-form-tags', BFormTags);
 }

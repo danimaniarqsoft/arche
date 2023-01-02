@@ -2,7 +2,9 @@ package mx.conacyt.arche.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import mx.conacyt.arche.domain.enumeration.EstadoSolucion;
 import org.springframework.data.annotation.Id;
@@ -33,6 +35,15 @@ public class Solucion implements Serializable {
     @Field("componentes")
     @JsonIgnoreProperties(value = { "solucion" }, allowSetters = true)
     private Set<Componente> componentes = new HashSet<>();
+
+    @Field("tags")
+    private List<String> tags = new ArrayList<>();
+
+    @Field("mensaje")
+    private Mensaje mensaje = new Mensaje();
+
+    @Field("calendario")
+    private Calendario calendario = new Calendario();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -111,6 +122,40 @@ public class Solucion implements Serializable {
         return this;
     }
 
+    public void setMensaje(Mensaje mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    public Mensaje getMensaje() {
+        return this.mensaje;
+    }
+
+    public Solucion estado(Mensaje mensaje) {
+        this.setMensaje(mensaje);
+        return this;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public Solucion calendario(Calendario calendario) {
+        this.setCalendario(calendario);
+        return this;
+    }
+
+    public Calendario getCalendario() {
+        return calendario;
+    }
+
+    public void setCalendario(Calendario calendario) {
+        this.calendario = calendario;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
     // setters here
 
@@ -140,6 +185,7 @@ public class Solucion implements Serializable {
                 ", titulo='" + getTitulo() + "'" +
                 ", descripcion='" + getDescripcion() + "'" +
                 ", estado='" + getEstado() + "'" +
+                ", tags='" + getTags() + "'" +
                 "}";
     }
 }

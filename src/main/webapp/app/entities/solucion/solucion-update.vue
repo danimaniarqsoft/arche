@@ -4,69 +4,110 @@
       <div v-if="isPreview">
         <formio ref="formio" :form="form" :options="options" v-on:submit="handleSubmit"></formio>
       </div>
-      <form v-else name="editForm" role="form" novalidate v-on:submit.prevent="handleSave()">
+      <div v-else>
         <h2
+          class="mb-5"
           id="archeApp.solucion.home.createOrEditLabel"
           data-cy="SolucionCreateUpdateHeading"
           v-text="$t('archeApp.solucion.home.createOrEditLabel')"
         >
           Create or edit a Solucion
         </h2>
-        <div>
-          <div class="form-group" v-if="solucion.id">
-            <label for="id" v-text="$t('global.field.id')">ID</label>
-            <input type="text" class="form-control" id="id" name="id" v-model="solucion.id" readonly />
-          </div>
-          <div class="form-group">
-            <label class="form-control-label" v-text="$t('archeApp.solucion.titulo')" for="solucion-titulo">Titulo</label>
-            <input
-              type="text"
-              class="form-control"
-              name="titulo"
-              id="solucion-titulo"
-              data-cy="titulo"
-              :class="{ valid: !$v.solucion.titulo.$invalid, invalid: $v.solucion.titulo.$invalid }"
-              v-model="$v.solucion.titulo.$model"
-            />
-          </div>
-          <div class="form-group">
-            <label class="form-control-label" v-text="$t('archeApp.solucion.descripcion')" for="solucion-descripcion">Descripcion</label>
-            <input
-              type="text"
-              class="form-control"
-              name="descripcion"
-              id="solucion-descripcion"
-              data-cy="descripcion"
-              :class="{ valid: !$v.solucion.descripcion.$invalid, invalid: $v.solucion.descripcion.$invalid }"
-              v-model="$v.solucion.descripcion.$model"
-            />
-          </div>
-        </div>
-        <b-card no-body>
-          <b-tabs nav-wrapper-class="w-35" pills card vertical end>
-            <b-tab v-for="form in forms" v-bind:key="form._id">
-              <template #title>
-                <b-icon v-if="isInComponents(form)" icon="check2-circle" variant="success"></b-icon>
-                <b-icon class="component-item" v-else icon="circle" variant="success"></b-icon>
-                &nbsp;&nbsp;
-                {{ form.title }}
-              </template>
-              <div v-if="isInComponents(form)">
-                <div class="text-right">
-                  <b-button :id="form._id" variant="danger" @click="handleRemoveComponente(form)"
-                    ><b-icon icon="x-circle" variant="danger"></b-icon>&nbsp; <b><i>Remover</i></b>
-                  </b-button>
-                </div>
+        <b-tabs>
+          <b-tab class="mt-4">
+            <template #title> <b-icon icon="info-circle"></b-icon> Información de la solución </template>
+            <div>
+              <div class="form-group" v-if="solucion.id">
+                <label for="id" v-text="$t('global.field.id')">ID</label>
+                <input type="text" class="form-control" id="id" name="id" v-model="solucion.id" readonly />
               </div>
-              <div v-else class="text-right">
-                <icon-picker @seleted="handleAddComponente($event, form)"></icon-picker>
+              <div class="form-group">
+                <label class="form-control-label" v-text="$t('archeApp.solucion.titulo')" for="solucion-titulo">Titulo</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="titulo"
+                  id="solucion-titulo"
+                  data-cy="titulo"
+                  :class="{ valid: !$v.solucion.titulo.$invalid, invalid: $v.solucion.titulo.$invalid }"
+                  v-model="$v.solucion.titulo.$model"
+                />
               </div>
-              <formio :form="form" :options="options"></formio>
-            </b-tab>
-          </b-tabs>
-        </b-card>
-        <hr />
-        <div class="text-right">
+              <div class="form-group">
+                <label class="form-control-label" v-text="$t('archeApp.solucion.descripcion')" for="solucion-descripcion"
+                  >Descripcion</label
+                >
+                <b-form-textarea
+                  id="solucion-descripcion"
+                  v-model="$v.solucion.descripcion.$model"
+                  :class="{ valid: !$v.solucion.descripcion.$invalid, invalid: $v.solucion.descripcion.$invalid }"
+                  rows="2"
+                  max-rows="2"
+                ></b-form-textarea>
+              </div>
+              <div class="form-group">
+                <tags v-model="$v.solucion.tags.$model" variant="primary" label="Tags" />
+              </div>
+            </div>
+          </b-tab>
+          <b-tab class="mt-4">
+            <template #title> <b-icon icon="chat-left-text"></b-icon> Mensajes </template>
+            <div class="form-group">
+              <label class="form-control-label">Mensaje de bienvenida</label>
+              <vue-editor id="mensaje-bienvenida" v-model="$v.solucion.mensaje.bienvenida.$model"></vue-editor>
+            </div>
+            <div class="form-group">
+              <label class="form-control-label">Términos y condiciones</label>
+              <vue-editor id="mensaje-terminos" v-model="$v.solucion.mensaje.terminos.$model"></vue-editor>
+            </div>
+          </b-tab>
+          <b-tab class="mt-4">
+            <template #title> <b-icon icon="calendar3-week"></b-icon> Calendario </template>
+            <div class="form-group">
+              <date-time-picker label="Fecha de apertura" v-model="solucion.calendario.fechaInicio" />
+            </div>
+            <div class="form-group">
+              <date-time-picker label="Fecha limite para recibir solicitudes" v-model="solucion.calendario.fechaFinSolicitud" />
+            </div>
+            <div class="form-group">
+              <date-time-picker label="Fecha limite para evaluar" v-model="solucion.calendario.fechaFinRevision" />
+            </div>
+          </b-tab>
+          <b-tab class="mt-4">
+            <template #title> <b-icon icon="puzzle"></b-icon> Componentes </template>
+            <b-card no-body>
+              <b-tabs nav-wrapper-class="w-35" pills card vertical end>
+                <b-tab v-for="form in forms" v-bind:key="form._id">
+                  <template #title>
+                    <b-icon v-if="isInComponents(form)" icon="check2-circle" variant="success"></b-icon>
+                    <b-icon class="component-item" v-else icon="circle" variant="success"></b-icon>
+                    &nbsp;&nbsp;
+                    {{ form.title }}
+                  </template>
+                  <div v-if="isInComponents(form)">
+                    <div class="text-right">
+                      <b-button :id="form._id" variant="danger" @click="handleRemoveComponente(form)"
+                        ><b-icon icon="x-circle" variant="danger"></b-icon>&nbsp; <b><i>Remover</i></b>
+                      </b-button>
+                    </div>
+                  </div>
+                  <div v-else class="text-right">
+                    <icon-picker @seleted="handleAddComponente($event, form)"></icon-picker>
+                  </div>
+                  <formio :form="form" :options="options"></formio>
+                </b-tab>
+              </b-tabs>
+            </b-card>
+          </b-tab>
+          <b-tab class="mt-4">
+            <template #title> <b-icon icon="file-ruled"></b-icon> Reglas </template>
+            <b-card no-body> </b-card>
+          </b-tab>
+          <b-tab class="mt-4">
+            <template #title> <b-icon icon="card-checklist"></b-icon> Cuestioanrio de Revisión </template>
+          </b-tab>
+        </b-tabs>
+        <div class="text-right card-body">
           <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">
             <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.cancel')">Cancel</span>
           </button>
@@ -88,13 +129,13 @@
             </b-dropdown-form>
           </b-dropdown>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts" src="./solucion-update.component.ts"></script>
 <style scoped>
-.active .b-icon {
+.component-selected {
   color: white !important;
 }
 </style>

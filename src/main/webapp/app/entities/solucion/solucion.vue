@@ -36,10 +36,6 @@
               <span v-text="$t('archeApp.solucion.titulo')">Titulo</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'titulo'"></jhi-sort-indicator>
             </th>
-            <th scope="row" v-on:click="changeOrder('descripcion')">
-              <span v-text="$t('archeApp.solucion.descripcion')">Descripcion</span>
-              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'descripcion'"></jhi-sort-indicator>
-            </th>
             <th scope="row" v-on:click="changeOrder('estado')">
               <span v-text="$t('archeApp.solucion.estado')">Estado</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'estado'"></jhi-sort-indicator>
@@ -53,16 +49,9 @@
               <router-link :to="{ name: 'SolucionView', params: { solucionId: solucion.id } }">{{ solucion.id }}</router-link>
             </td>
             <td>{{ solucion.titulo }}</td>
-            <td>{{ solucion.descripcion }}</td>
             <td v-text="$t('archeApp.EstadoSolucion.' + solucion.estado)">{{ solucion.estado }}</td>
             <td class="text-right">
               <div>
-                <router-link :to="{ name: 'SolucionView', params: { solucionId: solucion.id } }" custom v-slot="{ navigate }">
-                  <b-button @click="navigate" variant="info">
-                    <b-icon icon="eye"></b-icon>
-                    <span class="d-none d-md-inline" v-text="$t('entity.action.view')">View</span>
-                  </b-button>
-                </router-link>
                 <router-link :to="{ name: 'SolucionEdit', params: { solucionId: solucion.id } }" custom v-slot="{ navigate }">
                   <b-button @click="navigate" variant="primary">
                     <b-icon icon="pencil-square"></b-icon>

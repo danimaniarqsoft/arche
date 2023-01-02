@@ -29,9 +29,13 @@ import AlertService from './shared/alert/alert.service';
 import '../content/scss/global.scss';
 import '../content/scss/vendor.scss';
 import TranslationService from '@/locale/translation.service';
-import IconPicker from '@/components/icon-picker/icon-picker.vue';
-import Message from '@/components/message/message.vue';
-import Confirmation from '@/components/confirmation/confirmation.vue';
+import IconPickerComponent from '@/components/icon-picker/icon-picker.vue';
+import MessageComponent from '@/components/message/message.vue';
+import ConfirmationComponent from '@/components/confirmation/confirmation.vue';
+import DateTimePickerComponent from '@/components/date-time-picker/date-time-picker.vue';
+import TagsComponent from '@/components/tags/tags.vue';
+import { VueEditor } from 'vue2-editor';
+import VCalendar from 'v-calendar';
 
 /* tslint:disable */
 
@@ -44,15 +48,19 @@ config.initFortAwesome(Vue);
 bootstrapVueConfig.initBootstrapVue(Vue);
 Vue.use(Vue2Filters);
 Vue.use(ToastPlugin);
+Vue.use(VCalendar);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('jhi-item-count', JhiItemCountComponent);
 Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);
 Vue.component('infinite-loading', InfiniteLoading);
 Vue.component('formio', Form);
 Vue.component('formbuilder', FormBuilder);
-Vue.component('icon-picker', IconPicker);
-Vue.component('message', Message);
-Vue.component('confirmation', Confirmation);
+Vue.component('icon-picker', IconPickerComponent);
+Vue.component('message', MessageComponent);
+Vue.component('confirmation', ConfirmationComponent);
+Vue.component('vue-editor', VueEditor);
+Vue.component('tags', TagsComponent);
+Vue.component('date-time-picker', DateTimePickerComponent);
 const i18n = config.initI18N(Vue);
 const store = config.initVueXStore(Vue);
 

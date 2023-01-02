@@ -7,5 +7,5 @@ import org.mapstruct.Mapper;
 /**
  * Mapper for the entity {@link Solucion} and its DTO {@link SolucionDTO}.
  */
-@Mapper(componentModel = "spring", uses = ComponenteMapper.class)
+@Mapper(componentModel = "spring", uses = { ComponenteMapper.class, MensajeMapper.class, CalendarioMapper.class })
 public interface SolucionMapper extends EntityMapper<SolucionDTO, Solucion> {}

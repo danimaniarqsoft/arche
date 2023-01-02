@@ -34,4 +34,19 @@ nav li.router-link-active .navbar-dropdown-menu {
 .formio-warning-wrapper {
   padding: 0em;
 }
+
+/* for vue2 editor*/
+.ql-align-right {
+  text-align: right;
+}
+.ql-align-center {
+  text-align: center;
+}
+.ql-align-left {
+  text-align: left;
+}
+.ql-align-justify {
+  text-align: justify;
+}
+
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

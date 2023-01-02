@@ -1,7 +1,9 @@
 package mx.conacyt.arche.service.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import mx.conacyt.arche.domain.enumeration.EstadoSolucion;
@@ -20,7 +22,13 @@ public class SolucionDTO implements Serializable {
 
     private EstadoSolucion estado;
 
+    private MensajeDTO mensaje = new MensajeDTO();
+
+    private CalendarioDTO calendario = new CalendarioDTO();
+
     private Set<ComponenteDTO> componentes = new HashSet<>();
+
+    private List<String> tags = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -62,6 +70,30 @@ public class SolucionDTO implements Serializable {
         this.componentes = componentes;
     }
 
+    public MensajeDTO getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(MensajeDTO mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public CalendarioDTO getCalendario() {
+        return calendario;
+    }
+
+    public void setCalendario(CalendarioDTO calendario) {
+        this.calendario = calendario;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -87,11 +119,13 @@ public class SolucionDTO implements Serializable {
     @Override
     public String toString() {
         return "SolucionDTO{" +
-            "id='" + getId() + "'" +
-            ", titulo='" + getTitulo() + "'" +
-            ", descripcion='" + getDescripcion() + "'" +
-            ", estado='" + getEstado() + "'" +
-            ", componentes=" + getComponentes() +
-            "}";
+                "id='" + getId() + "'" +
+                ", titulo='" + getTitulo() + "'" +
+                ", descripcion='" + getDescripcion() + "'" +
+                ", estado='" + getEstado() + "'" +
+                ", componentes=" + getComponentes() +
+                ", mensaje=" + getMensaje() +
+                ", tags=" + getTags() +
+                "}";
     }
 }

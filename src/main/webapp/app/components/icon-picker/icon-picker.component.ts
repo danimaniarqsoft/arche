@@ -1,7 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class IconPicker extends Vue {
+export default class IconPickerComponent extends Vue {
   public icons = [
     'file-earmark-text',
     'person-fill',

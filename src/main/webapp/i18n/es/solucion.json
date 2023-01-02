@@ -5,7 +5,7 @@
         "title": "Solucions",
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nuevo Solucion",
-        "createOrEditLabel": "Crear o editar Solucion",
+        "createOrEditLabel": "Registro de soluciones",
         "notFound": "Ningún Solucions encontrado"
       },
       "created": "Un nuevo Solucion ha sido creado con el identificador {{ param }}",

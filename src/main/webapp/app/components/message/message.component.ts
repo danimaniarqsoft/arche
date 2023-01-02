@@ -1,7 +1,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
-export default class Message extends Vue {
+export default class MessageComponent extends Vue {
   @Prop({ default: null })
   public title: string;
 
