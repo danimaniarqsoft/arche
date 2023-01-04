@@ -7,7 +7,7 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entidades",
-        "solicitud": "Solicitud",
+        "solicitud": "Mis solicitudes",
         "solucion": "Solucion",
         "componente": "Componente",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"

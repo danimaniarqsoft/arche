@@ -2,7 +2,7 @@
   "archeApp": {
     "solicitud": {
       "home": {
-        "title": "Solicitudes",
+        "title": "Mis solicitudes",
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nueva Solicitud",
         "createOrEditLabel": "Crear o editar Solicitud",
