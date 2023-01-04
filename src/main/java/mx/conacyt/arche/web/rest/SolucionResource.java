@@ -2,10 +2,8 @@ package mx.conacyt.arche.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import mx.conacyt.arche.repository.SolucionRepository;
 import mx.conacyt.arche.service.SolucionService;
 import mx.conacyt.arche.service.dto.SolucionDTO;
@@ -13,18 +11,22 @@ import mx.conacyt.arche.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -57,10 +59,12 @@ public class SolucionResource {
      * {@code POST  /solucions} : Create a new solucion.
      *
      * @param solucionDTO the solucionDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new solucionDTO, or with status {@code 400 (Bad Request)} if the solucion has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new solucionDTO, or with status {@code 400 (Bad Request)} if
+     *         the solucion has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/solucions")
+    @PostMapping("/soluciones")
     public Mono<ResponseEntity<SolucionDTO>> createSolucion(@RequestBody SolucionDTO solucionDTO) throws URISyntaxException {
         log.debug("REST request to save Solucion : {}", solucionDTO);
         if (solucionDTO.getId() != null) {
@@ -71,7 +75,7 @@ public class SolucionResource {
             .map(result -> {
                 try {
                     return ResponseEntity
-                        .created(new URI("/api/solucions/" + result.getId()))
+                        .created(new URI("/api/soluciones/" + result.getId()))
                         .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
                         .body(result);
                 } catch (URISyntaxException e) {
@@ -83,14 +87,17 @@ public class SolucionResource {
     /**
      * {@code PUT  /solucions/:id} : Updates an existing solucion.
      *
-     * @param id the id of the solucionDTO to save.
+     * @param id          the id of the solucionDTO to save.
      * @param solucionDTO the solucionDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated solucionDTO,
-     * or with status {@code 400 (Bad Request)} if the solucionDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the solucionDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated solucionDTO,
+     *         or with status {@code 400 (Bad Request)} if the solucionDTO is not
+     *         valid,
+     *         or with status {@code 500 (Internal Server Error)} if the solucionDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/solucions/{id}")
+    @PutMapping("/soluciones/{id}")
     public Mono<ResponseEntity<SolucionDTO>> updateSolucion(
         @PathVariable(value = "id", required = false) final String id,
         @RequestBody SolucionDTO solucionDTO
@@ -123,17 +130,22 @@ public class SolucionResource {
     }
 
     /**
-     * {@code PATCH  /solucions/:id} : Partial updates given fields of an existing solucion, field will ignore if it is null
+     * {@code PATCH  /solucions/:id} : Partial updates given fields of an existing
+     * solucion, field will ignore if it is null
      *
-     * @param id the id of the solucionDTO to save.
+     * @param id          the id of the solucionDTO to save.
      * @param solucionDTO the solucionDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated solucionDTO,
-     * or with status {@code 400 (Bad Request)} if the solucionDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the solucionDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the solucionDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated solucionDTO,
+     *         or with status {@code 400 (Bad Request)} if the solucionDTO is not
+     *         valid,
+     *         or with status {@code 404 (Not Found)} if the solucionDTO is not
+     *         found,
+     *         or with status {@code 500 (Internal Server Error)} if the solucionDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/solucions/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PatchMapping(value = "/soluciones/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public Mono<ResponseEntity<SolucionDTO>> partialUpdateSolucion(
         @PathVariable(value = "id", required = false) final String id,
         @RequestBody SolucionDTO solucionDTO
@@ -170,10 +182,11 @@ public class SolucionResource {
      * {@code GET  /solucions} : get all the solucions.
      *
      * @param pageable the pagination information.
-     * @param request a {@link ServerHttpRequest} request.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of solucions in body.
+     * @param request  a {@link ServerHttpRequest} request.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of solucions in body.
      */
-    @GetMapping("/solucions")
+    @GetMapping("/soluciones")
     public Mono<ResponseEntity<List<SolucionDTO>>> getAllSolucions(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         ServerHttpRequest request
@@ -199,9 +212,10 @@ public class SolucionResource {
      * {@code GET  /solucions/:id} : get the "id" solucion.
      *
      * @param id the id of the solucionDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the solucionDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the solucionDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/solucions/{id}")
+    @GetMapping("/soluciones/{id}")
     public Mono<ResponseEntity<SolucionDTO>> getSolucion(@PathVariable String id) {
         log.debug("REST request to get Solucion : {}", id);
         Mono<SolucionDTO> solucionDTO = solucionService.findOne(id);
@@ -214,7 +228,7 @@ public class SolucionResource {
      * @param id the id of the solucionDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/solucions/{id}")
+    @DeleteMapping("/soluciones/{id}")
     public Mono<ResponseEntity<Void>> deleteSolucion(@PathVariable String id) {
         log.debug("REST request to delete Solucion : {}", id);
         return solucionService

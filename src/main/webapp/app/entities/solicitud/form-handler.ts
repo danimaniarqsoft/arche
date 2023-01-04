@@ -51,7 +51,7 @@ export default class FormHandler extends Vue {
 
   public retriveForm(formContext: any): void {
     this.formService()
-      .retrieveForms(formContext.currentComponente.formId)
+      .retrieveFormById(formContext.currentComponente.formId)
       .then(
         resForm => {
           this.form = resForm.data;

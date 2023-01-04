@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 /**
  * A Solicitud.
  */
-@Document(collection = "solicitud")
+@Document(collection = "solicitudes")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Solicitud implements Serializable {
 
@@ -28,6 +28,7 @@ public class Solicitud implements Serializable {
     @Field("solucionId")
     private String solucionId;
 
+    @Field("properties")
     private Map<String, Object> properties = new HashMap<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

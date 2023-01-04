@@ -4,7 +4,7 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
 import { ISolucion } from '@/shared/model/solucion.model';
 
-const baseApiUrl = 'api/solucions';
+const baseApiUrl = 'api/soluciones';
 
 export default class SolucionService {
   public find(id: string): Promise<ISolucion> {
@@ -78,18 +78,6 @@ export default class SolucionService {
         .patch(`${baseApiUrl}/${entity.id}`, entity)
         .then(res => {
           resolve(res.data);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  }
-  public retrieveForms(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      axios
-        .get('http://localhost:3001/form?type=form')
-        .then(res => {
-          resolve(res);
         })
         .catch(err => {
           reject(err);

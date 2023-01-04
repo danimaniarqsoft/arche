@@ -147,16 +147,18 @@ export default class SolucionUpdate extends mixins(FormHandler) {
   }
 
   public initRelationships(): void {
-    this.solucionService()
-      .retrieveForms()
-      .then(res => {
-        this.forms = res.data.filter((value, index, arr) => {
-          return !['userLogin', 'userRegister'].includes(value.name);
-        });
-      })
-      .catch(error => {
-        this.alertService().showHttpError(this, error.response);
-      });
+    this.formService()
+      .retrieveAllForms()
+      .then(
+        res => {
+          this.forms = res.data.filter((value, index, arr) => {
+            return !['userLogin', 'userRegister'].includes(value.name);
+          });
+        },
+        err => {
+          this.alertService().showHttpError(this, err.response);
+        }
+      );
   }
 
   public handleAddComponente(iconSelected: string, form: any): void {

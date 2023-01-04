@@ -108,9 +108,9 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
   }
 
   public handleFormLoad(): void {
-    if (this.solicitudId) {
+    if (this.solicitud.id) {
       this.solicitudService()
-        .find(this.solicitudId)
+        .find(this.solicitud.id)
         .then(res => {
           this.solicitud = res;
           this.formContext.submission = { data: this.solicitud };
@@ -122,9 +122,7 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
   }
 
   public handleSubmit(submit): void {
-    const tempo = submit[1].data;
-    this.solicitud = { ...this.solicitud, tempo };
-    this.save(this.solicitud);
+    this.save({ ...this.solicitud, ...submit[1].data });
   }
 
   public save(solicitud: ISolicitud): void {

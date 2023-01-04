@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 /**
  * A Solucion.
  */
-@Document(collection = "solucion")
+@Document(collection = "soluciones")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Solucion implements Serializable {
 
