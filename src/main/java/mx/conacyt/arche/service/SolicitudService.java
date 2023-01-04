@@ -39,10 +39,11 @@ public interface SolicitudService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Flux<SolicitudDTO> findAll(Pageable pageable);
+    Flux<SolicitudDTO> findAll(String solucionId, Pageable pageable);
 
     /**
      * Returns the number of solicituds available.
+     *
      * @return the number of entities in the database.
      *
      */
@@ -55,6 +56,8 @@ public interface SolicitudService {
      * @return the entity.
      */
     Mono<SolicitudDTO> findOne(String id);
+
+    Mono<SolicitudDTO> findBySolucionId(String id);
 
     /**
      * Delete the "id" solicitud.

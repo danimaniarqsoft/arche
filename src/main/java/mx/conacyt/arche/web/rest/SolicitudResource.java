@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -188,13 +189,14 @@ public class SolicitudResource {
      */
     @GetMapping("/solicitudes")
     public Mono<ResponseEntity<List<SolicitudDTO>>> getAllSolicituds(
+        @RequestParam(required = false) String solucionId,
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         ServerHttpRequest request
     ) {
         log.debug("REST request to get a page of Solicituds");
         return solicitudService
             .countAll()
-            .zipWith(solicitudService.findAll(pageable).collectList())
+            .zipWith(solicitudService.findAll(solucionId, pageable).collectList())
             .map(countWithEntities ->
                 ResponseEntity
                     .ok()
@@ -219,6 +221,13 @@ public class SolicitudResource {
     public Mono<ResponseEntity<SolicitudDTO>> getSolicitud(@PathVariable String id) {
         log.debug("REST request to get Solicitud : {}", id);
         Mono<SolicitudDTO> solicitudDTO = solicitudService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(solicitudDTO);
+    }
+
+    @GetMapping("/solicitudes/solucion/{id}")
+    public Mono<ResponseEntity<SolicitudDTO>> getSolicitudBySolucionId(@PathVariable String id) {
+        log.debug("REST request to get Solicitud : {}", id);
+        Mono<SolicitudDTO> solicitudDTO = solicitudService.findBySolucionId(id);
         return ResponseUtil.wrapOrNotFound(solicitudDTO);
     }
 

@@ -63,13 +63,18 @@ public class SolicitudServiceImpl implements SolicitudService {
     }
 
     @Override
-    public Flux<SolicitudDTO> findAll(Pageable pageable) {
+    public Flux<SolicitudDTO> findAll(String solucionId, Pageable pageable) {
         log.debug("Request to get all Solicituds");
         return SecurityUtils
             .getCurrentUserLogin()
             .switchIfEmpty(Mono.just("anonymous"))
             .flatMap(user -> {
-                Flux<Solicitud> sol = solicitudRepository.findAllByUsuario(user, pageable);
+                Flux<Solicitud> sol = null;
+                if (solucionId == null) {
+                    sol = solicitudRepository.findAllByUsuario(user, pageable);
+                } else {
+                    sol = solicitudRepository.findAllByUsuarioAndSolucionId(user, solucionId, pageable);
+                }
                 Flux<SolicitudDTO> solDto = sol.map(solicitudMapper::toDto);
                 return solDto.collectList();
             })
@@ -84,6 +89,12 @@ public class SolicitudServiceImpl implements SolicitudService {
     public Mono<SolicitudDTO> findOne(String id) {
         log.debug("Request to get Solicitud : {}", id);
         return solicitudRepository.findById(id).map(solicitudMapper::toDto);
+    }
+
+    @Override
+    public Mono<SolicitudDTO> findBySolucionId(String id) {
+        log.debug("Request to get Solicitud : {}", id);
+        return solicitudRepository.findBySolucionId(id).map(solicitudMapper::toDto);
     }
 
     @Override

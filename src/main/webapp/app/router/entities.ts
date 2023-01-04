@@ -39,6 +39,12 @@ export default {
       meta: { authorities: [Authority.USER] },
     },
     {
+      path: 'solicitud/:solucionId/edit',
+      name: 'SolicitudCreateFromSolucion',
+      component: SolicitudUpdate,
+      meta: { authorities: [Authority.USER] },
+    },
+    {
       path: 'solicitud/:solicitudId/view',
       name: 'SolicitudView',
       component: SolicitudUpdate,

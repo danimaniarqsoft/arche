@@ -4,6 +4,8 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
 import { ISolicitud } from '@/shared/model/solicitud.model';
 
+import buildQueryOpts from '@/components/solicitud-filter/filter-utils';
+
 const baseApiUrl = 'api/solicitudes';
 const baseFormApiUrl = 'http://localhost:3001/form';
 
@@ -21,10 +23,23 @@ export default class SolicitudService {
     });
   }
 
+  public findBySolucionId(solucionId: string): Promise<ISolicitud> {
+    return new Promise<ISolicitud>((resolve, reject) => {
+      axios
+        .get(`${baseApiUrl}/solucion/${solucionId}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public retrieve(paginationQuery?: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .get(baseApiUrl + `?${buildPaginationQueryOpts(paginationQuery)}${buildQueryOpts(paginationQuery.filter)}`)
         .then(res => {
           resolve(res);
         })

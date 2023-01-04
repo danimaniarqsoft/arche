@@ -58,7 +58,11 @@
                     <span class="d-none d-md-inline" v-text="$t('entity.action.edit')">Edit</span>
                   </b-button>
                 </router-link>
-                <router-link :to="{ name: 'SolicitudEdit', params: { solicitudId: solucion.id } }" custom v-slot="{ navigate }">
+                <router-link
+                  :to="{ name: 'SolicitudCreateFromSolucion', params: { solucionId: solucion.id } }"
+                  custom
+                  v-slot="{ navigate }"
+                >
                   <b-button @click="navigate" variant="primary">
                     <b-icon icon="arrow-right-square"></b-icon>
                     <span class="d-none d-md-inline">Crear solicitud</span>

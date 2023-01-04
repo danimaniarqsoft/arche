@@ -21,12 +21,30 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
   public solicitudId = null;
   public solicitud: ISolicitud = new Solicitud();
 
+  public filter = { currentSolicitudId: null, currentSolucionId: null };
+
+  mounted() {
+    (this.$root as any).$on('load-form', componente => {
+      if (componente.tipo && componente.tipo === 'send') {
+        this.isSendVisible = true;
+        this.isFormioVisible = false;
+      } else {
+        this.isFormioVisible = true;
+        this.isSendVisible = false;
+        this.formContext.currentComponente = componente;
+        this.retriveForm(this.formContext);
+      }
+    });
+  }
   beforeRouteEnter(to, from, next) {
     next(vm => {
+      vm.options.readOnly = to.meta.readOnly;
       if (to.params.solicitudId) {
-        vm.options.readOnly = to.meta.readOnly;
-        vm.retrieveSolicitud(to.params.solicitudId);
+        vm.filter.currentSolicitudId = to.params.solicitudId;
+      } else if (to.params.solucionId) {
+        vm.filter.currentSolucionId = to.params.solucionId;
       }
+      vm.retrieveSolicitud(vm.filter);
     });
   }
 
@@ -45,17 +63,33 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
     );
   }
 
-  public retrieveSolicitud(solicitudId): void {
-    this.solicitudId = solicitudId;
-    if (this.solicitudId) {
+  public retrieveSolicitud(filter): void {
+    this.filter = filter;
+    if (this.filter.currentSolicitudId) {
       this.solicitudService()
-        .find(this.solicitudId)
+        .find(this.filter.currentSolicitudId)
         .then(res => {
           this.solicitud = res;
           this.retrieveSolucion(this.solicitud.solucionId);
         })
         .catch(error => {
           this.alertService().showHttpError(this, error.response);
+        });
+    } else if (this.filter.currentSolucionId) {
+      this.solicitudService()
+        .findBySolucionId(this.filter.currentSolucionId)
+        .then(res => {
+          this.solicitud = res;
+          this.retrieveSolucion(this.solicitud.solucionId);
+        })
+        .catch(error => {
+          console.log(error.response.status);
+          if (error.response.status === 404) {
+            this.solicitud.solucionId = this.filter.currentSolucionId;
+            this.save(this.solicitud);
+          } else {
+            this.alertService().showHttpError(this, error.response);
+          }
         });
     }
   }
@@ -75,7 +109,8 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
   }
 
   public handleSubmit(submit): void {
-    this.solicitud = submit[1].data;
+    const tempo = submit[1].data;
+    this.solicitud = { ...this.solicitud, tempo };
     this.save(this.solicitud);
   }
 
@@ -112,6 +147,7 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
       .create(solicitud)
       .then(param => {
         this.isSaving = false;
+        this.retrieveSolucion(this.solicitud.solucionId);
         const message = this.$t('archeApp.solicitud.created', { param: param.id });
         (this.$root as any).$bvToast.toast(message.toString(), {
           toaster: 'b-toaster-top-center',
