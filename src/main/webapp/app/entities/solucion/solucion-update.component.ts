@@ -31,7 +31,6 @@ export default class SolucionUpdate extends mixins(FormHandler) {
   public forms: any = {};
   public isSaving = false;
   public isPublishing = false;
-  public options = { readOnly: false, languaje: 'en', viewAsHtml: false };
   public currentLanguage = '';
   public estadoSolucionValues: string[] = Object.keys(EstadoSolucion);
   public icon = 'fas fa-user-cog';

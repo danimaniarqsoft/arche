@@ -1,11 +1,11 @@
-import { ref } from 'vue';
 import { Component, Vue, Inject } from 'vue-property-decorator';
 import { ISolucion, Solucion } from '@/shared/model/solucion.model';
-import { Menu, IMenu } from '@/shared/model/menu.model';
+import { Menu } from '@/shared/model/menu.model';
 
 import SolucionService from '@/entities/solucion/solucion.service';
 import FormService from '@/shared/form/form.service';
 import SendSolicitudComponent from '@/components/forms/send-solicitud.vue';
+import { i18n } from '@/components/forms/i18n';
 
 import AlertService from '@/shared/alert/alert.service';
 
@@ -20,7 +20,7 @@ export default class FormHandler extends Vue {
   @Inject('solucionService') public solucionService: () => SolucionService;
 
   public form: any = {};
-  public options = { readOnly: false, languaje: 'en', viewAsHtml: false };
+  public options = { readOnly: false, languaje: 'es', viewAsHtml: false, i18n: i18n };
   public formContext: any = { submission: { data: {} } };
 
   public solucion: ISolucion = new Solucion();
@@ -34,7 +34,6 @@ export default class FormHandler extends Vue {
 
   mounted() {
     (this.$root as any).$on('load-form', componente => {
-      console.log('Loading forms');
       if (componente.tipo && componente.tipo === 'send') {
         this.isSendVisible = true;
         this.isFormioVisible = false;

@@ -11,6 +11,7 @@
             ref="formio"
             :form="form"
             :options="options"
+            :language="options.languaje"
             v-on:submit="handleSubmit"
             v-on:formLoad="handleFormLoad"
           ></formio>
