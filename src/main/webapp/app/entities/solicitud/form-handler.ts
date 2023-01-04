@@ -1,3 +1,4 @@
+import { ref } from 'vue';
 import { Component, Vue, Inject } from 'vue-property-decorator';
 import { ISolucion, Solucion } from '@/shared/model/solucion.model';
 import { Menu, IMenu } from '@/shared/model/menu.model';
@@ -29,6 +30,7 @@ export default class FormHandler extends Vue {
   public isFetching = false;
   public isSendVisible = false;
   public isFormioVisible = false;
+  public formioKey = 0;
 
   mounted() {
     (this.$root as any).$on('load-form', componente => {
@@ -54,7 +56,11 @@ export default class FormHandler extends Vue {
       .retrieveFormById(formContext.currentComponente.formId)
       .then(
         resForm => {
+          if (this.isReadOnly()) {
+            this.options.readOnly = true;
+          }
           this.form = resForm.data;
+          this.formioRerender();
         },
         err => {
           this.alertService().showHttpError(this, err.response);
@@ -88,4 +94,12 @@ export default class FormHandler extends Vue {
   }
 
   public handleSubmit(submit): void {}
+
+  public formioRerender(): void {
+    this.formioKey += 1;
+  }
+
+  public isReadOnly(): boolean {
+    return false;
+  }
 }

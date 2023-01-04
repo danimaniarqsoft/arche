@@ -30,7 +30,6 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
   }
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.options.readOnly = to.meta.readOnly;
       if (to.params.solicitudId) {
         vm.filter.currentSolicitudId = to.params.solicitudId;
       } else if (to.params.solucionId) {
@@ -201,6 +200,10 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
   }
 
   get isSolicitudSent(): boolean {
+    return this.solicitud.estado === EstadoSolicitud.ENVIADA;
+  }
+
+  public override isReadOnly(): boolean {
     return this.solicitud.estado === EstadoSolicitud.ENVIADA;
   }
 }

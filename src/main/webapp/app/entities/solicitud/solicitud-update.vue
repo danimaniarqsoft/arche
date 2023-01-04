@@ -5,6 +5,7 @@
         <div>
           <div v-show="showWelcomeMessage" v-html="solucion.mensaje.bienvenida"></div>
           <formio
+            :key="formioKey"
             v-if="isFormioVisible"
             :submission="formContext.submission"
             ref="formio"

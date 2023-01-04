@@ -111,7 +111,6 @@ export default class SolucionUpdate extends mixins(FormHandler) {
         .then(param => {
           this.isSaving = false;
           this.isPublishing = false;
-          this.$router.go(-1);
           const message = this.$t('archeApp.solucion.created', { param: param.id });
           (this.$root as any).$bvToast.toast(message.toString(), {
             toaster: 'b-toaster-top-center',
