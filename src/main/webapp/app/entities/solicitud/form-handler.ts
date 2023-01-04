@@ -30,6 +30,21 @@ export default class FormHandler extends Vue {
   public isSendVisible = false;
   public isFormioVisible = false;
 
+  mounted() {
+    (this.$root as any).$on('load-form', componente => {
+      console.log('Loading forms');
+      if (componente.tipo && componente.tipo === 'send') {
+        this.isSendVisible = true;
+        this.isFormioVisible = false;
+      } else {
+        this.isFormioVisible = true;
+        this.isSendVisible = false;
+        this.formContext.currentComponente = componente;
+        this.retriveForm(this.formContext);
+      }
+    });
+  }
+
   get showWelcomeMessage() {
     return Object.keys(this.form).length === 0 && !this.isSendVisible;
   }

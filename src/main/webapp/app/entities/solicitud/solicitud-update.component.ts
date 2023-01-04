@@ -22,19 +22,11 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
   public solicitud: ISolicitud = new Solicitud();
 
   public filter = { currentSolicitudId: null, currentSolucionId: null };
+  public executed = false;
 
-  mounted() {
-    (this.$root as any).$on('load-form', componente => {
-      if (componente.tipo && componente.tipo === 'send') {
-        this.isSendVisible = true;
-        this.isFormioVisible = false;
-      } else {
-        this.isFormioVisible = true;
-        this.isSendVisible = false;
-        this.formContext.currentComponente = componente;
-        this.retriveForm(this.formContext);
-      }
-    });
+  public toggle() {
+    this.executed = !this.executed;
+    return this.executed;
   }
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -66,32 +58,53 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
   public retrieveSolicitud(filter): void {
     this.filter = filter;
     if (this.filter.currentSolicitudId) {
-      this.solicitudService()
-        .find(this.filter.currentSolicitudId)
-        .then(res => {
-          this.solicitud = res;
-          this.retrieveSolucion(this.solicitud.solucionId);
-        })
-        .catch(error => {
-          this.alertService().showHttpError(this, error.response);
-        });
+      this.findById(this.filter.currentSolicitudId);
     } else if (this.filter.currentSolucionId) {
-      this.solicitudService()
-        .findBySolucionId(this.filter.currentSolucionId)
-        .then(res => {
-          this.solicitud = res;
-          this.retrieveSolucion(this.solicitud.solucionId);
-        })
-        .catch(error => {
-          console.log(error.response.status);
-          if (error.response.status === 404) {
-            this.solicitud.solucionId = this.filter.currentSolucionId;
-            this.save(this.solicitud);
-          } else {
-            this.alertService().showHttpError(this, error.response);
-          }
-        });
+      this.findBySolucionIdAndCreateIfNotExist(this.filter.currentSolucionId);
     }
+  }
+
+  public findById(solicitudId): void {
+    this.solicitudService()
+      .find(solicitudId)
+      .then(res => {
+        this.solicitud = res;
+        this.retrieveSolucion(this.solicitud.solucionId);
+      })
+      .catch(error => {
+        this.alertService().showHttpError(this, error.response);
+      });
+  }
+
+  public findBySolucionIdAndCreateIfNotExist(solucionId) {
+    this.solicitudService()
+      .findBySolucionId(solucionId)
+      .then(res => {
+        this.solicitud = res;
+        this.retrieveSolucion(this.solicitud.solucionId);
+      })
+      .catch(error => {
+        if (error.response.status === 404) {
+          this.createSolicitudFromSolucion(solucionId);
+        } else {
+          this.alertService().showHttpError(this, error.response);
+        }
+      });
+  }
+  public createSolicitudFromSolucion(solucionId): void {
+    this.solucionService()
+      .find(solucionId)
+      .then(res => {
+        this.solucion = res;
+        this.solicitud.nombre = this.solucion.titulo;
+        this.solicitud.solucionId = this.solucion.id;
+        this.save(this.solicitud);
+        this.showSideNavbar(true);
+        this.updateDefaultMenu(this.solucion);
+      })
+      .catch(error => {
+        this.alertService().showHttpError(this, error.response);
+      });
   }
 
   public handleFormLoad(): void {
