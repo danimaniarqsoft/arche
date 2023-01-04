@@ -13,7 +13,12 @@
             v-on:submit="handleSubmit"
             v-on:formLoad="handleFormLoad"
           ></formio>
-          <send-solicitud v-if="isSendVisible" @send="handleSend" :terminos="solucion.mensaje.terminos"></send-solicitud>
+          <send-solicitud
+            v-if="isSendVisible"
+            :isSent="isSolicitudSent"
+            @send="handleSend"
+            :terminos="solucion.mensaje.terminos"
+          ></send-solicitud>
         </div>
       </form>
     </div>

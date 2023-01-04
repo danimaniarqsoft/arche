@@ -36,6 +36,10 @@
               <span v-text="$t('archeApp.solicitud.nombre')">Nombre</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'nombre'"></jhi-sort-indicator>
             </th>
+            <th scope="row" v-on:click="changeOrder('estado')">
+              <span>Estado</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'estado'"></jhi-sort-indicator>
+            </th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -45,6 +49,7 @@
               <router-link :to="{ name: 'SolicitudView', params: { solicitudId: solicitud.id } }">{{ solicitud.id }}</router-link>
             </td>
             <td>{{ solicitud.nombre }}</td>
+            <td>{{ solicitud.estado }}</td>
             <td class="text-right">
               <div class="btn-group">
                 <router-link :to="{ name: 'SolicitudView', params: { solicitudId: solicitud.id } }" custom v-slot="{ navigate }">

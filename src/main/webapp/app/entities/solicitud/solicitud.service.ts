@@ -113,4 +113,17 @@ export default class SolicitudService {
         });
     });
   }
+
+  public send(entity: ISolicitud): Promise<ISolicitud> {
+    return new Promise<ISolicitud>((resolve, reject) => {
+      axios
+        .put(`${baseApiUrl}/enviar/${entity.id}`, entity)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
 }

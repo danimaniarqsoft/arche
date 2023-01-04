@@ -8,6 +8,9 @@ export default class SendSolicitudComponent extends Vue {
   @Prop({ required: true })
   public terminos: string;
 
+  @Prop({ default: false })
+  public isSent: boolean;
+
   public selectedIcon = '';
   public accepted = false;
 

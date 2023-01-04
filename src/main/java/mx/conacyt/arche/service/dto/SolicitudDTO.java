@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import mx.conacyt.arche.domain.enumeration.EstadoSolicitud;
 
 /**
  * A DTO for the {@link mx.conacyt.arche.domain.Solicitud} entity.
@@ -23,6 +24,8 @@ public class SolicitudDTO implements Serializable {
     private String usuario;
 
     private String solucionId;
+
+    private EstadoSolicitud estado;
 
     @JsonIgnore
     private transient Map<String, Object> properties = new HashMap<>();
@@ -74,6 +77,14 @@ public class SolicitudDTO implements Serializable {
         this.properties.put(name, value);
     }
 
+    public EstadoSolicitud getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoSolicitud estado) {
+        this.estado = estado;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -106,6 +117,7 @@ public class SolicitudDTO implements Serializable {
                 "id='" + getId() + "'" +
                 ", nombre='" + getNombre() + "'" +
                 ", usuario='" + getUsuario() + "'" +
+                ", estado='" + getEstado() + "'" +
                 ", solucionId='" + getSolucionId() + "'" +
                 "," + sb.toString() +
                 "}";

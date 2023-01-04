@@ -3,6 +3,7 @@ import { mixins } from 'vue-class-component';
 import FormHandler from '@/entities/solicitud/form-handler';
 import { Component, Inject } from 'vue-property-decorator';
 import { ISolicitud, Solicitud } from '@/shared/model/solicitud.model';
+import { EstadoSolicitud } from '@/shared/model/enumerations/estado-solicitud.model';
 
 import SolicitudService from './solicitud.service';
 
@@ -18,7 +19,6 @@ const validations: any = {
 export default class SolicitudUpdate extends mixins(FormHandler) {
   @Inject('solicitudService') public solicitudService: () => SolicitudService;
   public currentLanguage = '';
-  public solicitudId = null;
   public solicitud: ISolicitud = new Solicitud();
 
   public filter = { currentSolicitudId: null, currentSolucionId: null };
@@ -156,10 +156,11 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
   public createSolicitud(solicitud: ISolicitud): void {
     this.solicitudService()
       .create(solicitud)
-      .then(param => {
+      .then(solicitud => {
+        this.solicitud = solicitud;
         this.isSaving = false;
         this.retrieveSolucion(this.solicitud.solucionId);
-        const message = this.$t('archeApp.solicitud.created', { param: param.id });
+        const message = this.$t('archeApp.solicitud.created', { param: solicitud.id });
         (this.$root as any).$bvToast.toast(message.toString(), {
           toaster: 'b-toaster-top-center',
           title: 'Success',
@@ -175,9 +176,31 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
   }
 
   public handleSend(): void {
-    console.log('enviando una solicitud');
+    this.isSaving = true;
+    this.solicitudService()
+      .send(this.solicitud)
+      .then(solicitud => {
+        this.isSaving = false;
+        this.solicitud = solicitud;
+        const message = this.$t('archeApp.solicitud.updated', { param: solicitud.id });
+        return (this.$root as any).$bvToast.toast(message.toString(), {
+          toaster: 'b-toaster-top-center',
+          title: 'Info',
+          variant: 'info',
+          solid: true,
+          autoHideDelay: 5000,
+        });
+      })
+      .catch(error => {
+        this.isSaving = false;
+        this.alertService().showHttpError(this, error.response);
+      });
   }
   public previousState(): void {
     this.$router.go(-1);
+  }
+
+  get isSolicitudSent(): boolean {
+    return this.solicitud.estado === EstadoSolicitud.ENVIADA;
   }
 }

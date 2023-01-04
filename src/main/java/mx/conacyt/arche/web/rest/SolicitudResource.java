@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
+import mx.conacyt.arche.domain.enumeration.EstadoSolicitud;
 import mx.conacyt.arche.repository.SolicitudRepository;
 import mx.conacyt.arche.service.SolicitudService;
 import mx.conacyt.arche.service.dto.SolicitudDTO;
@@ -71,6 +72,7 @@ public class SolicitudResource {
         if (solicitudDTO.getId() != null) {
             throw new BadRequestAlertException("A new solicitud cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        solicitudDTO.setEstado(EstadoSolicitud.EN_CAPTURA);
         return solicitudService
             .save(solicitudDTO)
             .map(result -> {
@@ -247,5 +249,36 @@ public class SolicitudResource {
                     ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build()
                 )
             );
+    }
+
+    @PutMapping("/solicitudes/enviar/{id}")
+    public Mono<ResponseEntity<SolicitudDTO>> sendSolicitud(
+        @PathVariable(value = "id", required = false) final String id,
+        @RequestBody SolicitudDTO solicitudDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update Solicitud : {}, {}", id, solicitudDTO);
+        if (solicitudDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, solicitudDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+        solicitudDTO.setEstado(EstadoSolicitud.ENVIADA);
+        return solicitudRepository
+            .existsById(id)
+            .flatMap(exists -> {
+                if (!exists) {
+                    return Mono.error(new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound"));
+                }
+                return solicitudService
+                    .update(solicitudDTO)
+                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                    .map(result ->
+                        ResponseEntity
+                            .ok()
+                            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId()))
+                            .body(result)
+                    );
+            });
     }
 }

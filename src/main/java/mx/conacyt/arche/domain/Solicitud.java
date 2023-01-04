@@ -3,6 +3,7 @@ package mx.conacyt.arche.domain;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import mx.conacyt.arche.domain.enumeration.EstadoSolicitud;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -27,6 +28,9 @@ public class Solicitud implements Serializable {
 
     @Field("solucionId")
     private String solucionId;
+
+    @Field("estado")
+    private EstadoSolicitud estado;
 
     @Field("properties")
     private Map<String, Object> properties = new HashMap<>();
@@ -86,6 +90,14 @@ public class Solicitud implements Serializable {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public EstadoSolicitud getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoSolicitud estado) {
+        this.estado = estado;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
