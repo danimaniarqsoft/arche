@@ -3,7 +3,6 @@
 import Vue from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { setupAxiosInterceptors } from '@/shared/config/axios-interceptor';
-import { Form, FormBuilder } from 'vue-formiojs';
 import 'formiojs/dist/formio.full.min.css';
 
 import App from './app.vue';
@@ -12,6 +11,7 @@ import { ToastPlugin } from 'bootstrap-vue';
 import router from './router';
 import * as config from './shared/config/config';
 import * as bootstrapVueConfig from './shared/config/config-bootstrap-vue';
+import * as customVueConfig from './shared/config/config-custom-vue';
 import JhiItemCountComponent from './shared/jhi-item-count.vue';
 import JhiSortIndicatorComponent from './shared/sort/jhi-sort-indicator.vue';
 import InfiniteLoading from 'vue-infinite-loading';
@@ -29,14 +29,6 @@ import AlertService from './shared/alert/alert.service';
 import '../content/scss/global.scss';
 import '../content/scss/vendor.scss';
 import TranslationService from '@/locale/translation.service';
-import IconPickerComponent from '@/components/icon-picker/icon-picker.vue';
-import MessageComponent from '@/components/message/message.vue';
-import ErrorComponent from '@/components/error/error.vue';
-import ConfirmationComponent from '@/components/confirmation/confirmation.vue';
-import DateTimePickerComponent from '@/components/date-time-picker/date-time-picker.vue';
-import TagsComponent from '@/components/tags/tags.vue';
-import { VueEditor } from 'vue2-editor';
-import VCalendar from 'v-calendar';
 
 /* tslint:disable */
 
@@ -47,22 +39,13 @@ Vue.config.productionTip = false;
 config.initVueApp(Vue);
 config.initFortAwesome(Vue);
 bootstrapVueConfig.initBootstrapVue(Vue);
+customVueConfig.initCustomVue(Vue);
 Vue.use(Vue2Filters);
 Vue.use(ToastPlugin);
-Vue.use(VCalendar);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.component('jhi-item-count', JhiItemCountComponent);
 Vue.component('jhi-sort-indicator', JhiSortIndicatorComponent);
 Vue.component('infinite-loading', InfiniteLoading);
-Vue.component('formio', Form);
-Vue.component('formbuilder', FormBuilder);
-Vue.component('icon-picker', IconPickerComponent);
-Vue.component('message', MessageComponent);
-Vue.component('confirmation', ConfirmationComponent);
-Vue.component('vue-editor', VueEditor);
-Vue.component('tags', TagsComponent);
-Vue.component('date-time-picker', DateTimePickerComponent);
-Vue.component('errors', ErrorComponent);
 const i18n = config.initI18N(Vue);
 const store = config.initVueXStore(Vue);
 
