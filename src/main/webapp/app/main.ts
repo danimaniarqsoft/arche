@@ -31,6 +31,7 @@ import '../content/scss/vendor.scss';
 import TranslationService from '@/locale/translation.service';
 import IconPickerComponent from '@/components/icon-picker/icon-picker.vue';
 import MessageComponent from '@/components/message/message.vue';
+import ErrorComponent from '@/components/error/error.vue';
 import ConfirmationComponent from '@/components/confirmation/confirmation.vue';
 import DateTimePickerComponent from '@/components/date-time-picker/date-time-picker.vue';
 import TagsComponent from '@/components/tags/tags.vue';
@@ -61,6 +62,7 @@ Vue.component('confirmation', ConfirmationComponent);
 Vue.component('vue-editor', VueEditor);
 Vue.component('tags', TagsComponent);
 Vue.component('date-time-picker', DateTimePickerComponent);
+Vue.component('errors', ErrorComponent);
 const i18n = config.initI18N(Vue);
 const store = config.initVueXStore(Vue);
 

@@ -2,6 +2,7 @@ package mx.conacyt.arche.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import mx.conacyt.arche.domain.enumeration.EstadoSolicitud;
@@ -9,6 +10,8 @@ import mx.conacyt.arche.repository.SolicitudRepository;
 import mx.conacyt.arche.service.SolicitudService;
 import mx.conacyt.arche.service.dto.SolicitudDTO;
 import mx.conacyt.arche.web.rest.errors.BadRequestAlertException;
+import mx.conacyt.arche.web.rest.errors.ErrorSolicitud;
+import mx.conacyt.arche.web.rest.errors.InvalidSolicitudException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -258,10 +261,10 @@ public class SolicitudResource {
     ) throws URISyntaxException {
         log.debug("REST request to update Solicitud : {}, {}", id, solicitudDTO);
         if (solicitudDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, solicitudDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            List<ErrorSolicitud> errores = new ArrayList<>();
+            ErrorSolicitud error = new ErrorSolicitud("becas_id", "La beca ya existe");
+            errores.add(error);
+            throw new InvalidSolicitudException("Invalid id", "invalidSolicitud", errores);
         }
         solicitudDTO.setEstado(EstadoSolicitud.ENVIADA);
         return solicitudRepository

@@ -12,6 +12,7 @@
             :form="form"
             :options="options"
             :language="options.languaje"
+            :loading="true"
             v-on:submit="handleSubmit"
             v-on:formLoad="handleFormLoad"
           ></formio>
@@ -21,6 +22,7 @@
             @send="handleSend"
             :terminos="solucion.mensaje.terminos"
           ></send-solicitud>
+          <errors v-if="errores.length && errores.length > 0" v-model="errores"></errors>
         </div>
       </form>
     </div>

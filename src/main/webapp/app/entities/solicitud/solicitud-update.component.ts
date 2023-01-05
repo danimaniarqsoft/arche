@@ -4,7 +4,7 @@ import FormHandler from '@/entities/solicitud/form-handler';
 import { Component, Inject } from 'vue-property-decorator';
 import { ISolicitud, Solicitud } from '@/shared/model/solicitud.model';
 import { EstadoSolicitud } from '@/shared/model/enumerations/estado-solicitud.model';
-
+import { StatusCodes } from 'http-status-codes';
 import SolicitudService from './solicitud.service';
 
 const validations: any = {
@@ -23,6 +23,7 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
 
   public filter = { currentSolicitudId: null, currentSolucionId: null };
   public executed = false;
+  public errores = [];
 
   public toggle() {
     this.executed = !this.executed;
@@ -106,24 +107,6 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
       });
   }
 
-  public handleFormLoad(): void {
-    if (this.solicitud.id) {
-      this.solicitudService()
-        .find(this.solicitud.id)
-        .then(res => {
-          this.solicitud = res;
-          this.formContext.submission = { data: this.solicitud };
-        })
-        .catch(error => {
-          this.alertService().showHttpError(this, error.response);
-        });
-    }
-  }
-
-  public handleSubmit(submit): void {
-    this.save({ ...this.solicitud, ...submit[1].data });
-  }
-
   public save(solicitud: ISolicitud): void {
     this.isSaving = true;
     if (solicitud.id) {
@@ -138,6 +121,7 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
       .update(solicitud)
       .then(param => {
         this.isSaving = false;
+        this.redrawForm();
         const message = this.$t('archeApp.solicitud.updated', { param: param.id });
         return (this.$root as any).$bvToast.toast(message.toString(), {
           toaster: 'b-toaster-top-center',
@@ -174,6 +158,24 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
       });
   }
 
+  public handleFormLoad(): void {
+    if (this.solicitud.id) {
+      this.solicitudService()
+        .find(this.solicitud.id)
+        .then(res => {
+          this.solicitud = res;
+          this.formContext.submission = { data: this.solicitud };
+        })
+        .catch(error => {
+          this.alertService().showHttpError(this, error.response);
+        });
+    }
+  }
+
+  public handleSubmit(submit): void {
+    this.save({ ...this.solicitud, ...submit[1].data });
+  }
+
   public handleSend(): void {
     this.isSaving = true;
     this.solicitudService()
@@ -192,7 +194,12 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
       })
       .catch(error => {
         this.isSaving = false;
-        this.alertService().showHttpError(this, error.response);
+        console.log(error.response);
+        if (error.response.data.status === StatusCodes.PRECONDITION_FAILED) {
+          this.errores = error.response.data.errores;
+        } else {
+          this.alertService().showHttpError(this, error.response);
+        }
       });
   }
   public previousState(): void {

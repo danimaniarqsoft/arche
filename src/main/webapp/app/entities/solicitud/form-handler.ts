@@ -101,4 +101,10 @@ export default class FormHandler extends Vue {
   public isReadOnly(): boolean {
     return false;
   }
+
+  public redrawForm() {
+    if (this.$refs.formio) {
+      (this.$refs.formio as any).formio.redraw();
+    }
+  }
 }
