@@ -49,4 +49,10 @@ nav li.router-link-active .navbar-dropdown-menu {
   text-align: justify;
 }
 
+.card-header {
+  .btn,
+  .btn:hover {
+    color: $primary;
+  }
+}
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

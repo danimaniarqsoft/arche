@@ -1,4 +1,4 @@
-export const i18n = {
+const I18N = {
   es: {
     Save: 'Guardar',
     'Add Another': 'Agregar',
@@ -56,5 +56,57 @@ export const i18n = {
     Layout: 'Diseño',
     'Text Field Component': 'Campo de texto',
     Questions: 'Preguntas',
+    'Drag and Drop a form component': 'Arrastre aquí un componente del menú',
   },
 } as const;
+
+class DefaultFormOptions {
+  constructor(public readOnly?: boolean, public language?: string | null, public i18n?: any | null) {
+    this.readOnly = false;
+    this.language = 'es';
+    this.i18n = I18N;
+  }
+}
+
+class DefaultBuilderOptions {
+  constructor(
+    public readOnly?: boolean,
+    public language?: string | null,
+    public viewAsHtml?: boolean | null,
+    public i18n?: any | null,
+    public builder?: any | null
+  ) {
+    this.readOnly = false;
+    this.language = 'es';
+    this.viewAsHtml = false;
+    this.i18n = I18N;
+    this.builder = {
+      resource: false,
+      basic: false,
+      advanced: false,
+      data: false,
+      premium: false,
+      layout: false,
+      customBasic: {
+        title: 'Menú',
+        default: true,
+        weight: 0,
+        components: {
+          textfield: true,
+          textarea: true,
+          email: true,
+          phoneNumber: true,
+          survey: true,
+          radio: true,
+          select: true,
+          tags: true,
+          address: true,
+          editGrid: true,
+        },
+      },
+    };
+  }
+}
+const defaultFormOptions = new DefaultFormOptions();
+const defaultBuilderOptions = new DefaultBuilderOptions();
+export { defaultFormOptions, defaultBuilderOptions };

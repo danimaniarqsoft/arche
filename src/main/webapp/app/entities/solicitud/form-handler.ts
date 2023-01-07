@@ -5,7 +5,7 @@ import { Menu } from '@/shared/model/menu.model';
 import SolucionService from '@/entities/solucion/solucion.service';
 import FormService from '@/shared/form/form.service';
 import SendSolicitudComponent from '@/components/forms/send-solicitud.vue';
-import { i18n } from '@/components/forms/i18n';
+import { defaultFormOptions, defaultBuilderOptions } from '@/components/forms/default-form-options';
 
 import AlertService from '@/shared/alert/alert.service';
 
@@ -20,7 +20,9 @@ export default class FormHandler extends Vue {
   @Inject('solucionService') public solucionService: () => SolucionService;
 
   public form: any = {};
-  public options = { readOnly: false, languaje: 'es', viewAsHtml: false, i18n: i18n };
+  public formOptions = defaultFormOptions;
+  public builderOptions = defaultBuilderOptions;
+
   public formContext: any = { submission: { data: {} } };
 
   public solucion: ISolucion = new Solucion();
@@ -31,6 +33,7 @@ export default class FormHandler extends Vue {
   public isSendVisible = false;
   public isFormioVisible = false;
   public formioKey = 0;
+  public formioBuilderKey = 0;
 
   mounted() {
     (this.$root as any).$on('load-form', componente => {
@@ -56,7 +59,7 @@ export default class FormHandler extends Vue {
       .then(
         resForm => {
           if (this.isReadOnly()) {
-            this.options.readOnly = true;
+            this.formOptions.readOnly = true;
           }
           this.form = resForm.data;
           this.formioRerender();
@@ -67,17 +70,47 @@ export default class FormHandler extends Vue {
       );
   }
 
+  public retriveAllForms(): void {
+    this.formService()
+      .retrieveAllForms()
+      .then(
+        res => {
+          this.doAfterRetriveAllForms(
+            res.data.filter((value, index, arr) => {
+              return !['userLogin', 'userRegister'].includes(value.name);
+            })
+          );
+        },
+        err => {
+          this.alertService().showHttpError(this, err.response);
+        }
+      );
+  }
+
+  public doAfterRetriveAllForms(forms: any): void {}
+
   public retrieveSolucion(solucionId): void {
     this.solucionService()
       .find(solucionId)
       .then(res => {
-        this.solucion = res;
-        this.showSideNavbar(true);
-        this.updateDefaultMenu(this.solucion);
+        this.doAfterRetriveSolucion(res);
       })
       .catch(error => {
         this.alertService().showHttpError(this, error.response);
       });
+  }
+
+  /**
+   * Execute after to retrive a Solution. This method can be overrided by a client
+   * This method is part of the {@link core-library#Statistics | Statistics subsystem}.
+   *
+   * @param solution - the {@link Solution }. retrived
+   *
+   */
+  public doAfterRetriveSolucion(solucion: ISolucion): void {
+    this.solucion = solucion;
+    this.showSideNavbar(true);
+    this.updateDefaultMenu(solucion);
   }
 
   public updateDefaultMenu(solucion: any) {
@@ -96,6 +129,10 @@ export default class FormHandler extends Vue {
 
   public formioRerender(): void {
     this.formioKey += 1;
+  }
+
+  public builderRerender(): void {
+    this.formioBuilderKey += 1;
   }
 
   public isReadOnly(): boolean {

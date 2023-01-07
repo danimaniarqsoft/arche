@@ -3,8 +3,10 @@ package mx.conacyt.arche.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import mx.conacyt.arche.domain.enumeration.EstadoSolucion;
 import org.springframework.data.annotation.Id;
@@ -44,6 +46,9 @@ public class Solucion implements Serializable {
 
     @Field("calendario")
     private Calendario calendario = new Calendario();
+
+    @Field("properties")
+    private Map<String, Object> properties = new HashMap<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -154,6 +159,14 @@ public class Solucion implements Serializable {
 
     public void setCalendario(Calendario calendario) {
         this.calendario = calendario;
+    }
+
+    public Map<String, Object> getProperties() {
+        return this.properties;
+    }
+
+    public void setProperty(String name, Object value) {
+        this.properties.put(name, value);
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and

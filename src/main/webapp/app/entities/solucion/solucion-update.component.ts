@@ -35,10 +35,7 @@ export default class SolucionUpdate extends mixins(FormHandler) {
   public estadoSolucionValues: string[] = Object.keys(EstadoSolucion);
   public icon = 'fas fa-user-cog';
   public isPreview = false;
-  public range = {
-    start: new Date(),
-    end: new Date(),
-  };
+  public cuestionario = { display: 'form' };
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -69,6 +66,7 @@ export default class SolucionUpdate extends mixins(FormHandler) {
         this.currentLanguage = this.$store.getters.currentLanguage;
       }
     );
+    this.builderRerender();
   }
 
   public handlePublicar(): void {
@@ -83,6 +81,7 @@ export default class SolucionUpdate extends mixins(FormHandler) {
 
   public saveSolucion(estado: EstadoSolucion): void {
     this.solucion.estado = estado;
+    this.solucion.cuestionario = this.cuestionario;
     if (this.solucion.id) {
       this.solucionService()
         .update(this.solucion)
@@ -127,36 +126,12 @@ export default class SolucionUpdate extends mixins(FormHandler) {
     }
   }
 
-  public retrieveSolucion(solucionId): void {
-    this.solucionService()
-      .find(solucionId)
-      .then(res => {
-        this.solucion = res;
-        this.solucion.mensaje = this.solucion.mensaje ? this.solucion.mensaje : new Mensaje();
-        this.updateMenu(this.solucion);
-      })
-      .catch(error => {
-        this.alertService().showHttpError(this, error.response);
-      });
-  }
-
   public previousState(): void {
     this.$router.go(-1);
   }
 
   public initRelationships(): void {
-    this.formService()
-      .retrieveAllForms()
-      .then(
-        res => {
-          this.forms = res.data.filter((value, index, arr) => {
-            return !['userLogin', 'userRegister'].includes(value.name);
-          });
-        },
-        err => {
-          this.alertService().showHttpError(this, err.response);
-        }
-      );
+    this.retriveAllForms();
   }
 
   public handleAddComponente(iconSelected: string, form: any): void {
@@ -186,7 +161,7 @@ export default class SolucionUpdate extends mixins(FormHandler) {
     this.updateMenu(this.solucion);
   }
 
-  public isInComponents(form: any): boolean {
+  public isFormSelected(form: any): boolean {
     return this.solucion.componentes.find(comp => comp.formId === form._id) ? true : false;
   }
 
@@ -196,5 +171,19 @@ export default class SolucionUpdate extends mixins(FormHandler) {
     menu.isPreviewActivated = true;
     menu.componentes = solucion.componentes;
     (this.$root as any).$emit('update-menu', menu);
+  }
+
+  /** @override */
+  public doAfterRetriveSolucion(solucion: ISolucion): void {
+    this.solucion = solucion;
+    this.solucion.mensaje = this.solucion.mensaje ? this.solucion.mensaje : new Mensaje();
+    this.solucion.cuestionario = this.solucion.cuestionario ? this.solucion.cuestionario : { display: 'form', components: [] };
+    this.cuestionario = this.solucion.cuestionario;
+    this.updateMenu(this.solucion);
+  }
+
+  /** @override */
+  public doAfterRetriveAllForms(forms: any): void {
+    this.forms = forms;
   }
 }

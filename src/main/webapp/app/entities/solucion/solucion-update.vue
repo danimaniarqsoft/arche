@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-8">
       <div v-if="isPreview">
-        <formio ref="formio" :form="form" :options="options" v-on:submit="handleSubmit"></formio>
+        <formio :form="form" :options="formOptions" v-on:submit="handleSubmit"></formio>
       </div>
       <div v-else>
         <h2
@@ -79,12 +79,12 @@
               <b-tabs nav-wrapper-class="w-35" pills card vertical end>
                 <b-tab v-for="form in forms" v-bind:key="form._id">
                   <template #title>
-                    <b-icon v-if="isInComponents(form)" icon="check2-circle" variant="success"></b-icon>
+                    <b-icon v-if="isFormSelected(form)" icon="check2-circle" variant="success"></b-icon>
                     <b-icon class="component-item" v-else icon="circle" variant="success"></b-icon>
                     &nbsp;&nbsp;
                     {{ form.title }}
                   </template>
-                  <div v-if="isInComponents(form)">
+                  <div v-if="isFormSelected(form)">
                     <div class="text-right">
                       <b-button :id="form._id" variant="danger" @click="handleRemoveComponente(form)"
                         ><b-icon icon="x-circle" variant="danger"></b-icon>&nbsp; <b><i>Remover</i></b>
@@ -94,7 +94,7 @@
                   <div v-else class="text-right">
                     <icon-picker @seleted="handleAddComponente($event, form)"></icon-picker>
                   </div>
-                  <formio :form="form" :options="options"></formio>
+                  <formio :form="form" :options="formOptions"></formio>
                 </b-tab>
               </b-tabs>
             </b-card>
@@ -105,6 +105,7 @@
           </b-tab>
           <b-tab class="mt-4">
             <template #title> <b-icon icon="card-checklist"></b-icon> Cuestioanrio de Revisión </template>
+            <formbuilder :form="cuestionario" :options="builderOptions"></formbuilder>
           </b-tab>
         </b-tabs>
         <div class="text-right card-body">
@@ -135,6 +136,10 @@
 </template>
 <script lang="ts" src="./solucion-update.component.ts"></script>
 <style scoped>
+.card-header {
+  background-color: #78c2ad !important;
+  background-color: rgba(234, 35, 35, 0.03) !important;
+}
 .component-selected {
   color: white !important;
 }

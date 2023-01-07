@@ -29,6 +29,7 @@ export interface ISolucion {
   mensaje?: Mensaje | null;
   tags?: string[] | null;
   calendario?: ICalendario | null;
+  cuestionario?: any | null;
 }
 
 export class Solucion implements ISolucion {
@@ -40,8 +41,10 @@ export class Solucion implements ISolucion {
     public componentes?: IComponente[] | null,
     public mensaje?: Mensaje | null,
     public tags?: string[] | null,
-    public calendario?: ICalendario | null
+    public calendario?: ICalendario | null,
+    public cuestionario?: any | null
   ) {
+    this.cuestionario = this.cuestionario ? this.cuestionario : {};
     this.mensaje = this.mensaje ? this.mensaje : new Mensaje();
     this.calendario = this.calendario ? this.calendario : new Calendario();
     this.componentes = this.componentes ? this.componentes : [];

@@ -1,9 +1,14 @@
 package mx.conacyt.arche.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import mx.conacyt.arche.domain.enumeration.EstadoSolucion;
@@ -29,6 +34,9 @@ public class SolucionDTO implements Serializable {
     private Set<ComponenteDTO> componentes = new HashSet<>();
 
     private List<String> tags = new ArrayList<>();
+
+    @JsonIgnore
+    private transient Map<String, Object> properties = new HashMap<>();
 
     public String getId() {
         return id;
@@ -92,6 +100,16 @@ public class SolucionDTO implements Serializable {
 
     public void setCalendario(CalendarioDTO calendario) {
         this.calendario = calendario;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getProperties() {
+        return this.properties;
+    }
+
+    @JsonAnySetter
+    public void setProperty(String name, Object value) {
+        this.properties.put(name, value);
     }
 
     @Override
