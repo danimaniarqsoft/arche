@@ -4,7 +4,7 @@ import { Menu } from '@/shared/model/menu.model';
 
 import SolucionService from '@/entities/solucion/solucion.service';
 import FormService from '@/shared/form/form.service';
-import SendSolicitudComponent from '@/components/forms/send-solicitud.vue';
+import SendSolicitudComponent from '@/components/forms/send-solicitud/send-solicitud.vue';
 import { DefaultFormOptions, DefaultBuilderOptions } from '@/components/forms/default-form-options';
 
 import AlertService from '@/shared/alert/alert.service';
@@ -14,7 +14,7 @@ import AlertService from '@/shared/alert/alert.service';
     'send-solicitud': SendSolicitudComponent,
   },
 })
-export default class FormHandler extends Vue {
+export default class FormsHandler extends Vue {
   @Inject('alertService') public alertService: () => AlertService;
   @Inject('formService') public formService: () => FormService;
   @Inject('solucionService') public solucionService: () => SolucionService;
@@ -34,6 +34,7 @@ export default class FormHandler extends Vue {
   public isFormioVisible = false;
   public formioKey = 0;
   public formioBuilderKey = 0;
+  public isSent = false;
 
   mounted() {
     (this.$root as any).$on('load-form', this.handleLoadForms);
@@ -165,6 +166,7 @@ export default class FormHandler extends Vue {
     this.isSaving = true;
     setTimeout(() => {
       this.isSaving = false;
+      this.isSent = true;
       const message = this.$t('archeApp.solicitud.updated', { param: 'test' });
       this.infoMessage(message.toString());
     }, 2000);

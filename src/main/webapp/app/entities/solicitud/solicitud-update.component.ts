@@ -1,6 +1,6 @@
 import { mixins } from 'vue-class-component';
 
-import FormHandler from '@/entities/solicitud/form-handler';
+import FormsHandler from '@/components/forms/forms-handler';
 import { Component, Inject } from 'vue-property-decorator';
 import { ISolicitud, Solicitud } from '@/shared/model/solicitud.model';
 import { EstadoSolicitud } from '@/shared/model/enumerations/estado-solicitud.model';
@@ -16,7 +16,7 @@ const validations: any = {
 @Component({
   validations,
 })
-export default class SolicitudUpdate extends mixins(FormHandler) {
+export default class SolicitudUpdate extends mixins(FormsHandler) {
   @Inject('solicitudService') public solicitudService: () => SolicitudService;
   public currentLanguage = '';
   public solicitud: ISolicitud = new Solicitud();

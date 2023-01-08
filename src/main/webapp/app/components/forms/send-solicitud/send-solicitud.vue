@@ -12,8 +12,9 @@
 
         <div class="mt-4" v-if="accepted">
           <small id="btnProcesoFirmaHelp" class="mb-2 form-text text-muted">Por favor oprima el botón para enviar su solicitud</small>
-          <b-button block variant="primary" v-b-modal.send-confirmation-modal>
-            <span>Enviar solicitud</span>
+          <b-button :disabled="status" block variant="primary" v-b-modal.send-confirmation-modal>
+            <b-icon icon="clock" :animation="status ? 'spin-pulse' : ''"></b-icon>
+            <span>{{ status ? 'Enviando...' : 'Enviar solicitud' }}</span>
             <span class="icon-mas"></span>
           </b-button>
 

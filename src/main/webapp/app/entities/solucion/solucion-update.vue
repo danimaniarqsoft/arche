@@ -10,7 +10,13 @@
           :language="formOptions.language"
           v-on:submit="handleSubmit"
         ></formio>
-        <send-solicitud v-if="isSendVisible" :isSent="false" @send="handleSend" :terminos="solucion.mensaje.terminos"></send-solicitud>
+        <send-solicitud
+          v-if="isSendVisible"
+          :isSent="isSent"
+          :status="isSaving"
+          @send="handleSend"
+          :terminos="solucion.mensaje.terminos"
+        ></send-solicitud>
       </div>
       <div v-else>
         <h2
@@ -21,8 +27,8 @@
         >
           Create or edit a Solucion
         </h2>
-        <b-tabs>
-          <b-tab class="mt-4">
+        <b-tabs v-model="tabIndex">
+          <b-tab class="mt-4" :title-link-class="linkClass(0)">
             <template #title> <b-icon icon="info-circle"></b-icon> Información de la solución </template>
             <div>
               <div class="form-group" v-if="solucion.id">
@@ -58,7 +64,7 @@
               </div>
             </div>
           </b-tab>
-          <b-tab class="mt-4">
+          <b-tab class="mt-4" :title-link-class="linkClass(1)">
             <template #title> <b-icon icon="chat-left-text"></b-icon> Mensajes </template>
             <div class="form-group">
               <label class="form-control-label">Mensaje de bienvenida</label>
@@ -69,7 +75,7 @@
               <vue-editor id="mensaje-terminos" v-model="$v.solucion.mensaje.terminos.$model"></vue-editor>
             </div>
           </b-tab>
-          <b-tab class="mt-4">
+          <b-tab class="mt-4" :title-link-class="linkClass(2)">
             <template #title> <b-icon icon="calendar3-week"></b-icon> Calendario </template>
             <div class="form-group">
               <date-time-picker label="Fecha de apertura" v-model="solucion.calendario.fechaInicio" />
@@ -81,7 +87,7 @@
               <date-time-picker label="Fecha limite para evaluar" v-model="solucion.calendario.fechaFinRevision" />
             </div>
           </b-tab>
-          <b-tab class="mt-4">
+          <b-tab class="mt-4" :title-link-class="linkClass(3)">
             <template #title> <b-icon icon="puzzle"></b-icon> Componentes </template>
             <b-card no-body>
               <b-tabs nav-wrapper-class="w-35" pills card vertical end>
@@ -107,36 +113,32 @@
               </b-tabs>
             </b-card>
           </b-tab>
-          <b-tab class="mt-4">
+          <b-tab class="mt-4" :title-link-class="linkClass(4)">
             <template #title> <b-icon icon="file-ruled"></b-icon> Reglas </template>
             <b-card no-body> </b-card>
           </b-tab>
-          <b-tab class="mt-4">
+          <b-tab class="mt-4" :title-link-class="linkClass(5)">
             <template #title> <b-icon icon="card-checklist"></b-icon> Cuestioanrio de Revisión </template>
             <formbuilder :form="cuestionario" :options="builderOptions"></formbuilder>
           </b-tab>
         </b-tabs>
         <div class="text-right card-body">
-          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" v-on:click="previousState()">
-            <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.cancel')">Cancel</span>
-          </button>
           <b-button variant="primary" id="save-entity" :disabled="$v.solucion.$invalid || isSaving" @click="handleSave()">
             <b-icon v-if="isSaving" icon="save" animation="fade" aria-hidden="true"></b-icon>
             <b-icon v-else icon="save" aria-hidden="true"></b-icon>&nbsp;{{ $t('entity.action.save') }}
           </b-button>
-          <b-dropdown variant="outline-primary" dropright no-caret>
-            <template #button-content>
-              <b-icon v-if="isPublishing" icon="megaphone" animation="fade" aria-hidden="true"></b-icon>
-              <b-icon v-else icon="megaphone" aria-hidden="true"></b-icon>&nbsp;Publicar solución
-            </template>
-            <b-dropdown-form>
-              <div class="text-center">
-                <small class="text-center">¿Esta seguro de publicar?</small>
-              </div>
-              <b-dropdown-divider></b-dropdown-divider>
-              <b-dropdown-item-button @click="handlePublicar()" class="text-center">Aceptar</b-dropdown-item-button>
-            </b-dropdown-form>
-          </b-dropdown>
+
+          <b-button
+            variant="primary"
+            id="publish-solucion"
+            :disabled="$v.solucion.$invalid || isPublishing"
+            v-b-modal.confirmar-publicar-modal
+          >
+            <b-icon v-if="isPublishing" icon="save" animation="fade" aria-hidden="true"></b-icon>
+            <b-icon v-else icon="save" aria-hidden="true"></b-icon>&nbsp;Publicar solución
+          </b-button>
+
+          <confirmation id="confirmar-publicar-modal" @confirmed="handlePublicarConfirmation"></confirmation>
         </div>
       </div>
     </div>

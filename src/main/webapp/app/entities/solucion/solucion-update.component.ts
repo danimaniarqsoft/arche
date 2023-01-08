@@ -6,7 +6,7 @@ import { Menu } from '@/shared/model/menu.model';
 import { EstadoSolucion } from '@/shared/model/enumerations/estado-solucion.model';
 import SolucionService from './solucion.service';
 import { mixins } from 'vue-class-component';
-import FormHandler from '@/entities/solicitud/form-handler';
+import FormsHandler from '@/components/forms/forms-handler';
 
 const validations: any = {
   solucion: {
@@ -24,18 +24,18 @@ const validations: any = {
 @Component({
   validations,
 })
-export default class SolucionUpdate extends mixins(FormHandler) {
+export default class SolucionUpdate extends mixins(FormsHandler) {
   @Inject('solucionService') public solucionService: () => SolucionService;
 
   public solucion: ISolucion = new Solucion();
   public forms: any = {};
-  public isSaving = false;
   public isPublishing = false;
   public currentLanguage = '';
   public estadoSolucionValues: string[] = Object.keys(EstadoSolucion);
   public icon = 'fas fa-user-cog';
   public isPreview = false;
   public cuestionario = { display: 'form' };
+  public tabIndex = 0;
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -74,14 +74,22 @@ export default class SolucionUpdate extends mixins(FormHandler) {
   public handleIsPreviewActivated(activate: boolean) {
     this.isPreview = activate;
     this.isSendVisible = false;
+    this.isSent = false;
     this.form = {};
   }
 
+  public linkClass(idx) {
+    if (this.tabIndex === idx) {
+      return ['bg-primary', 'text-light'];
+    } else {
+      return ['bg-light'];
+    }
+  }
   public isLoadFormActivated(): boolean {
     return this.isPreview;
   }
 
-  public handlePublicar(): void {
+  public handlePublicarConfirmation() {
     this.isPublishing = true;
     this.saveSolucion(EstadoSolucion.PUBLICADA);
   }

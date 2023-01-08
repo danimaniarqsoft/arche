@@ -9,7 +9,6 @@ import Router, { RouteConfig } from 'vue-router';
 
 const Home = () => import('@/core/home/home.vue');
 const Error = () => import('@/core/error/error.vue');
-const Forms = () => import('@/forms/form.vue');
 import account from '@/router/account';
 import admin from '@/router/admin';
 import entities from '@/router/entities';
@@ -37,11 +36,6 @@ const router = new Router({
       name: 'NotFound',
       component: Error,
       meta: { error404: true }
-    },
-    {
-      path: '/forms',
-      name: 'Forms',
-      component: Forms,
     },
     ...account,
     ...admin,
