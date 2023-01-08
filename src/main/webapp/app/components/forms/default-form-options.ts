@@ -107,6 +107,5 @@ class DefaultBuilderOptions {
     };
   }
 }
-const defaultFormOptions = new DefaultFormOptions();
-const defaultBuilderOptions = new DefaultBuilderOptions();
-export { defaultFormOptions, defaultBuilderOptions };
+
+export { DefaultFormOptions, DefaultBuilderOptions };

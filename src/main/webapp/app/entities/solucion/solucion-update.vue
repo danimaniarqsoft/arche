@@ -2,7 +2,15 @@
   <div class="row justify-content-center">
     <div class="col-8">
       <div v-if="isPreview">
-        <formio :form="form" :options="formOptions" v-on:submit="handleSubmit"></formio>
+        <div v-show="showWelcomeMessage" v-html="solucion.mensaje.bienvenida"></div>
+        <formio
+          v-if="isFormioVisible"
+          :form="form"
+          :options="formOptions"
+          :language="formOptions.language"
+          v-on:submit="handleSubmit"
+        ></formio>
+        <send-solicitud v-if="isSendVisible" :isSent="false" @send="handleSend" :terminos="solucion.mensaje.terminos"></send-solicitud>
       </div>
       <div v-else>
         <h2
@@ -94,7 +102,7 @@
                   <div v-else class="text-right">
                     <icon-picker @seleted="handleAddComponente($event, form)"></icon-picker>
                   </div>
-                  <formio :form="form" :options="formOptions"></formio>
+                  <formio :form="form" :options="formOptions" :language="formOptions.language"></formio>
                 </b-tab>
               </b-tabs>
             </b-card>

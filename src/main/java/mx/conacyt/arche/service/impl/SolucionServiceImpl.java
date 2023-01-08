@@ -7,6 +7,8 @@ import mx.conacyt.arche.service.dto.SolucionDTO;
 import mx.conacyt.arche.service.mapper.SolucionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -22,11 +24,12 @@ public class SolucionServiceImpl implements SolucionService {
 
     private final SolucionRepository solucionRepository;
 
-    private final SolucionMapper solucionMapper;
+    @Lazy
+    @Autowired
+    private SolucionMapper solucionMapper;
 
-    public SolucionServiceImpl(SolucionRepository solucionRepository, SolucionMapper solucionMapper) {
+    public SolucionServiceImpl(SolucionRepository solucionRepository) {
         this.solucionRepository = solucionRepository;
-        this.solucionMapper = solucionMapper;
     }
 
     @Override

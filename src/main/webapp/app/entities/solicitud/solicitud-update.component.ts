@@ -44,7 +44,6 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
     (this.$root as any).$emit('show-side-navbar', false);
     next();
   }
-
   created(): void {
     this.currentLanguage = this.$store.getters.currentLanguage;
     this.$store.watch(
@@ -184,13 +183,7 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
         this.isSaving = false;
         this.solicitud = solicitud;
         const message = this.$t('archeApp.solicitud.updated', { param: solicitud.id });
-        return (this.$root as any).$bvToast.toast(message.toString(), {
-          toaster: 'b-toaster-top-center',
-          title: 'Info',
-          variant: 'info',
-          solid: true,
-          autoHideDelay: 5000,
-        });
+        this.infoMessage(message.toString());
       })
       .catch(error => {
         this.isSaving = false;
@@ -210,7 +203,8 @@ export default class SolicitudUpdate extends mixins(FormHandler) {
     return this.solicitud.estado === EstadoSolicitud.ENVIADA;
   }
 
-  public override isReadOnly(): boolean {
+  public isReadOnly(): boolean {
+    console.log(this.solicitud.estado);
     return this.solicitud.estado === EstadoSolicitud.ENVIADA;
   }
 }

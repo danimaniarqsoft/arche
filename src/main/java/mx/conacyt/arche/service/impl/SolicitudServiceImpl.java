@@ -8,6 +8,8 @@ import mx.conacyt.arche.service.dto.SolicitudDTO;
 import mx.conacyt.arche.service.mapper.SolicitudMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -23,11 +25,12 @@ public class SolicitudServiceImpl implements SolicitudService {
 
     private final SolicitudRepository solicitudRepository;
 
-    private final SolicitudMapper solicitudMapper;
+    @Lazy
+    @Autowired
+    private SolicitudMapper solicitudMapper;
 
-    public SolicitudServiceImpl(SolicitudRepository solicitudRepository, SolicitudMapper solicitudMapper) {
+    public SolicitudServiceImpl(SolicitudRepository solicitudRepository) {
         this.solicitudRepository = solicitudRepository;
-        this.solicitudMapper = solicitudMapper;
     }
 
     @Override

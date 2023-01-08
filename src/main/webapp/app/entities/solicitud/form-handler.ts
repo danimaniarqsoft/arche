@@ -5,7 +5,7 @@ import { Menu } from '@/shared/model/menu.model';
 import SolucionService from '@/entities/solucion/solucion.service';
 import FormService from '@/shared/form/form.service';
 import SendSolicitudComponent from '@/components/forms/send-solicitud.vue';
-import { defaultFormOptions, defaultBuilderOptions } from '@/components/forms/default-form-options';
+import { DefaultFormOptions, DefaultBuilderOptions } from '@/components/forms/default-form-options';
 
 import AlertService from '@/shared/alert/alert.service';
 
@@ -20,8 +20,8 @@ export default class FormHandler extends Vue {
   @Inject('solucionService') public solucionService: () => SolucionService;
 
   public form: any = {};
-  public formOptions = defaultFormOptions;
-  public builderOptions = defaultBuilderOptions;
+  public formOptions = new DefaultFormOptions();
+  public builderOptions = new DefaultBuilderOptions();
 
   public formContext: any = { submission: { data: {} } };
 
@@ -36,17 +36,33 @@ export default class FormHandler extends Vue {
   public formioBuilderKey = 0;
 
   mounted() {
-    (this.$root as any).$on('load-form', componente => {
-      if (componente.tipo && componente.tipo === 'send') {
-        this.isSendVisible = true;
-        this.isFormioVisible = false;
-      } else {
-        this.isFormioVisible = true;
-        this.isSendVisible = false;
-        this.formContext.currentComponente = componente;
-        this.retriveForm(this.formContext);
-      }
-    });
+    (this.$root as any).$on('load-form', this.handleLoadForms);
+  }
+
+  beforeDestroy() {
+    (this.$root as any).$off('load-form', this.handleLoadForms);
+  }
+
+  public handleLoadForms(componente) {
+    if (this.isLoadFormActivated()) {
+      this.renderComponente(componente);
+    }
+  }
+
+  public renderComponente(componente) {
+    if (componente.tipo && componente.tipo === 'send') {
+      this.isSendVisible = true;
+      this.isFormioVisible = false;
+    } else {
+      this.isSendVisible = false;
+      this.isFormioVisible = true;
+      this.formContext.currentComponente = componente;
+      this.retriveForm(this.formContext);
+    }
+  }
+
+  public isLoadFormActivated(): boolean {
+    return true;
   }
 
   get showWelcomeMessage() {
@@ -143,5 +159,32 @@ export default class FormHandler extends Vue {
     if (this.$refs.formio) {
       (this.$refs.formio as any).formio.redraw();
     }
+  }
+
+  public handleSend(): void {
+    this.isSaving = true;
+    setTimeout(() => {
+      this.isSaving = false;
+      const message = this.$t('archeApp.solicitud.updated', { param: 'test' });
+      this.infoMessage(message.toString());
+    }, 2000);
+  }
+
+  public infoMessage(message: string): void {
+    this.message(message, 'Info', 'info');
+  }
+
+  public successMessage(message: string): void {
+    this.message(message, 'Success', 'success');
+  }
+
+  public message(message: string, title: string, variant: string): void {
+    (this.$root as any).$bvToast.toast(message, {
+      toaster: 'b-toaster-top-center',
+      title: title,
+      variant: variant,
+      solid: true,
+      autoHideDelay: 5000,
+    });
   }
 }

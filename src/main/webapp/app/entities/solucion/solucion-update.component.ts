@@ -53,9 +53,11 @@ export default class SolucionUpdate extends mixins(FormHandler) {
   }
 
   mounted() {
-    (this.$root as any).$on('is-preview-activated', activate => {
-      this.isPreview = activate;
-    });
+    (this.$root as any).$on('is-preview-activated', this.handleIsPreviewActivated);
+  }
+
+  beforeDestroy() {
+    (this.$root as any).$off('is-preview-activated', this.handleIsPreviewActivated);
   }
 
   created(): void {
@@ -69,6 +71,16 @@ export default class SolucionUpdate extends mixins(FormHandler) {
     this.builderRerender();
   }
 
+  public handleIsPreviewActivated(activate: boolean) {
+    this.isPreview = activate;
+    this.isSendVisible = false;
+    this.form = {};
+  }
+
+  public isLoadFormActivated(): boolean {
+    return this.isPreview;
+  }
+
   public handlePublicar(): void {
     this.isPublishing = true;
     this.saveSolucion(EstadoSolucion.PUBLICADA);
@@ -77,61 +89,6 @@ export default class SolucionUpdate extends mixins(FormHandler) {
   public handleSave(): void {
     this.isSaving = true;
     this.saveSolucion(EstadoSolucion.EN_CAPTURA);
-  }
-
-  public saveSolucion(estado: EstadoSolucion): void {
-    this.solucion.estado = estado;
-    this.solucion.cuestionario = this.cuestionario;
-    if (this.solucion.id) {
-      this.solucionService()
-        .update(this.solucion)
-        .then(param => {
-          this.isSaving = false;
-          this.isPublishing = false;
-          const message = this.$t('archeApp.solucion.updated', { param: param.id });
-          return (this.$root as any).$bvToast.toast(message.toString(), {
-            toaster: 'b-toaster-top-center',
-            title: 'Info',
-            variant: 'info',
-            solid: true,
-            autoHideDelay: 5000,
-          });
-        })
-        .catch(error => {
-          this.isSaving = false;
-          this.isPublishing = false;
-          this.alertService().showHttpError(this, error.response);
-        });
-    } else {
-      this.solucion.estado = EstadoSolucion.EN_CAPTURA;
-      this.solucionService()
-        .create(this.solucion)
-        .then(param => {
-          this.isSaving = false;
-          this.isPublishing = false;
-          const message = this.$t('archeApp.solucion.created', { param: param.id });
-          (this.$root as any).$bvToast.toast(message.toString(), {
-            toaster: 'b-toaster-top-center',
-            title: 'Success',
-            variant: 'success',
-            solid: true,
-            autoHideDelay: 5000,
-          });
-        })
-        .catch(error => {
-          this.isSaving = false;
-          this.isPublishing = false;
-          this.alertService().showHttpError(this, error.response);
-        });
-    }
-  }
-
-  public previousState(): void {
-    this.$router.go(-1);
-  }
-
-  public initRelationships(): void {
-    this.retriveAllForms();
   }
 
   public handleAddComponente(iconSelected: string, form: any): void {
@@ -159,6 +116,49 @@ export default class SolucionUpdate extends mixins(FormHandler) {
       component.orden = index++;
     });
     this.updateMenu(this.solucion);
+  }
+
+  public saveSolucion(estado: EstadoSolucion): void {
+    this.solucion.estado = estado;
+    this.solucion.cuestionario = this.cuestionario;
+    if (this.solucion.id) {
+      this.solucionService()
+        .update(this.solucion)
+        .then(param => {
+          this.isSaving = false;
+          this.isPublishing = false;
+          const message = this.$t('archeApp.solucion.updated', { param: param.id });
+          this.infoMessage(message.toString());
+        })
+        .catch(error => {
+          this.isSaving = false;
+          this.isPublishing = false;
+          this.alertService().showHttpError(this, error.response);
+        });
+    } else {
+      this.solucion.estado = EstadoSolucion.EN_CAPTURA;
+      this.solucionService()
+        .create(this.solucion)
+        .then(param => {
+          this.isSaving = false;
+          this.isPublishing = false;
+          const message = this.$t('archeApp.solucion.created', { param: param.id });
+          this.successMessage(message.toString());
+        })
+        .catch(error => {
+          this.isSaving = false;
+          this.isPublishing = false;
+          this.alertService().showHttpError(this, error.response);
+        });
+    }
+  }
+
+  public previousState(): void {
+    this.$router.go(-1);
+  }
+
+  public initRelationships(): void {
+    this.retriveAllForms();
   }
 
   public isFormSelected(form: any): boolean {

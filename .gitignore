@@ -6,6 +6,7 @@
 /src/test/javascript/coverage/
 convocatoria.json
 convocatoria.png
+init.sh
 
 ######################
 # Node
