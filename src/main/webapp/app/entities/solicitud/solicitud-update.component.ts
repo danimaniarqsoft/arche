@@ -40,10 +40,6 @@ export default class SolicitudUpdate extends mixins(FormsHandler) {
     });
   }
 
-  beforeRouteLeave(to, from, next) {
-    (this.$root as any).$emit('show-side-navbar', false);
-    next();
-  }
   created(): void {
     this.currentLanguage = this.$store.getters.currentLanguage;
     this.$store.watch(

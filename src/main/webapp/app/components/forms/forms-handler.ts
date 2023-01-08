@@ -38,16 +38,17 @@ export default class FormsHandler extends Vue {
 
   mounted() {
     (this.$root as any).$on('load-form', this.handleLoadForms);
+    (this.$root as any).$on('is-preview-activated', this.handleIsPreviewActivated);
   }
 
   beforeDestroy() {
     (this.$root as any).$off('load-form', this.handleLoadForms);
+    (this.$root as any).$off('is-preview-activated', this.handleIsPreviewActivated);
   }
 
-  public handleLoadForms(componente) {
-    if (this.isLoadFormActivated()) {
-      this.renderComponente(componente);
-    }
+  beforeRouteLeave(to, from, next) {
+    (this.$root as any).$emit('show-side-navbar', false);
+    next();
   }
 
   public renderComponente(componente) {
@@ -142,8 +143,6 @@ export default class FormsHandler extends Vue {
     (this.$root as any).$emit('show-side-navbar', show);
   }
 
-  public handleSubmit(submit): void {}
-
   public formioRerender(): void {
     this.formioKey += 1;
   }
@@ -162,16 +161,6 @@ export default class FormsHandler extends Vue {
     }
   }
 
-  public handleSend(): void {
-    this.isSaving = true;
-    setTimeout(() => {
-      this.isSaving = false;
-      this.isSent = true;
-      const message = this.$t('archeApp.solicitud.updated', { param: 'test' });
-      this.infoMessage(message.toString());
-    }, 2000);
-  }
-
   public infoMessage(message: string): void {
     this.message(message, 'Info', 'info');
   }
@@ -188,5 +177,28 @@ export default class FormsHandler extends Vue {
       solid: true,
       autoHideDelay: 5000,
     });
+  }
+
+  public handleSend(): void {
+    console.log('default handleSend(): ');
+    this.isSaving = true;
+    setTimeout(() => {
+      this.isSaving = false;
+      this.isSent = true;
+      const message = this.$t('archeApp.solicitud.updated', { param: 'test' });
+      this.infoMessage(message.toString());
+    }, 2000);
+  }
+  public handleLoadForms(componente) {
+    if (this.isLoadFormActivated()) {
+      this.renderComponente(componente);
+    }
+  }
+
+  public handleIsPreviewActivated(activate: boolean) {
+    console.log('default handleIsPreviewActivated(): ' + activate);
+  }
+  public handleSubmit(submit): void {
+    console.log('default handleSubmit(): ' + submit);
   }
 }

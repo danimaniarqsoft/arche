@@ -47,19 +47,6 @@ export default class SolucionUpdate extends mixins(FormsHandler) {
     });
   }
 
-  beforeRouteLeave(to, from, next) {
-    (this.$root as any).$emit('show-side-navbar', false);
-    next();
-  }
-
-  mounted() {
-    (this.$root as any).$on('is-preview-activated', this.handleIsPreviewActivated);
-  }
-
-  beforeDestroy() {
-    (this.$root as any).$off('is-preview-activated', this.handleIsPreviewActivated);
-  }
-
   created(): void {
     this.currentLanguage = this.$store.getters.currentLanguage;
     this.$store.watch(
@@ -69,13 +56,6 @@ export default class SolucionUpdate extends mixins(FormsHandler) {
       }
     );
     this.builderRerender();
-  }
-
-  public handleIsPreviewActivated(activate: boolean) {
-    this.isPreview = activate;
-    this.isSendVisible = false;
-    this.isSent = false;
-    this.form = {};
   }
 
   public linkClass(idx) {
@@ -193,5 +173,13 @@ export default class SolucionUpdate extends mixins(FormsHandler) {
   /** @override */
   public doAfterRetriveAllForms(forms: any): void {
     this.forms = forms;
+  }
+
+  /** @override */
+  public handleIsPreviewActivated(activate: boolean) {
+    this.isPreview = activate;
+    this.isSendVisible = false;
+    this.isSent = false;
+    this.form = {};
   }
 }
