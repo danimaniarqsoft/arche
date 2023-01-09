@@ -210,6 +210,28 @@ public class SolucionResource {
             );
     }
 
+    @GetMapping("/soluciones/activas")
+    public Mono<ResponseEntity<List<SolucionDTO>>> getAllSolucionesActivas(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        ServerHttpRequest request
+    ) {
+        log.debug("REST request to get a page of Solucions");
+        return solucionService
+            .countAll()
+            .zipWith(solucionService.findAllByEstado("PUBLICADA", pageable).collectList())
+            .map(countWithEntities ->
+                ResponseEntity
+                    .ok()
+                    .headers(
+                        PaginationUtil.generatePaginationHttpHeaders(
+                            UriComponentsBuilder.fromHttpRequest(request),
+                            new PageImpl<>(countWithEntities.getT2(), pageable, countWithEntities.getT1())
+                        )
+                    )
+                    .body(countWithEntities.getT2())
+            );
+    }
+
     /**
      * {@code GET  /solucions/:id} : get the "id" solucion.
      *

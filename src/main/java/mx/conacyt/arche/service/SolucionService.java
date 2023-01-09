@@ -42,7 +42,17 @@ public interface SolucionService {
     Flux<SolucionDTO> findAll(Pageable pageable);
 
     /**
+     * Get all the solucions by estado
+     *
+     * @param estado   the state of the solucion.
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    public Flux<SolucionDTO> findAllByEstado(String estado, Pageable pageable);
+
+    /**
      * Returns the number of solucions available.
+     *
      * @return the number of entities in the database.
      *
      */

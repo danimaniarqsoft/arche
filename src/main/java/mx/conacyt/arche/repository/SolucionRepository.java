@@ -13,4 +13,6 @@ import reactor.core.publisher.Flux;
 @Repository
 public interface SolucionRepository extends ReactiveMongoRepository<Solucion, String> {
     Flux<Solucion> findAllBy(Pageable pageable);
+
+    Flux<Solucion> findAllByEstado(String estado, Pageable pageable);
 }

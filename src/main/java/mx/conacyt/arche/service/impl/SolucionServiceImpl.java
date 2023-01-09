@@ -65,6 +65,12 @@ public class SolucionServiceImpl implements SolucionService {
         return solucionRepository.findAllBy(pageable).map(solucionMapper::toDto);
     }
 
+    @Override
+    public Flux<SolucionDTO> findAllByEstado(String estado, Pageable pageable) {
+        log.debug("Request to get all Solucions by PUBLICADA");
+        return solucionRepository.findAllByEstado("PUBLICADA", pageable).map(solucionMapper::toDto);
+    }
+
     public Mono<Long> countAll() {
         return solucionRepository.count();
     }

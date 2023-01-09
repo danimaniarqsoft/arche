@@ -33,6 +33,19 @@ export default class SolucionService {
     });
   }
 
+  public retrieveByActive(paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(baseApiUrl + '/activas' + `?${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
   public delete(id: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios

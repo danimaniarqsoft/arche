@@ -128,7 +128,7 @@
             <formbuilder :form="cuestionario" :options="builderOptions"></formbuilder>
           </b-tab>
         </b-tabs>
-        <div class="text-right card-body" v-if="!isPublished">
+        <div class="text-right card-body">
           <b-button variant="primary" id="save-entity" :disabled="$v.solucion.$invalid || isSaving" @click="handleSave()">
             <b-icon v-if="isSaving" icon="save" animation="fade" aria-hidden="true"></b-icon>
             <b-icon v-else icon="save" aria-hidden="true"></b-icon>&nbsp;{{ $t('entity.action.save') }}
