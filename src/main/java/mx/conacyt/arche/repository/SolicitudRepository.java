@@ -15,6 +15,8 @@ import reactor.core.publisher.Mono;
 public interface SolicitudRepository extends ReactiveMongoRepository<Solicitud, String> {
     Mono<Solicitud> findBySolucionId(String solucionId);
 
+    Mono<Solicitud> findByUsuarioAndSolucionId(String usuario, String solucionId);
+
     Flux<Solicitud> findAllBy(Pageable pageable);
 
     Flux<Solicitud> findAllByUsuario(String usuario, Pageable pageable);

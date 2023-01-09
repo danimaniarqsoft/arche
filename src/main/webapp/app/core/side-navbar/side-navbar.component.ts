@@ -46,6 +46,18 @@ export default class JhiNavbar extends Vue {
     this.loadForm(componente);
   }
 
+  public loadCuestionarioForm() {
+    const componente = new Componente();
+    componente.formId = 'cuestionario-component';
+    componente.titulo = 'Cuestionario';
+    componente.descripcion = 'cuestionarioSolicitud';
+    componente.orden = 2000;
+    componente.icon = 'no-icon';
+    componente.path = 'cuestionario/compponent';
+    componente.tipo = 'review';
+    this.loadForm(componente);
+  }
+
   public loadForm(component) {
     (this.$root as any).$emit('load-form', component);
   }

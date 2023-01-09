@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
+import mx.conacyt.arche.domain.enumeration.EstadoSolucion;
 import mx.conacyt.arche.repository.SolucionRepository;
 import mx.conacyt.arche.service.SolucionService;
 import mx.conacyt.arche.service.dto.SolucionDTO;
@@ -70,6 +71,7 @@ public class SolucionResource {
         if (solucionDTO.getId() != null) {
             throw new BadRequestAlertException("A new solucion cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        solucionDTO.setEstado(EstadoSolucion.EN_CAPTURA);
         return solucionService
             .save(solucionDTO)
             .map(result -> {

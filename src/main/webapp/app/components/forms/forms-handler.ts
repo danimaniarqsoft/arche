@@ -20,15 +20,16 @@ export default class FormsHandler extends Vue {
   @Inject('solucionService') public solucionService: () => SolucionService;
 
   public form: any = {};
+  public forms: any = {};
   public formOptions = new DefaultFormOptions();
   public builderOptions = new DefaultBuilderOptions();
 
+  public currentLanguage = '';
   public formContext: any = { submission: { data: {} } };
 
   public solucion: ISolucion = new Solucion();
 
   public isSaving = false;
-  public currentLanguage = '';
   public isFetching = false;
   public isSendVisible = false;
   public isFormioVisible = false;
@@ -55,6 +56,11 @@ export default class FormsHandler extends Vue {
     if (componente.tipo && componente.tipo === 'send') {
       this.isSendVisible = true;
       this.isFormioVisible = false;
+    } else if (componente.tipo && componente.tipo == 'review') {
+      this.isSendVisible = false;
+      this.isFormioVisible = true;
+      this.formContext.currentComponente = componente;
+      this.renderForm(this.solucion.cuestionario);
     } else {
       this.isSendVisible = false;
       this.isFormioVisible = true;
@@ -79,13 +85,17 @@ export default class FormsHandler extends Vue {
           if (this.isReadOnly()) {
             this.formOptions.readOnly = true;
           }
-          this.form = resForm.data;
-          this.formioRerender();
+          this.renderForm(resForm.data);
         },
         err => {
           this.alertService().showHttpError(this, err.response);
         }
       );
+  }
+
+  public renderForm(currentForm: any) {
+    this.form = currentForm;
+    this.formioRerender();
   }
 
   public retriveAllForms(): void {
@@ -105,7 +115,9 @@ export default class FormsHandler extends Vue {
       );
   }
 
-  public doAfterRetriveAllForms(forms: any): void {}
+  public doAfterRetriveAllForms(forms: any): void {
+    this.forms = forms;
+  }
 
   public retrieveSolucion(solucionId): void {
     this.solucionService()
@@ -132,6 +144,10 @@ export default class FormsHandler extends Vue {
   }
 
   public updateDefaultMenu(solucion: any) {
+    this.configMenuFromSolucion(solucion);
+  }
+
+  public configMenuFromSolucion(solucion: any): void {
     const menu = new Menu();
     menu.isSendActivated = true;
     menu.isPreviewActivated = false;

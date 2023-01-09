@@ -28,11 +28,8 @@ export default class SolucionUpdate extends mixins(FormsHandler) {
   @Inject('solucionService') public solucionService: () => SolucionService;
 
   public solucion: ISolucion = new Solucion();
-  public forms: any = {};
   public isPublishing = false;
-  public currentLanguage = '';
   public estadoSolucionValues: string[] = Object.keys(EstadoSolucion);
-  public icon = 'fas fa-user-cog';
   public isPreview = false;
   public cuestionario = { display: 'form' };
   public tabIndex = 0;
@@ -41,6 +38,8 @@ export default class SolucionUpdate extends mixins(FormsHandler) {
     next(vm => {
       if (to.params.solucionId) {
         vm.retrieveSolucion(to.params.solucionId);
+      } else {
+        vm.configMenuFromSolucion(vm.solucion);
       }
       vm.initRelationships();
       vm.$root.$emit('show-side-navbar', true);
@@ -110,35 +109,43 @@ export default class SolucionUpdate extends mixins(FormsHandler) {
     this.solucion.estado = estado;
     this.solucion.cuestionario = this.cuestionario;
     if (this.solucion.id) {
-      this.solucionService()
-        .update(this.solucion)
-        .then(param => {
-          this.isSaving = false;
-          this.isPublishing = false;
-          const message = this.$t('archeApp.solucion.updated', { param: param.id });
-          this.infoMessage(message.toString());
-        })
-        .catch(error => {
-          this.isSaving = false;
-          this.isPublishing = false;
-          this.alertService().showHttpError(this, error.response);
-        });
+      this.updateSolucion();
     } else {
-      this.solucion.estado = EstadoSolucion.EN_CAPTURA;
-      this.solucionService()
-        .create(this.solucion)
-        .then(param => {
-          this.isSaving = false;
-          this.isPublishing = false;
-          const message = this.$t('archeApp.solucion.created', { param: param.id });
-          this.successMessage(message.toString());
-        })
-        .catch(error => {
-          this.isSaving = false;
-          this.isPublishing = false;
-          this.alertService().showHttpError(this, error.response);
-        });
+      this.createSolucion();
     }
+  }
+
+  public updateSolucion(): void {
+    this.solucionService()
+      .update(this.solucion)
+      .then(param => {
+        this.isSaving = false;
+        this.isPublishing = false;
+        const message = this.$t('archeApp.solucion.updated', { param: param.id });
+        this.infoMessage(message.toString());
+      })
+      .catch(error => {
+        this.isSaving = false;
+        this.isPublishing = false;
+        this.alertService().showHttpError(this, error.response);
+      });
+  }
+
+  public createSolucion(): void {
+    this.solucionService()
+      .create(this.solucion)
+      .then(param => {
+        this.isSaving = false;
+        this.isPublishing = false;
+        this.solucion.id = param.id;
+        const message = this.$t('archeApp.solucion.created', { param: param.id });
+        this.successMessage(message.toString());
+      })
+      .catch(error => {
+        this.isSaving = false;
+        this.isPublishing = false;
+        this.alertService().showHttpError(this, error.response);
+      });
   }
 
   public previousState(): void {
@@ -157,8 +164,13 @@ export default class SolucionUpdate extends mixins(FormsHandler) {
     const menu = new Menu();
     menu.isSendActivated = true;
     menu.isPreviewActivated = true;
+    menu.isCuestionarioActivated = true;
     menu.componentes = solucion.componentes;
     (this.$root as any).$emit('update-menu', menu);
+  }
+
+  get isPublished(): boolean {
+    return this.solucion.estado === EstadoSolucion.PUBLICADA;
   }
 
   /** @override */
@@ -168,11 +180,6 @@ export default class SolucionUpdate extends mixins(FormsHandler) {
     this.solucion.cuestionario = this.solucion.cuestionario ? this.solucion.cuestionario : { display: 'form', components: [] };
     this.cuestionario = this.solucion.cuestionario;
     this.updateMenu(this.solucion);
-  }
-
-  /** @override */
-  public doAfterRetriveAllForms(forms: any): void {
-    this.forms = forms;
   }
 
   /** @override */

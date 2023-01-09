@@ -63,7 +63,7 @@
                   custom
                   v-slot="{ navigate }"
                 >
-                  <b-button @click="navigate" variant="primary">
+                  <b-button @click="navigate" variant="primary" v-if="solucion.estado === 'PUBLICADA'">
                     <b-icon icon="arrow-right-square"></b-icon>
                     <span class="d-none d-md-inline">Crear solicitud</span>
                   </b-button>

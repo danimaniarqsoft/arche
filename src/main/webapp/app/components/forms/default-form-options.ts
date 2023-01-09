@@ -57,6 +57,17 @@ const I18N = {
     'Text Field Component': 'Campo de texto',
     Questions: 'Preguntas',
     'Drag and Drop a form component': 'Arrastre aquí un componente del menú',
+    'Type to search': 'Buscar',
+    'Search field(s)': 'Buscar campos',
+    Prefix: 'Prefijo',
+    Suffix: 'Sufijo',
+    Copy: 'Copiar',
+    Move: 'Mover',
+    'Edit JSON': 'Editar JSON',
+    Remove: 'Eliminar',
+    'Paste below': 'Copiar abajo',
+    'Display Mask': 'Mostrar máscara',
+    'Custom CSS Class': 'Editar CSS',
   },
 } as const;
 

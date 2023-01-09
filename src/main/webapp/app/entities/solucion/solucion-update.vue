@@ -19,6 +19,12 @@
         ></send-solicitud>
       </div>
       <div v-else>
+        <message
+          v-if="solucion.estado === 'PUBLICADA'"
+          title="Solución publicada"
+          description="Su solución se encuentra publicada correctamente. Ya no se podrán relizar cambios "
+        />
+
         <h2
           class="mb-5"
           id="archeApp.solucion.home.createOrEditLabel"
@@ -113,29 +119,29 @@
               </b-tabs>
             </b-card>
           </b-tab>
-          <b-tab class="mt-4" :title-link-class="linkClass(4)">
+          <b-tab class="mt-4" :title-link-class="linkClass(4)" disabled>
             <template #title> <b-icon icon="file-ruled"></b-icon> Reglas </template>
             <b-card no-body> </b-card>
           </b-tab>
           <b-tab class="mt-4" :title-link-class="linkClass(5)">
-            <template #title> <b-icon icon="card-checklist"></b-icon> Cuestioanrio de Revisión </template>
+            <template #title> <b-icon icon="card-checklist"></b-icon> Cuestionario de Revisión </template>
             <formbuilder :form="cuestionario" :options="builderOptions"></formbuilder>
           </b-tab>
         </b-tabs>
-        <div class="text-right card-body">
+        <div class="text-right card-body" v-if="!isPublished">
           <b-button variant="primary" id="save-entity" :disabled="$v.solucion.$invalid || isSaving" @click="handleSave()">
             <b-icon v-if="isSaving" icon="save" animation="fade" aria-hidden="true"></b-icon>
             <b-icon v-else icon="save" aria-hidden="true"></b-icon>&nbsp;{{ $t('entity.action.save') }}
           </b-button>
 
           <b-button
-            variant="primary"
+            variant="outline-danger"
             id="publish-solucion"
             :disabled="$v.solucion.$invalid || isPublishing"
             v-b-modal.confirmar-publicar-modal
           >
-            <b-icon v-if="isPublishing" icon="save" animation="fade" aria-hidden="true"></b-icon>
-            <b-icon v-else icon="save" aria-hidden="true"></b-icon>&nbsp;Publicar solución
+            <b-icon v-if="isPublishing" icon="megaphone" animation="fade" aria-hidden="true"></b-icon>
+            <b-icon v-else icon="megaphone" aria-hidden="true"></b-icon>&nbsp;Publicar solución
           </b-button>
 
           <confirmation id="confirmar-publicar-modal" @confirmed="handlePublicarConfirmation"></confirmation>

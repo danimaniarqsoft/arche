@@ -97,7 +97,11 @@ public class SolicitudServiceImpl implements SolicitudService {
     @Override
     public Mono<SolicitudDTO> findBySolucionId(String id) {
         log.debug("Request to get Solicitud : {}", id);
-        return solicitudRepository.findBySolucionId(id).map(solicitudMapper::toDto);
+        return SecurityUtils
+            .getCurrentUserLogin()
+            .switchIfEmpty(Mono.just("anonymous"))
+            .flatMap(usuario -> solicitudRepository.findByUsuarioAndSolucionId(usuario, id))
+            .map(solicitudMapper::toDto);
     }
 
     @Override

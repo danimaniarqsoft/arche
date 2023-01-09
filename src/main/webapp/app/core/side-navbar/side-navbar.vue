@@ -38,8 +38,17 @@
               Enviar solicitud
             </b-nav-item>
           </b-nav>
-          <div v-if="menu.isPreviewActivated">
+          <div v-if="menu.isCuestionarioActivated">
             <hr />
+            <b-nav vertical class="w-100">
+              <b-nav-item @click="loadCuestionarioForm" exact exact-active-class="active" class="d-inline-block">
+                <b-icon icon="journal-check" variant="success"></b-icon>
+                Cuestionario
+              </b-nav-item>
+            </b-nav>
+            <hr />
+          </div>
+          <div v-if="menu.isPreviewActivated">
             <b-button @click="handleActivatePreview(true)" v-if="!isPreview" block variant="outline-success"
               ><b-icon icon="eye-slash"></b-icon> Activar vista previa</b-button
             >
